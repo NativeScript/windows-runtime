@@ -1,27 +1,18 @@
 ﻿#include "pch.h"
 #include "ComHelpers.h"
+#include <array>
 
 namespace NativeScript {
 
 #ifdef _DEBUG
-void ASSERT_HR(HRESULT hr) {
-    if (FAILED(hr)) {
-        _com_error com_error(hr, nullptr);
-        DEBUG_LOG(L"Error: %s\n", com_error.ErrorMessage());
-        RaiseException(hr, EXCEPTION_NONCONTINUABLE, 0, nullptr);
-    }
-}
-#endif
-
-#ifdef _DEBUG
-void DEBUG_LOG(const wchar_t* format, ...) {
+void DEBUG_LOG(_Printf_format_string_ const wchar_t* format, ...) {
     va_list args;
     va_start(args, format);
-    wchar_t buffer[4096];
-    _vsnwprintf_s(buffer, sizeof(buffer), format, args);
+    std::array<wchar_t, 4096> buffer;
+    _vsnwprintf_s(buffer.data(), buffer.size(), _TRUNCATE, format, args);
     va_end(args);
 
-    OutputDebugString(buffer);
+    OutputDebugString(buffer.data());
 }
 #endif
 
