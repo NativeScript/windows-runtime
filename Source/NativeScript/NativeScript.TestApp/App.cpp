@@ -1,17 +1,20 @@
 #include "pch.h"
 #include "App.h"
-#include "Metadata.h"
+#include "MetadataReader.h"
+#include "EnumDeclaration.h"
 
 namespace NativeScript {
 namespace TestApp {
 
-using namespace Tests::Fixtures;
+using namespace std;
 using namespace Windows::UI::Popups;
 using namespace Windows::ApplicationModel::Activation;
+using namespace Metadata::Ast;
+using namespace Metadata;
+using namespace Tests::Fixtures;
 
 void App::OnLaunched(LaunchActivatedEventArgs^ e) {
-    Metadata::MetadataReader metadataReader = Metadata::MetadataReader::instance();
-    Class1 class1;
+    MetadataReader metadataReader;
 
     (ref new MessageDialog(L"Loaded"))->ShowAsync();
 }

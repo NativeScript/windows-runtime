@@ -7,11 +7,11 @@ using namespace NativeScript::TestApp;
 
 int __cdecl main(Array<String^>^ args) {
     Application::Start(ref new ApplicationInitializationCallback([](ApplicationInitializationCallbackParams^ p) {
-        App^ app = ref new App();
+        App^ app(ref new App());
 
         app->UnhandledException += ref new UnhandledExceptionEventHandler([](Object^ sender, UnhandledExceptionEventArgs^ e) {
             if (IsDebuggerPresent()) {
-                String^ errorMessage = e->Message;
+                String^ errorMessage(e->Message);
                 __debugbreak();
             }
         });

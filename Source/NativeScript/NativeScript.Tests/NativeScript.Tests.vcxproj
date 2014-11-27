@@ -142,7 +142,8 @@
     <ClInclude Include="pch.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="MetadataTests.cpp" />
+    <ClCompile Include="EnumsTests.cpp" />
+    <ClCompile Include="NamespacesTests.cpp" />
     <ClCompile Include="pch.cpp">
       <PrecompiledHeader>Create</PrecompiledHeader>
     </ClCompile>
