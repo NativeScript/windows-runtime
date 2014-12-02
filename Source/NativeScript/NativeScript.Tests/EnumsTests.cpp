@@ -25,16 +25,19 @@ public:
         shared_ptr<EnumDeclaration> declaration{dynamic_pointer_cast<EnumDeclaration>(metadataReader.findByName(name))};
 
         EnumDeclaration::MemberIterator it{declaration->begin()};
-        Assert::IsTrue((*it).value() == -1);
-        Assert::IsTrue((*it).name() == L"Value1");
+        EnumMemberDeclaration member1 = *it;
+        Assert::IsTrue(member1.value() == -1);
+        Assert::IsTrue(member1.name() == L"Value1");
 
         ++it;
-        Assert::IsTrue((*it).value() == 0);
-        Assert::IsTrue((*it).name() == L"Value2");
+        EnumMemberDeclaration member2 = *it;
+        Assert::IsTrue(member2.value() == 0);
+        Assert::IsTrue(member2.name() == L"Value2");
 
         ++it;
-        Assert::IsTrue((*it).value() == 1);
-        Assert::IsTrue((*it).name() == L"Value3");
+        EnumMemberDeclaration member3 = *it;
+        Assert::IsTrue(member3.value() == 1);
+        Assert::IsTrue(member3.name() == L"Value3");
 
         ++it;
         Assert::IsTrue(it == declaration->end());
@@ -47,12 +50,14 @@ public:
         shared_ptr<EnumDeclaration> declaration{dynamic_pointer_cast<EnumDeclaration>(metadataReader.findByName(name))};
 
         EnumDeclaration::MemberIterator it{declaration->begin()};
-        Assert::IsTrue((*it).value() == INT32_MIN);
-        Assert::IsTrue((*it).name() == L"MinValue");
+        EnumMemberDeclaration member1 = *it;
+        Assert::IsTrue(member1.value() == INT32_MIN);
+        Assert::IsTrue(member1.name() == L"MinValue");
 
         ++it;
-        Assert::IsTrue((*it).value() == INT32_MAX);
-        Assert::IsTrue((*it).name() == L"MaxValue");
+        EnumMemberDeclaration member2 = *it;
+        Assert::IsTrue(member2.value() == INT32_MAX);
+        Assert::IsTrue(member2.name() == L"MaxValue");
 
         ++it;
         Assert::IsTrue(it == declaration->end());
@@ -70,11 +75,13 @@ public:
         EnumDeclaration::MemberIterator it{declaration->begin()};
 
         for (size_t i = 0; i < size; ++i) {
+            EnumMemberDeclaration member = *it;
+
             wostringstream ss;
             ss << L"V" << setw(3) << setfill(L'0') << i;
-            Assert::IsTrue((*it).name() == ss.str());
+            Assert::IsTrue(member.name() == ss.str());
 
-            Assert::IsTrue((*it).value() == i);
+            Assert::IsTrue(member.value() == i);
 
             ++it;
         }

@@ -13,19 +13,19 @@ class EnumDeclaration final : public MetadataDeclaration {
 public:
     typedef MetadataDeclaration Base;
 
-    class MemberIterator final : public std::iterator<std::forward_iterator_tag, EnumMemberDeclaration> {
+    class MemberIterator final : public std::iterator<std::input_iterator_tag, EnumMemberDeclaration> {
     public:
         explicit MemberIterator(Microsoft::WRL::ComPtr<IMetaDataImport2>, mdTypeDef, ULONG index);
 
         ~MemberIterator();
 
         MemberIterator(const MemberIterator&) = delete;
-        MemberIterator(const MemberIterator&&);
+        MemberIterator(MemberIterator&&);
 
         MemberIterator& operator=(const MemberIterator&) = delete;
-        MemberIterator& operator=(const MemberIterator&&);
+        MemberIterator& operator=(MemberIterator&&);
 
-        EnumMemberDeclaration operator*() const;
+        EnumMemberDeclaration operator*();
         MemberIterator& operator++();
 
         friend bool operator==(const MemberIterator&, const MemberIterator&);
@@ -36,7 +36,7 @@ public:
         mdTypeDef _token;
 
         ULONG _currentIndex;
-        mutable HCORENUM _enumerator;
+        HCORENUM _enumerator;
     };
 
     explicit EnumDeclaration(Microsoft::WRL::ComPtr<IMetaDataImport2>, mdTypeDef);

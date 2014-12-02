@@ -17,7 +17,14 @@ EnumDeclaration::MemberIterator::MemberIterator(ComPtr<IMetaDataImport2> metadat
     ASSERT_SUCCESS(_metadata->ResetEnum(_enumerator, _currentIndex));
 }
 
-EnumDeclaration::MemberIterator::MemberIterator(const MemberIterator&& other)
+EnumDeclaration::MemberIterator::~MemberIterator() {
+    if (_enumerator) {
+        _metadata->CloseEnum(_enumerator);
+        _enumerator = nullptr;
+    }
+}
+
+EnumDeclaration::MemberIterator::MemberIterator(MemberIterator&& other)
     : _metadata{move(other._metadata)}
       , _token{move(other._token)}
       , _currentIndex{move(other._currentIndex)}
@@ -26,7 +33,7 @@ EnumDeclaration::MemberIterator::MemberIterator(const MemberIterator&& other)
     other._enumerator = nullptr;
 }
 
-EnumDeclaration::MemberIterator& EnumDeclaration::MemberIterator::operator=(const MemberIterator&& other) {
+EnumDeclaration::MemberIterator& EnumDeclaration::MemberIterator::operator=(MemberIterator&& other) {
     _metadata = move(other._metadata);
     _token = move(other._token);
     _currentIndex = move(other._currentIndex);
@@ -37,22 +44,17 @@ EnumDeclaration::MemberIterator& EnumDeclaration::MemberIterator::operator=(cons
     return *this;
 }
 
-EnumDeclaration::MemberIterator::~MemberIterator() {
-    _metadata->CloseEnum(_enumerator);
-    _enumerator = nullptr;
-}
-
-EnumMemberDeclaration EnumDeclaration::MemberIterator::operator*() const {
+EnumMemberDeclaration EnumDeclaration::MemberIterator::operator*() {
     mdFieldDef field{0};
 
     ASSERT_SUCCESS(_metadata->EnumFields(&_enumerator, _token, &field, 1, nullptr));
-    ASSERT_SUCCESS(_metadata->ResetEnum(_enumerator, _currentIndex));
+    ++_currentIndex;
 
     return EnumMemberDeclaration(_metadata, field);
 }
 
 EnumDeclaration::MemberIterator& EnumDeclaration::MemberIterator::operator++() {
-    ASSERT_SUCCESS(_metadata->ResetEnum(_enumerator, ++_currentIndex));
+    // Pretend to move
     return *this;
 }
 
