@@ -33,7 +33,6 @@ namespace Metadata {
 using namespace std;
 using namespace Microsoft::WRL::Wrappers;
 using namespace Microsoft::WRL;
-using namespace Ast;
 
 // TODO: Create HCorenum wrapper
 

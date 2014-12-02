@@ -3,12 +3,11 @@
 
 namespace NativeScript {
 namespace Metadata {
-namespace Ast {
 
 using namespace std;
 using namespace Microsoft::WRL;
 
-MetadataDeclaration::MetadataDeclaration(const ComPtr<IMetaDataImport2>& metadata, const mdTypeDef token)
+MetadataDeclaration::MetadataDeclaration(ComPtr<IMetaDataImport2> metadata, mdTypeDef token)
     : Base()
       , _metadata{metadata}
       , _token{token} {
@@ -25,6 +24,5 @@ wstring MetadataDeclaration::name() const {
     return name;
 }
 
-}
 }
 }

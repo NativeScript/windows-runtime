@@ -3,7 +3,6 @@
 
 namespace NativeScript {
 namespace Metadata {
-namespace Ast {
 
 Declaration::~Declaration() {
 }
@@ -11,6 +10,5 @@ Declaration::~Declaration() {
 Declaration::Declaration() {
 }
 
-}
 }
 }

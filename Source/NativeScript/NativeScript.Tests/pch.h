@@ -13,6 +13,5 @@ using namespace Microsoft::VisualStudio::CppUnitTestFramework;
 
 using namespace NativeScript::Tests::Fixtures;
 using namespace NativeScript::Tests;
-using namespace NativeScript::Metadata::Ast;
 using namespace NativeScript::Metadata;
 using namespace NativeScript;

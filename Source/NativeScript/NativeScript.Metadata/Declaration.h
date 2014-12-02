@@ -4,7 +4,6 @@
 
 namespace NativeScript {
 namespace Metadata {
-namespace Ast {
 
 class Declaration {
 public:
@@ -16,6 +15,5 @@ protected:
     explicit Declaration();
 };
 
-}
 }
 }

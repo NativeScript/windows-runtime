@@ -6,7 +6,6 @@
 
 namespace NativeScript {
 namespace Metadata {
-namespace Ast {
 
 class NamespaceDeclaration final : public Declaration {
 public:
@@ -20,6 +19,5 @@ private:
     std::wstring _name;
 };
 
-}
 }
 }

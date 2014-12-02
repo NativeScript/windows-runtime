@@ -8,7 +8,6 @@
 
 namespace NativeScript {
 namespace Metadata {
-namespace Ast {
 
 class MetadataDeclaration : public Declaration {
 public:
@@ -17,12 +16,11 @@ public:
     virtual std::wstring name() const override;
 
 protected:
-    explicit MetadataDeclaration(const Microsoft::WRL::ComPtr<IMetaDataImport2>&, const mdTypeDef);
+    explicit MetadataDeclaration(Microsoft::WRL::ComPtr<IMetaDataImport2>, mdTypeDef);
 
-    const Microsoft::WRL::ComPtr<IMetaDataImport2> _metadata;
-    const mdTypeDef _token;
+    Microsoft::WRL::ComPtr<IMetaDataImport2> _metadata;
+    mdTypeDef _token;
 };
 
-}
 }
 }

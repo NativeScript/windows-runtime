@@ -9,9 +9,10 @@ namespace Metadata {
 
 class MetadataReader {
 public:
-    std::shared_ptr<Ast::Declaration> findByName(const wchar_t* fullyQualifiedName) const;
+    // TODO: HRESULT
+    std::shared_ptr<Declaration> findByName(const wchar_t* fullyQualifiedName) const;
 
-    std::shared_ptr<Ast::Declaration> findByNameInNamespace(const wchar_t* name, const wchar_t* namespaceName) const;
+    std::shared_ptr<Declaration> findByNameInNamespace(const wchar_t* name, const wchar_t* namespaceName) const;
 };
 
 }

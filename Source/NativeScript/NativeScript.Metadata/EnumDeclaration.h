@@ -8,7 +8,6 @@
 
 namespace NativeScript {
 namespace Metadata {
-namespace Ast {
 
 class EnumDeclaration final : public MetadataDeclaration {
 public:
@@ -16,29 +15,34 @@ public:
 
     class MemberIterator final : public std::iterator<std::forward_iterator_tag, EnumMemberDeclaration> {
     public:
-        explicit MemberIterator(const Microsoft::WRL::ComPtr<IMetaDataImport2>&, const mdTypeDef, ULONG index);
+        explicit MemberIterator(Microsoft::WRL::ComPtr<IMetaDataImport2>, mdTypeDef, ULONG index);
 
         ~MemberIterator();
 
-        EnumMemberDeclaration operator*() const;
+        MemberIterator(const MemberIterator&) = delete;
+        MemberIterator(const MemberIterator&&);
 
+        MemberIterator& operator=(const MemberIterator&) = delete;
+        MemberIterator& operator=(const MemberIterator&&);
+
+        EnumMemberDeclaration operator*() const;
         MemberIterator& operator++();
-        MemberIterator operator++(int);
 
         friend bool operator==(const MemberIterator&, const MemberIterator&);
         friend bool operator!=(const MemberIterator&, const MemberIterator&);
 
     private:
-        const Microsoft::WRL::ComPtr<IMetaDataImport2> _metadata;
-        const mdTypeDef _token;
+        Microsoft::WRL::ComPtr<IMetaDataImport2> _metadata;
+        mdTypeDef _token;
 
         ULONG _currentIndex;
         mutable HCORENUM _enumerator;
     };
 
-    explicit EnumDeclaration(const Microsoft::WRL::ComPtr<IMetaDataImport2>&, const mdTypeDef);
+    explicit EnumDeclaration(Microsoft::WRL::ComPtr<IMetaDataImport2>, mdTypeDef);
 
     size_t size() const;
+
     MemberIterator begin() const;
     MemberIterator end() const;
 };
@@ -46,6 +50,5 @@ public:
 bool operator==(const EnumDeclaration::MemberIterator&, const EnumDeclaration::MemberIterator&);
 bool operator!=(const EnumDeclaration::MemberIterator&, const EnumDeclaration::MemberIterator&);
 
-}
 }
 }

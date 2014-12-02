@@ -3,12 +3,11 @@
 
 namespace NativeScript {
 namespace Metadata {
-namespace Ast {
 
 using namespace std;
 using namespace Microsoft::WRL;
 
-EnumMemberDeclaration::EnumMemberDeclaration(const ComPtr<IMetaDataImport2>& metadata, const mdFieldDef token)
+EnumMemberDeclaration::EnumMemberDeclaration(ComPtr<IMetaDataImport2> metadata, mdFieldDef token)
     : Base()
       , _metadata{metadata}
       , _token{token} {
@@ -35,11 +34,11 @@ int64_t EnumMemberDeclaration::value() const {
     // TODO: Do this in the EnumDeclaration ctor.
     switch (valueType) {
         case ELEMENT_TYPE_I4:
-            result = *(static_cast<const int32_t*>(value));
+            result = *static_cast<const int32_t*>(value);
             break;
 
         case ELEMENT_TYPE_U4:
-            result = *(static_cast<const uint32_t*>(value));
+            result = *static_cast<const uint32_t*>(value);
             break;
 
         default:
@@ -49,6 +48,5 @@ int64_t EnumMemberDeclaration::value() const {
     return result;
 }
 
-}
 }
 }

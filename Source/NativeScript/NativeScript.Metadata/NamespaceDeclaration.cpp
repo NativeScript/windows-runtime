@@ -3,7 +3,6 @@
 
 namespace NativeScript {
 namespace Metadata {
-namespace Ast {
 
 using namespace std;
 
@@ -16,6 +15,5 @@ wstring NamespaceDeclaration::name() const {
     return _name;
 }
 
-}
 }
 }
