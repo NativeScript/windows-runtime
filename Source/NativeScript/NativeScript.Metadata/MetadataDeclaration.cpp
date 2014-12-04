@@ -11,17 +11,27 @@ MetadataDeclaration::MetadataDeclaration(ComPtr<IMetaDataImport2> metadata, mdTy
     : Base()
       , _metadata{metadata}
       , _token{token} {
+
+    ASSERT(token != mdTypeDefNil);
 }
 
 wstring MetadataDeclaration::name() const {
-    identifier fullyQualifiedNameData;
-    ULONG fullyQualifiedNameDataLength{0};
+    wstring fullyQualifiedName(fullName());
+    size_t dotIndex = fullyQualifiedName.rfind(L".");
+    if (dotIndex != wstring::npos) {
+        fullyQualifiedName = fullyQualifiedName.substr(dotIndex + 1);
+    }
+    return fullyQualifiedName;
+}
 
-    ASSERT_SUCCESS(_metadata->GetTypeDefProps(_token, fullyQualifiedNameData.data(), fullyQualifiedNameData.size(), &fullyQualifiedNameDataLength, nullptr, nullptr));
+wstring MetadataDeclaration::fullName() const {
+    identifier fullNameData;
+    ULONG fullNameDataLength{0};
 
-    wstring fullyQualifiedName(fullyQualifiedNameData.data(), fullyQualifiedNameDataLength - 1);
-    wstring name(fullyQualifiedName.substr(fullyQualifiedName.rfind(L".") + 1));
-    return name;
+    ASSERT_SUCCESS(_metadata->GetTypeDefProps(_token, fullNameData.data(), fullNameData.size(), &fullNameDataLength, nullptr, nullptr));
+
+    wstring fullName(fullNameData.data(), fullNameDataLength - 1);
+    return fullName;
 }
 
 }

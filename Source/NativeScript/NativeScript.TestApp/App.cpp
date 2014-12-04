@@ -1,7 +1,6 @@
 #include "pch.h"
 #include "App.h"
 #include "MetadataReader.h"
-#include "EnumDeclaration.h"
 
 namespace NativeScript {
 namespace TestApp {
@@ -9,7 +8,6 @@ namespace TestApp {
 using namespace std;
 using namespace Windows::UI::Popups;
 using namespace Windows::ApplicationModel::Activation;
-using namespace Metadata::Ast;
 using namespace Metadata;
 using namespace Tests::Fixtures;
 

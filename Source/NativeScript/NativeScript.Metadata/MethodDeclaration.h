@@ -1,7 +1,5 @@
 #pragma once
 
-#include <stdint.h>
-#include <string>
 #include <cor.h>
 #include <wrl.h>
 
@@ -10,21 +8,23 @@
 namespace NativeScript {
 namespace Metadata {
 
-class EnumMemberDeclaration final : public Declaration {
+class MethodDeclaration final : public Declaration {
 public:
     typedef Declaration Base;
 
-    explicit EnumMemberDeclaration(Microsoft::WRL::ComPtr<IMetaDataImport2>, mdFieldDef);
+    explicit MethodDeclaration(Microsoft::WRL::ComPtr<IMetaDataImport2>, mdMethodDef);
+
+    virtual bool isExported() const override;
+
+    bool isStatic() const;
 
     virtual std::wstring name() const override;
 
     virtual std::wstring fullName() const override;
 
-    int64_t value() const;
-
 private:
     const Microsoft::WRL::ComPtr<IMetaDataImport2> _metadata;
-    const mdFieldDef _token;
+    const mdMethodDef _token;
 };
 
 }

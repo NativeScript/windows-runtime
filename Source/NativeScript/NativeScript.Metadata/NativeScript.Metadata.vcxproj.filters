@@ -4,6 +4,9 @@
     <Filter Include="Ast">
       <UniqueIdentifier>{76d83043-eed9-4a6b-b04b-77da9cc0d2ac}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Wrappers">
+      <UniqueIdentifier>{b2069fe1-cb0e-4d24-9328-bad070d936c1}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp" />
@@ -22,6 +25,15 @@
       <Filter>Ast</Filter>
     </ClCompile>
     <ClCompile Include="MetadataDeclaration.cpp">
+      <Filter>Ast</Filter>
+    </ClCompile>
+    <ClCompile Include="ClassDeclaration.cpp">
+      <Filter>Ast</Filter>
+    </ClCompile>
+    <ClCompile Include="PropertyDeclaration.cpp">
+      <Filter>Ast</Filter>
+    </ClCompile>
+    <ClCompile Include="MethodDeclaration.cpp">
       <Filter>Ast</Filter>
     </ClCompile>
   </ItemGroup>
@@ -46,6 +58,18 @@
     </ClInclude>
     <ClInclude Include="MetadataDeclaration.h">
       <Filter>Ast</Filter>
+    </ClInclude>
+    <ClInclude Include="ClassDeclaration.h">
+      <Filter>Ast</Filter>
+    </ClInclude>
+    <ClInclude Include="PropertyDeclaration.h">
+      <Filter>Ast</Filter>
+    </ClInclude>
+    <ClInclude Include="MethodDeclaration.h">
+      <Filter>Ast</Filter>
+    </ClInclude>
+    <ClInclude Include="IteratorRange.h">
+      <Filter>Wrappers</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

@@ -129,21 +129,27 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="Ast.h" />
+    <ClInclude Include="ClassDeclaration.h" />
     <ClInclude Include="ComHelpers.h" />
     <ClInclude Include="Declaration.h" />
     <ClInclude Include="EnumDeclaration.h" />
     <ClInclude Include="EnumMemberDeclaration.h" />
+    <ClInclude Include="IteratorRange.h" />
     <ClInclude Include="MetadataDeclaration.h" />
     <ClInclude Include="MetadataReader.h" />
+    <ClInclude Include="MethodDeclaration.h" />
     <ClInclude Include="NamespaceDeclaration.h" />
     <ClInclude Include="pch.h" />
+    <ClInclude Include="PropertyDeclaration.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="ClassDeclaration.cpp" />
     <ClCompile Include="ComHelpers.cpp" />
     <ClCompile Include="EnumDeclaration.cpp" />
     <ClCompile Include="EnumMemberDeclaration.cpp" />
     <ClCompile Include="MetadataDeclaration.cpp" />
     <ClCompile Include="MetadataReader.cpp" />
+    <ClCompile Include="MethodDeclaration.cpp" />
     <ClCompile Include="pch.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
@@ -152,6 +158,7 @@
     </ClCompile>
     <ClCompile Include="NamespaceDeclaration.cpp" />
     <ClCompile Include="Declaration.cpp" />
+    <ClCompile Include="PropertyDeclaration.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

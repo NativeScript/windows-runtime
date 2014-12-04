@@ -1,8 +1,5 @@
 #pragma once
 
-#include <cor.h>
-#include <wrl.h>
-
 #include "MetadataDeclaration.h"
 #include "EnumMemberDeclaration.h"
 

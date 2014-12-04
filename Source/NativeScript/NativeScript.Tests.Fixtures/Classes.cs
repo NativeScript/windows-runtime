@@ -2,18 +2,27 @@
 
 namespace NativeScript.Tests.Fixtures
 {
+    public sealed class EmptyClass
+    {
+        private EmptyClass()
+        {
+        }
+    }
+
     public sealed class SimpleClass
     {
-        private const int InstanceReadonlyPropertyBackingField = 0;
         public int InstanceReadonlyProperty
         {
-            get { return InstanceReadonlyPropertyBackingField; }
+            get { throw new NotImplementedException(); }
         }
 
-        private const int StaticReadonlyPropertyBackingField = 0;
         public static int StaticReadonlyProperty
         {
-            get { return StaticReadonlyPropertyBackingField; }
+            get { throw new NotImplementedException(); }
+        }
+
+        private SimpleClass()
+        {
         }
 
         public int InstanceMethod()
@@ -24,10 +33,6 @@ namespace NativeScript.Tests.Fixtures
         public static int StaticMethod()
         {
             throw new NotImplementedException();
-        }
-
-        private SimpleClass()
-        {
         }
     }
 }

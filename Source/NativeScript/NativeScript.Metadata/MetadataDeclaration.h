@@ -1,6 +1,5 @@
 #pragma once
 
-#include <string>
 #include <cor.h>
 #include <wrl.h>
 
@@ -14,6 +13,8 @@ public:
     typedef Declaration Base;
 
     virtual std::wstring name() const override;
+
+    virtual std::wstring fullName() const override;
 
 protected:
     explicit MetadataDeclaration(Microsoft::WRL::ComPtr<IMetaDataImport2>, mdTypeDef);

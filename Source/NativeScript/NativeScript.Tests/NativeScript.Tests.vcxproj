@@ -142,6 +142,7 @@
     <ClInclude Include="pch.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="ClassesTests.cpp" />
     <ClCompile Include="EnumsTests.cpp" />
     <ClCompile Include="NamespacesTests.cpp" />
     <ClCompile Include="pch.cpp">

@@ -38,17 +38,17 @@ using namespace Microsoft::WRL;
 
 // TODO: Use decl_iterator, specific_decl_iterator, filtered_decl_iterator
 
-shared_ptr<Declaration> MetadataReader::findByName(const wchar_t* fullyQualifiedName) const {
-    ASSERT(fullyQualifiedName);
+shared_ptr<Declaration> MetadataReader::findByName(const wchar_t* fullName) const {
+    ASSERT(fullName);
 
-    if (*fullyQualifiedName == L'\0') {
+    if (*fullName == L'\0') {
         return make_shared<NamespaceDeclaration>(L"");
     }
 
     ComPtr<IMetaDataImport2> metadata;
-    mdTypeDef token{mdTokenNil};
+    mdTypeDef token{mdTypeDefNil};
 
-    HStringReference fullyQualifiedNameRef{fullyQualifiedName};
+    HStringReference fullyQualifiedNameRef{fullName};
     HRESULT getMetadataFileResult{RoGetMetaDataFile(fullyQualifiedNameRef.Get(), nullptr, nullptr, metadata.GetAddressOf(), &token)};
 
     if (FAILED(getMetadataFileResult)) {
@@ -62,12 +62,7 @@ shared_ptr<Declaration> MetadataReader::findByName(const wchar_t* fullyQualified
             // RoResolveNamespace gives incomplete results.
             // The search for the "Windows" namespace on Windows Phone 8.1 fails both on a device and on an emulator with corrupted metadata error.
 
-            wstring namespaceName{fullyQualifiedName};
-            size_t lastDotIndex = namespaceName.rfind(L".");
-            if (lastDotIndex != wstring::npos) {
-                namespaceName = namespaceName.substr(lastDotIndex + 1);
-            }
-            return make_shared<NamespaceDeclaration>(namespaceName.data());
+            return make_shared<NamespaceDeclaration>(fullName);
         }
     }
 
@@ -81,7 +76,6 @@ shared_ptr<Declaration> MetadataReader::findByName(const wchar_t* fullyQualified
 
     if (!IsTdPublic(flags) || IsTdSpecialName(flags) || IsTdRTSpecialName(flags)) {
         // TODO: Check deprecated?, obsolete
-        // TODO: Check platform
 
         return nullptr;
     }
@@ -115,8 +109,12 @@ shared_ptr<Declaration> MetadataReader::findByName(const wchar_t* fullyQualified
             return make_shared<EnumDeclaration>(metadata, token);
         }
 
-        return nullptr;
+        // TODO: Check for struct
+
+        return make_shared<ClassDeclaration>(metadata, token);
     }
+
+    // TODO: Check for interface
 
     ASSERT_NOT_REACHED();
 }
