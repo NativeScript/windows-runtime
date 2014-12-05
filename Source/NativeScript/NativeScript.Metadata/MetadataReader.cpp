@@ -12,6 +12,9 @@
 #define SYSTEM_ENUM_W                  L"System.Enum"
 #define SYSTEM_ENUM                     "System.Enum"
 
+#define SYSTEM_VALUETYPE_W             L"System.ValueType"
+#define SYSTEM_VALUETYPE                "System.ValueType"
+
 #define SYSTEM_OBJECT_W                L"System.Object"
 #define SYSTEM_OBJECT                   "System.Object"
 
@@ -109,12 +112,16 @@ shared_ptr<Declaration> MetadataReader::findByName(const wchar_t* fullName) cons
             return make_shared<EnumDeclaration>(metadata, token);
         }
 
-        // TODO: Check for struct
+        if (wcscmp(parentName.data(), SYSTEM_VALUETYPE_W) == 0) {
+            return make_shared<StructDeclaration>(metadata, token);
+        }
 
         return make_shared<ClassDeclaration>(metadata, token);
     }
 
-    // TODO: Check for interface
+    if (IsTdInterface(token)) {
+        return nullptr;
+    }
 
     ASSERT_NOT_REACHED();
 }

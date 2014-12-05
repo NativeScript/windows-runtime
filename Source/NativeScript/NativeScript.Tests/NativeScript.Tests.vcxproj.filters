@@ -2,9 +2,18 @@
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
     <ClCompile Include="pch.cpp" />
-    <ClCompile Include="EnumsTests.cpp" />
-    <ClCompile Include="NamespacesTests.cpp" />
-    <ClCompile Include="ClassesTests.cpp" />
+    <ClCompile Include="StructsTests.cpp">
+      <Filter>TestCases</Filter>
+    </ClCompile>
+    <ClCompile Include="EnumsTests.cpp">
+      <Filter>TestCases</Filter>
+    </ClCompile>
+    <ClCompile Include="ClassesTests.cpp">
+      <Filter>TestCases</Filter>
+    </ClCompile>
+    <ClCompile Include="NamespacesTests.cpp">
+      <Filter>TestCases</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="pch.h" />
@@ -38,6 +47,9 @@
   <ItemGroup>
     <Filter Include="Images">
       <UniqueIdentifier>{81615a75-2b9c-488a-9897-83af7a9d5f70}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="TestCases">
+      <UniqueIdentifier>{d8b85e12-6150-4683-a29c-953778e17c2b}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

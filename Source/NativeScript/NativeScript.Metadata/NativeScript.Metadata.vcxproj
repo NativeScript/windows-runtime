@@ -134,6 +134,7 @@
     <ClInclude Include="Declaration.h" />
     <ClInclude Include="EnumDeclaration.h" />
     <ClInclude Include="EnumMemberDeclaration.h" />
+    <ClInclude Include="FieldDeclaration.h" />
     <ClInclude Include="IteratorRange.h" />
     <ClInclude Include="MetadataDeclaration.h" />
     <ClInclude Include="MetadataReader.h" />
@@ -141,12 +142,14 @@
     <ClInclude Include="NamespaceDeclaration.h" />
     <ClInclude Include="pch.h" />
     <ClInclude Include="PropertyDeclaration.h" />
+    <ClInclude Include="StructDeclaration.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ClassDeclaration.cpp" />
     <ClCompile Include="ComHelpers.cpp" />
     <ClCompile Include="EnumDeclaration.cpp" />
     <ClCompile Include="EnumMemberDeclaration.cpp" />
+    <ClCompile Include="FieldDeclaration.cpp" />
     <ClCompile Include="MetadataDeclaration.cpp" />
     <ClCompile Include="MetadataReader.cpp" />
     <ClCompile Include="MethodDeclaration.cpp" />
@@ -159,6 +162,7 @@
     <ClCompile Include="NamespaceDeclaration.cpp" />
     <ClCompile Include="Declaration.cpp" />
     <ClCompile Include="PropertyDeclaration.cpp" />
+    <ClCompile Include="StructDeclaration.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

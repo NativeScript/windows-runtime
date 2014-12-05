@@ -36,6 +36,12 @@
     <ClCompile Include="MethodDeclaration.cpp">
       <Filter>Ast</Filter>
     </ClCompile>
+    <ClCompile Include="StructDeclaration.cpp">
+      <Filter>Ast</Filter>
+    </ClCompile>
+    <ClCompile Include="FieldDeclaration.cpp">
+      <Filter>Ast</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="pch.h" />
@@ -70,6 +76,12 @@
     </ClInclude>
     <ClInclude Include="IteratorRange.h">
       <Filter>Wrappers</Filter>
+    </ClInclude>
+    <ClInclude Include="StructDeclaration.h">
+      <Filter>Ast</Filter>
+    </ClInclude>
+    <ClInclude Include="FieldDeclaration.h">
+      <Filter>Ast</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

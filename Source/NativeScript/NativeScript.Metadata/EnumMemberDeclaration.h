@@ -1,30 +1,19 @@
 #pragma once
 
 #include <stdint.h>
-#include <string>
-#include <cor.h>
-#include <wrl.h>
 
-#include "Declaration.h"
+#include "FieldDeclaration.h"
 
 namespace NativeScript {
 namespace Metadata {
 
-class EnumMemberDeclaration final : public Declaration {
+class EnumMemberDeclaration final : public FieldDeclaration {
 public:
-    typedef Declaration Base;
+    typedef FieldDeclaration Base;
 
     explicit EnumMemberDeclaration(Microsoft::WRL::ComPtr<IMetaDataImport2>, mdFieldDef);
 
-    virtual std::wstring name() const override;
-
-    virtual std::wstring fullName() const override;
-
     int64_t value() const;
-
-private:
-    const Microsoft::WRL::ComPtr<IMetaDataImport2> _metadata;
-    const mdFieldDef _token;
 };
 
 }
