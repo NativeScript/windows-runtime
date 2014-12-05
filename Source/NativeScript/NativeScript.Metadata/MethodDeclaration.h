@@ -1,9 +1,13 @@
 #pragma once
 
+#include <vector>
+
 #include <cor.h>
 #include <wrl.h>
 
 #include "Declaration.h"
+#include "ParameterDeclaration.h"
+#include "IteratorRange.h"
 
 namespace NativeScript {
 namespace Metadata {
@@ -11,6 +15,8 @@ namespace Metadata {
 class MethodDeclaration final : public Declaration {
 public:
     typedef Declaration Base;
+
+    using ParameterIterator = std::vector<ParameterDeclaration>::const_iterator;
 
     explicit MethodDeclaration(Microsoft::WRL::ComPtr<IMetaDataImport2>, mdMethodDef);
 
@@ -22,9 +28,13 @@ public:
 
     virtual std::wstring fullName() const override;
 
+    IteratorRange<ParameterIterator> parameters() const;
+
 private:
     const Microsoft::WRL::ComPtr<IMetaDataImport2> _metadata;
     const mdMethodDef _token;
+
+    std::vector<ParameterDeclaration> _parameters;
 };
 
 }

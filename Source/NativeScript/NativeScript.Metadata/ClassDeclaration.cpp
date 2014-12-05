@@ -99,5 +99,44 @@ IteratorRange<ClassDeclaration::PropertyIterator> ClassDeclaration::properties()
     return IteratorRange<PropertyIterator>(_properties.begin(), _properties.end());
 }
 
+vector<shared_ptr<Declaration>> ClassDeclaration::findMembersWithName(const wchar_t* name) const {
+    HCORENUM enumerator{nullptr};
+    array<mdToken, 1024> memberTokens;
+    ULONG membersSize{0};
+    ASSERT_SUCCESS(_metadata->EnumMembersWithName(&enumerator, _token, name, memberTokens.data(), memberTokens.size(), &membersSize));
+    _metadata->CloseEnum(enumerator);
+
+    vector<shared_ptr<Declaration>> result;
+
+    for (size_t i = 0; i < membersSize; ++i) {
+        mdToken memberToken{memberTokens[i]};
+
+        shared_ptr<Declaration> declaration{nullptr};
+
+        switch (TypeFromToken(memberToken)) {
+            case mdtMethodDef:
+                declaration = make_shared<MethodDeclaration>(_metadata, memberToken);
+                break;
+
+            case mdtProperty:
+                declaration = make_shared<PropertyDeclaration>(_metadata, memberToken);
+                break;
+
+                // TODO: Add others
+
+            default:
+                ASSERT_NOT_REACHED();
+        }
+
+        if (!declaration->isExported()) {
+            continue;
+        }
+
+        result.push_back(declaration);
+    }
+
+    return result;
+}
+
 }
 }

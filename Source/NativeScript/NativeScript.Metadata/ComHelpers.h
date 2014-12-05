@@ -50,5 +50,6 @@ void DEBUG_LOG(_Printf_format_string_ const wchar_t* format, ...);
 #else
 #define DEBUG_LOG(format, ...)
 #endif
+
 }
 }

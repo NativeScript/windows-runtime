@@ -3,9 +3,6 @@
 
 #include "Ast.h"
 
-#undef TypeFromToken
-#define TypeFromToken(tk) ((CorTokenType)((ULONG32)((tk) & 0xff000000)))
-
 #define WINDOWS_W                      L"Windows"
 #define WINDOWS                         "Windows"
 
@@ -14,9 +11,6 @@
 
 #define SYSTEM_VALUETYPE_W             L"System.ValueType"
 #define SYSTEM_VALUETYPE                "System.ValueType"
-
-#define SYSTEM_OBJECT_W                L"System.Object"
-#define SYSTEM_OBJECT                   "System.Object"
 
 namespace {
 template <typename T, typename U>
@@ -68,8 +62,6 @@ shared_ptr<Declaration> MetadataReader::findByName(const wchar_t* fullName) cons
             return make_shared<NamespaceDeclaration>(fullName);
         }
     }
-
-    // TODO: Check for System.Object
 
     ASSERT_SUCCESS(getMetadataFileResult);
 

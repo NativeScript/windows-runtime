@@ -10,6 +10,7 @@ using namespace Microsoft::WRL;
 // TODO
 namespace {
 
+// TODO: Use GetClassLayout
 vector<FieldDeclaration> makeFieldDeclarations(ComPtr<IMetaDataImport2> metadata, mdTypeDef token) {
     HCORENUM enumerator{nullptr};
     ULONG count{0};
@@ -21,13 +22,7 @@ vector<FieldDeclaration> makeFieldDeclarations(ComPtr<IMetaDataImport2> metadata
 
     vector<FieldDeclaration> result;
     for (size_t i = 0; i < count; ++i) {
-        FieldDeclaration field{metadata, tokens[i]};
-
-        if (!field.isExported()) {
-            continue;
-        }
-
-        result.push_back(move(field));
+        result.emplace_back(metadata, tokens[i]);
     }
 
     return result;

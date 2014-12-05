@@ -7,10 +7,33 @@ namespace Metadata {
 using namespace std;
 using namespace Microsoft::WRL;
 
+// TODO
+namespace {
+
+vector<ParameterDeclaration> makeParameterDeclarations(ComPtr<IMetaDataImport2> metadata, mdMethodDef token) {
+    HCORENUM enumerator{nullptr};
+    ULONG count{0};
+    array<mdParamDef, 1024> tokens;
+
+    ASSERT_SUCCESS(metadata->EnumParams(&enumerator, token, tokens.data(), tokens.size(), &count));
+    ASSERT(count < tokens.size() - 1);
+    metadata->CloseEnum(enumerator);
+
+    vector<ParameterDeclaration> result;
+    for (size_t i = 0; i < count; ++i) {
+        result.emplace_back(metadata, tokens[i]);
+    }
+
+    return result;
+}
+
+}
+
 MethodDeclaration::MethodDeclaration(ComPtr<IMetaDataImport2> metadata, mdMethodDef token)
     : Base()
       , _metadata{metadata}
-      , _token{token} {
+      , _token{token}
+      , _parameters(makeParameterDeclarations(metadata, token)) {
 
     ASSERT(token != mdMethodDefNil);
 }
@@ -60,6 +83,10 @@ wstring MethodDeclaration::fullName() const {
     wstring fullName{parentFullNameData.data(), parentFullNameDataLength - 1};
     fullName.append(L".").append(name());
     return fullName;
+}
+
+IteratorRange<MethodDeclaration::ParameterIterator> MethodDeclaration::parameters() const {
+    return IteratorRange<ParameterIterator>(_parameters.begin(), _parameters.end());
 }
 
 }

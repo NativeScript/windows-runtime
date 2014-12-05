@@ -1,6 +1,7 @@
 #pragma once
 
 #include <vector>
+#include <memory>
 
 #include "TypeDeclaration.h"
 #include "MethodDeclaration.h"
@@ -27,6 +28,8 @@ public:
 
     IteratorRange<MethodIterator> methods() const;
     IteratorRange<PropertyIterator> properties() const;
+
+    std::vector<std::shared_ptr<Declaration>> findMembersWithName(const wchar_t*) const;
 
 private:
     std::vector<MethodDeclaration> _methods;
