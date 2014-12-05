@@ -9,9 +9,9 @@ using namespace Microsoft::WRL;
 
 EnumDeclaration::MemberIterator::MemberIterator(IMetaDataImport2* metadata, mdTypeDef token, ULONG index)
     : _metadata{metadata}
-      , _token{token}
-      , _currentIndex{index}
-      , _enumerator{nullptr} {
+    , _token{token}
+    , _currentIndex{index}
+    , _enumerator{nullptr} {
 
     ASSERT_SUCCESS(_metadata->EnumFields(&_enumerator, _token, nullptr, 0, nullptr));
     ASSERT_SUCCESS(_metadata->ResetEnum(_enumerator, _currentIndex));
@@ -26,9 +26,9 @@ EnumDeclaration::MemberIterator::~MemberIterator() {
 
 EnumDeclaration::MemberIterator::MemberIterator(MemberIterator&& other)
     : _metadata{move(other._metadata)}
-      , _token{move(other._token)}
-      , _currentIndex{move(other._currentIndex)}
-      , _enumerator{move(other._enumerator)} {
+    , _token{move(other._token)}
+    , _currentIndex{move(other._currentIndex)}
+    , _enumerator{move(other._enumerator)} {
 
     other._enumerator = nullptr;
 }

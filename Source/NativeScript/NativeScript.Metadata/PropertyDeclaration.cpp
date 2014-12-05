@@ -7,10 +7,10 @@ namespace Metadata {
 using namespace std;
 using namespace Microsoft::WRL;
 
-PropertyDeclaration::PropertyDeclaration(IMetaDataImport2* metadata, mdFieldDef token)
+PropertyDeclaration::PropertyDeclaration(IMetaDataImport2* metadata, mdProperty token)
     : Base()
-      , _metadata{metadata}
-      , _token{token} {
+    , _metadata{metadata}
+    , _token{token} {
 
     ASSERT(token != mdPropertyNil);
 }
@@ -19,7 +19,7 @@ bool PropertyDeclaration::isExported() const {
     DWORD propertyFlags{0};
     ASSERT_SUCCESS(_metadata->GetPropertyProps(_token, nullptr, nullptr, 0, nullptr, &propertyFlags, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, 0, nullptr));
 
-    if (IsPrSpecialName(propertyFlags) || IsPrRTSpecialName(propertyFlags)) {
+    if (IsPrSpecialName(propertyFlags)) {
         return false;
     }
 

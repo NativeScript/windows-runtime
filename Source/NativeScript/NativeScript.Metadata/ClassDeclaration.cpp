@@ -60,8 +60,8 @@ vector<PropertyDeclaration> makePropertyDeclarations(IMetaDataImport2* metadata,
 
 ClassDeclaration::ClassDeclaration(IMetaDataImport2* metadata, mdTypeDef token)
     : Base(metadata, token)
-      , _methods(makeMethodDeclarations(metadata, token))
-      , _properties(makePropertyDeclarations(metadata, token)) {
+    , _methods(makeMethodDeclarations(metadata, token))
+    , _properties(makePropertyDeclarations(metadata, token)) {
 
 }
 
@@ -111,7 +111,7 @@ vector<shared_ptr<Declaration>> ClassDeclaration::findMembersWithName(const wcha
     for (size_t i = 0; i < membersSize; ++i) {
         mdToken memberToken{memberTokens[i]};
 
-        shared_ptr<Declaration> declaration{nullptr};
+        shared_ptr<Declaration> declaration;
 
         switch (TypeFromToken(memberToken)) {
             case mdtMethodDef:

@@ -45,8 +45,8 @@ shared_ptr<Declaration> MetadataReader::findByName(const wchar_t* fullName) cons
     ComPtr<IMetaDataImport2> metadata;
     mdTypeDef token{mdTypeDefNil};
 
-    HStringReference fullyQualifiedNameRef{fullName};
-    HRESULT getMetadataFileResult{RoGetMetaDataFile(fullyQualifiedNameRef.Get(), nullptr, nullptr, metadata.GetAddressOf(), &token)};
+    HStringReference fullNameRef{fullName};
+    HRESULT getMetadataFileResult{RoGetMetaDataFile(fullNameRef.Get(), nullptr, nullptr, metadata.GetAddressOf(), &token)};
 
     if (FAILED(getMetadataFileResult)) {
         if (equalToAny(getMetadataFileResult, E_INVALIDARG, RO_E_METADATA_INVALID_TYPE_FORMAT, RO_E_METADATA_NAME_NOT_FOUND, RO_E_INVALID_METADATA_FILE)) {
@@ -69,7 +69,7 @@ shared_ptr<Declaration> MetadataReader::findByName(const wchar_t* fullName) cons
     mdToken parentToken{mdTokenNil};
     ASSERT_SUCCESS(metadata->GetTypeDefProps(token, nullptr, 0, nullptr, &flags, &parentToken));
 
-    if (!IsTdPublic(flags) || IsTdSpecialName(flags) || IsTdRTSpecialName(flags)) {
+    if (!IsTdPublic(flags) || IsTdSpecialName(flags)) {
         // TODO: Check deprecated?, obsolete
 
         return nullptr;
@@ -111,7 +111,7 @@ shared_ptr<Declaration> MetadataReader::findByName(const wchar_t* fullName) cons
         return make_shared<ClassDeclaration>(metadata.Get(), token);
     }
 
-    if (IsTdInterface(token)) {
+    if (IsTdInterface(flags)) {
         return nullptr;
     }
 

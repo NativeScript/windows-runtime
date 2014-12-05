@@ -7,7 +7,7 @@ namespace Metadata {
 
 class Declaration {
 public:
-    virtual ~Declaration();
+    virtual ~Declaration() = default;
 
     virtual bool isExported() const;
 
@@ -19,7 +19,7 @@ public:
     virtual std::wstring fullName() const = 0;
 
 protected:
-    explicit Declaration();
+    explicit Declaration() = default;
 };
 
 }

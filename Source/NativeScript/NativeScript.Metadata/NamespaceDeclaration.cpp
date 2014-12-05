@@ -8,7 +8,7 @@ using namespace std;
 
 NamespaceDeclaration::NamespaceDeclaration(const wchar_t* fullName)
     : Base()
-      , _fullName(fullName) {
+    , _fullName(fullName) {
 }
 
 wstring NamespaceDeclaration::name() const {

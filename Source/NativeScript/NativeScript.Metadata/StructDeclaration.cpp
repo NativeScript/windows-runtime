@@ -32,7 +32,7 @@ vector<FieldDeclaration> makeFieldDeclarations(IMetaDataImport2* metadata, mdTyp
 
 StructDeclaration::StructDeclaration(IMetaDataImport2* metadata, mdTypeDef token)
     : Base(metadata, token)
-      , _fields(makeFieldDeclarations(metadata, token)) {
+    , _fields(makeFieldDeclarations(metadata, token)) {
 
 }
 

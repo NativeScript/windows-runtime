@@ -8,7 +8,7 @@ public:
     TEST_METHOD(Namespaces) {
         MetadataReader metadataReader;
 
-        initializer_list<pair<const wchar_t*, const wchar_t*>> cases = {
+        initializer_list<pair<const wchar_t*, const wchar_t*>> cases{
             pair<const wchar_t*, const wchar_t*>(L"", L""),
             pair<const wchar_t*, const wchar_t*>(L"NativeScript", L"NativeScript"),
             pair<const wchar_t*, const wchar_t*>(L"NativeScript.Tests", L"Tests"),
@@ -27,7 +27,7 @@ public:
     TEST_METHOD(WindowsNamespaces) {
         MetadataReader metadataReader;
 
-        initializer_list<pair<const wchar_t*, const wchar_t*>> cases = {
+        initializer_list<pair<const wchar_t*, const wchar_t*>> cases{
             pair<const wchar_t*, const wchar_t*>(L"Windows", L"Windows"),
             pair<const wchar_t*, const wchar_t*>(L"Windows.Foundation", L"Foundation"),
             pair<const wchar_t*, const wchar_t*>(L"Windows.Foundation.Collections", L"Collections"),

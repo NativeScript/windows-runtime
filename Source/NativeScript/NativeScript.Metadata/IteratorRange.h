@@ -7,7 +7,7 @@ class IteratorRange final {
 public:
     explicit IteratorRange(T beginIterator, T endIterator)
         : _beginIterator(std::move(beginIterator))
-          , _endIterator(std::move(endIterator)) {
+        , _endIterator(std::move(endIterator)) {
     }
 
     T begin() const {

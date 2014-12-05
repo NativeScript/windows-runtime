@@ -9,8 +9,8 @@ using namespace Microsoft::WRL;
 
 FieldDeclaration::FieldDeclaration(IMetaDataImport2* metadata, mdFieldDef token)
     : Base()
-      , _metadata{metadata}
-      , _token{token} {
+    , _metadata{metadata}
+    , _token{token} {
 
     ASSERT(token != mdFieldDefNil);
 }

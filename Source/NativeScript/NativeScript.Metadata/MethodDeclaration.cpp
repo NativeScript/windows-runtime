@@ -31,9 +31,9 @@ vector<ParameterDeclaration> makeParameterDeclarations(IMetaDataImport2* metadat
 
 MethodDeclaration::MethodDeclaration(IMetaDataImport2* metadata, mdMethodDef token)
     : Base()
-      , _metadata{metadata}
-      , _token{token}
-      , _parameters(makeParameterDeclarations(metadata, token)) {
+    , _metadata{metadata}
+    , _token{token}
+    , _parameters(makeParameterDeclarations(metadata, token)) {
 
     ASSERT(token != mdMethodDefNil);
 }
@@ -42,11 +42,11 @@ bool MethodDeclaration::isExported() const {
     DWORD methodFlags{0};
     ASSERT_SUCCESS(_metadata->GetMethodProps(_token, nullptr, nullptr, 0, nullptr, &methodFlags, nullptr, nullptr, nullptr, nullptr));
 
-    if (!(IsMdPublic(methodFlags) || IsMdFamily(methodFlags))) {
+    if (!(IsMdPublic(methodFlags) || IsMdFamily(methodFlags) || IsMdFamORAssem(methodFlags))) {
         return false;
     }
 
-    if (IsMdSpecialName(methodFlags) || IsMdRTSpecialName(methodFlags)) {
+    if (IsMdSpecialName(methodFlags)) {
         return false;
     }
 

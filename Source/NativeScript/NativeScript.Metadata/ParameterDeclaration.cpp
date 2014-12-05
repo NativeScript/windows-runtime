@@ -8,8 +8,8 @@ using namespace std;
 
 ParameterDeclaration::ParameterDeclaration(IMetaDataImport2* metadata, mdParamDef token)
     : Base()
-      , _metadata{metadata}
-      , _token{token} {
+    , _metadata{metadata}
+    , _token{token} {
 
     ASSERT(token != mdParamDefNil);
 }
