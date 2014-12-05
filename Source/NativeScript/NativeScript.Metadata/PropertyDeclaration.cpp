@@ -7,7 +7,7 @@ namespace Metadata {
 using namespace std;
 using namespace Microsoft::WRL;
 
-PropertyDeclaration::PropertyDeclaration(ComPtr<IMetaDataImport2> metadata, mdFieldDef token)
+PropertyDeclaration::PropertyDeclaration(IMetaDataImport2* metadata, mdFieldDef token)
     : Base()
       , _metadata{metadata}
       , _token{token} {
@@ -71,7 +71,7 @@ unique_ptr<MethodDeclaration> PropertyDeclaration::getter() const {
         return nullptr;
     }
 
-    return make_unique<MethodDeclaration>(_metadata, getterToken);
+    return make_unique<MethodDeclaration>(_metadata.Get(), getterToken);
 }
 
 unique_ptr<MethodDeclaration> PropertyDeclaration::setter() const {
@@ -83,7 +83,7 @@ unique_ptr<MethodDeclaration> PropertyDeclaration::setter() const {
         return nullptr;
     }
 
-    return make_unique<MethodDeclaration>(_metadata, setterToken);
+    return make_unique<MethodDeclaration>(_metadata.Get(), setterToken);
 }
 
 }

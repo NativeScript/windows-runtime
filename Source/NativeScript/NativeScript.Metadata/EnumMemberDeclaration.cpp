@@ -7,7 +7,7 @@ namespace Metadata {
 using namespace std;
 using namespace Microsoft::WRL;
 
-EnumMemberDeclaration::EnumMemberDeclaration(ComPtr<IMetaDataImport2> metadata, mdFieldDef token)
+EnumMemberDeclaration::EnumMemberDeclaration(IMetaDataImport2* metadata, mdFieldDef token)
     : Base(metadata, token) {
 
 }

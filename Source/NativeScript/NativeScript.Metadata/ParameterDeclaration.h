@@ -12,7 +12,7 @@ class ParameterDeclaration final : public Declaration {
 public:
     typedef Declaration Base;
 
-    explicit ParameterDeclaration(Microsoft::WRL::ComPtr<IMetaDataImport2>, mdParamDef);
+    explicit ParameterDeclaration(IMetaDataImport2*, mdParamDef);
 
     virtual std::wstring name() const override;
 

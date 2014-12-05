@@ -18,7 +18,7 @@ public:
     using MethodIterator = std::vector<MethodDeclaration>::const_iterator;
     using PropertyIterator = std::vector<PropertyDeclaration>::const_iterator;
 
-    explicit ClassDeclaration(Microsoft::WRL::ComPtr<IMetaDataImport2>, mdTypeDef);
+    explicit ClassDeclaration(IMetaDataImport2*, mdTypeDef);
 
     std::wstring baseFullName() const;
 

@@ -10,7 +10,7 @@ using namespace Microsoft::WRL;
 // TODO
 namespace {
 
-vector<MethodDeclaration> makeMethodDeclarations(ComPtr<IMetaDataImport2> metadata, mdTypeDef token) {
+vector<MethodDeclaration> makeMethodDeclarations(IMetaDataImport2* metadata, mdTypeDef token) {
     HCORENUM enumerator{nullptr};
     ULONG count{0};
     array<mdProperty, 1024> tokens;
@@ -33,7 +33,7 @@ vector<MethodDeclaration> makeMethodDeclarations(ComPtr<IMetaDataImport2> metada
     return result;
 }
 
-vector<PropertyDeclaration> makePropertyDeclarations(ComPtr<IMetaDataImport2> metadata, mdTypeDef token) {
+vector<PropertyDeclaration> makePropertyDeclarations(IMetaDataImport2* metadata, mdTypeDef token) {
     HCORENUM enumerator{nullptr};
     ULONG count{0};
     array<mdMethodDef, 1024> tokens;
@@ -58,7 +58,7 @@ vector<PropertyDeclaration> makePropertyDeclarations(ComPtr<IMetaDataImport2> me
 
 }
 
-ClassDeclaration::ClassDeclaration(ComPtr<IMetaDataImport2> metadata, mdTypeDef token)
+ClassDeclaration::ClassDeclaration(IMetaDataImport2* metadata, mdTypeDef token)
     : Base(metadata, token)
       , _methods(makeMethodDeclarations(metadata, token))
       , _properties(makePropertyDeclarations(metadata, token)) {
@@ -115,11 +115,11 @@ vector<shared_ptr<Declaration>> ClassDeclaration::findMembersWithName(const wcha
 
         switch (TypeFromToken(memberToken)) {
             case mdtMethodDef:
-                declaration = make_shared<MethodDeclaration>(_metadata, memberToken);
+                declaration = make_shared<MethodDeclaration>(_metadata.Get(), memberToken);
                 break;
 
             case mdtProperty:
-                declaration = make_shared<PropertyDeclaration>(_metadata, memberToken);
+                declaration = make_shared<PropertyDeclaration>(_metadata.Get(), memberToken);
                 break;
 
                 // TODO: Add others

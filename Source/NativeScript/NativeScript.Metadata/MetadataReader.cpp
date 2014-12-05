@@ -101,14 +101,14 @@ shared_ptr<Declaration> MetadataReader::findByName(const wchar_t* fullName) cons
         ASSERT(parentName.data());
 
         if (wcscmp(parentName.data(), SYSTEM_ENUM_W) == 0) {
-            return make_shared<EnumDeclaration>(metadata, token);
+            return make_shared<EnumDeclaration>(metadata.Get(), token);
         }
 
         if (wcscmp(parentName.data(), SYSTEM_VALUETYPE_W) == 0) {
-            return make_shared<StructDeclaration>(metadata, token);
+            return make_shared<StructDeclaration>(metadata.Get(), token);
         }
 
-        return make_shared<ClassDeclaration>(metadata, token);
+        return make_shared<ClassDeclaration>(metadata.Get(), token);
     }
 
     if (IsTdInterface(token)) {

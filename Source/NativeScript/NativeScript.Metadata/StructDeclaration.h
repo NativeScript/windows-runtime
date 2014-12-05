@@ -15,7 +15,7 @@ public:
 
     using FieldIterator = std::vector<FieldDeclaration>::const_iterator;
 
-    explicit StructDeclaration(Microsoft::WRL::ComPtr<IMetaDataImport2>, mdTypeDef);
+    explicit StructDeclaration(IMetaDataImport2*, mdTypeDef);
 
     size_t size() const;
 

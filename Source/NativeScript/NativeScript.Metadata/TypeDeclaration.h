@@ -17,7 +17,7 @@ public:
     virtual std::wstring fullName() const override;
 
 protected:
-    explicit TypeDeclaration(Microsoft::WRL::ComPtr<IMetaDataImport2>, mdTypeDef);
+    explicit TypeDeclaration(IMetaDataImport2*, mdTypeDef);
 
     const Microsoft::WRL::ComPtr<IMetaDataImport2> _metadata;
     const mdTypeDef _token;

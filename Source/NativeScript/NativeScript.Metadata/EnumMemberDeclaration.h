@@ -11,7 +11,7 @@ class EnumMemberDeclaration final : public FieldDeclaration {
 public:
     typedef FieldDeclaration Base;
 
-    explicit EnumMemberDeclaration(Microsoft::WRL::ComPtr<IMetaDataImport2>, mdFieldDef);
+    explicit EnumMemberDeclaration(IMetaDataImport2*, mdFieldDef);
 
     int64_t value() const;
 };

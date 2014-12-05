@@ -14,7 +14,7 @@ class PropertyDeclaration final : public Declaration {
 public:
     typedef Declaration Base;
 
-    explicit PropertyDeclaration(Microsoft::WRL::ComPtr<IMetaDataImport2>, mdProperty);
+    explicit PropertyDeclaration(IMetaDataImport2*, mdProperty);
 
     virtual bool isExported() const override;
 

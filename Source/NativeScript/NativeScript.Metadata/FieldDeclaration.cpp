@@ -7,7 +7,7 @@ namespace Metadata {
 using namespace std;
 using namespace Microsoft::WRL;
 
-FieldDeclaration::FieldDeclaration(ComPtr<IMetaDataImport2> metadata, mdFieldDef token)
+FieldDeclaration::FieldDeclaration(IMetaDataImport2* metadata, mdFieldDef token)
     : Base()
       , _metadata{metadata}
       , _token{token} {

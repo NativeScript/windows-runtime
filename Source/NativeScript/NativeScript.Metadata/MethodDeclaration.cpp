@@ -10,7 +10,7 @@ using namespace Microsoft::WRL;
 // TODO
 namespace {
 
-vector<ParameterDeclaration> makeParameterDeclarations(ComPtr<IMetaDataImport2> metadata, mdMethodDef token) {
+vector<ParameterDeclaration> makeParameterDeclarations(IMetaDataImport2* metadata, mdMethodDef token) {
     HCORENUM enumerator{nullptr};
     ULONG count{0};
     array<mdParamDef, 1024> tokens;
@@ -29,7 +29,7 @@ vector<ParameterDeclaration> makeParameterDeclarations(ComPtr<IMetaDataImport2> 
 
 }
 
-MethodDeclaration::MethodDeclaration(ComPtr<IMetaDataImport2> metadata, mdMethodDef token)
+MethodDeclaration::MethodDeclaration(IMetaDataImport2* metadata, mdMethodDef token)
     : Base()
       , _metadata{metadata}
       , _token{token}

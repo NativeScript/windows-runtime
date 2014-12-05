@@ -6,7 +6,7 @@ namespace Metadata {
 
 using namespace std;
 
-ParameterDeclaration::ParameterDeclaration(Microsoft::WRL::ComPtr<IMetaDataImport2> metadata, mdParamDef token)
+ParameterDeclaration::ParameterDeclaration(IMetaDataImport2* metadata, mdParamDef token)
     : Base()
       , _metadata{metadata}
       , _token{token} {

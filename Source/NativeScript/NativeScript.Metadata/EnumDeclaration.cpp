@@ -7,7 +7,7 @@ namespace Metadata {
 using namespace std;
 using namespace Microsoft::WRL;
 
-EnumDeclaration::MemberIterator::MemberIterator(ComPtr<IMetaDataImport2> metadata, mdTypeDef token, ULONG index)
+EnumDeclaration::MemberIterator::MemberIterator(IMetaDataImport2* metadata, mdTypeDef token, ULONG index)
     : _metadata{metadata}
       , _token{token}
       , _currentIndex{index}
@@ -50,7 +50,7 @@ EnumMemberDeclaration EnumDeclaration::MemberIterator::operator*() {
     ASSERT_SUCCESS(_metadata->EnumFields(&_enumerator, _token, &field, 1, nullptr));
     ++_currentIndex;
 
-    return EnumMemberDeclaration(_metadata, field);
+    return EnumMemberDeclaration(_metadata.Get(), field);
 }
 
 EnumDeclaration::MemberIterator& EnumDeclaration::MemberIterator::operator++() {
@@ -58,7 +58,7 @@ EnumDeclaration::MemberIterator& EnumDeclaration::MemberIterator::operator++() {
     return *this;
 }
 
-EnumDeclaration::EnumDeclaration(ComPtr<IMetaDataImport2> metadata, mdTypeDef token)
+EnumDeclaration::EnumDeclaration(IMetaDataImport2* metadata, mdTypeDef token)
     : Base(metadata, token) {
 }
 
@@ -75,11 +75,11 @@ size_t EnumDeclaration::size() const {
 }
 
 EnumDeclaration::MemberIterator EnumDeclaration::begin() const {
-    return MemberIterator(_metadata, _token, 1);
+    return MemberIterator(_metadata.Get(), _token, 1);
 }
 
 EnumDeclaration::MemberIterator EnumDeclaration::end() const {
-    return MemberIterator(_metadata, _token, size() + 1);
+    return MemberIterator(_metadata.Get(), _token, size() + 1);
 }
 
 bool operator==(const EnumDeclaration::MemberIterator& left, const EnumDeclaration::MemberIterator& right) {

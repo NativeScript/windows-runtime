@@ -7,7 +7,7 @@ namespace Metadata {
 using namespace std;
 using namespace Microsoft::WRL;
 
-TypeDeclaration::TypeDeclaration(ComPtr<IMetaDataImport2> metadata, mdTypeDef token)
+TypeDeclaration::TypeDeclaration(IMetaDataImport2* metadata, mdTypeDef token)
     : Base()
       , _metadata{metadata}
       , _token{token} {

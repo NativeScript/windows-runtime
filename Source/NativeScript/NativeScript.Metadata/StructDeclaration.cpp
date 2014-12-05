@@ -11,7 +11,7 @@ using namespace Microsoft::WRL;
 namespace {
 
 // TODO: Use GetClassLayout
-vector<FieldDeclaration> makeFieldDeclarations(ComPtr<IMetaDataImport2> metadata, mdTypeDef token) {
+vector<FieldDeclaration> makeFieldDeclarations(IMetaDataImport2* metadata, mdTypeDef token) {
     HCORENUM enumerator{nullptr};
     ULONG count{0};
     array<mdFieldDef, 1024> tokens;
@@ -30,7 +30,7 @@ vector<FieldDeclaration> makeFieldDeclarations(ComPtr<IMetaDataImport2> metadata
 
 }
 
-StructDeclaration::StructDeclaration(ComPtr<IMetaDataImport2> metadata, mdTypeDef token)
+StructDeclaration::StructDeclaration(IMetaDataImport2* metadata, mdTypeDef token)
     : Base(metadata, token)
       , _fields(makeFieldDeclarations(metadata, token)) {
 

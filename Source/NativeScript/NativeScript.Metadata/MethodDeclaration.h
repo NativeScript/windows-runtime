@@ -18,7 +18,7 @@ public:
 
     using ParameterIterator = std::vector<ParameterDeclaration>::const_iterator;
 
-    explicit MethodDeclaration(Microsoft::WRL::ComPtr<IMetaDataImport2>, mdMethodDef);
+    explicit MethodDeclaration(IMetaDataImport2*, mdMethodDef);
 
     virtual bool isExported() const override;
 

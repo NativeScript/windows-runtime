@@ -12,7 +12,7 @@ class FieldDeclaration : public Declaration {
 public:
     typedef Declaration Base;
 
-    explicit FieldDeclaration(Microsoft::WRL::ComPtr<IMetaDataImport2>, mdFieldDef);
+    explicit FieldDeclaration(IMetaDataImport2*, mdFieldDef);
 
     virtual std::wstring name() const override;
 

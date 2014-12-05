@@ -12,7 +12,7 @@ public:
 
     class MemberIterator final : public std::iterator<std::input_iterator_tag, EnumMemberDeclaration> {
     public:
-        explicit MemberIterator(Microsoft::WRL::ComPtr<IMetaDataImport2>, mdTypeDef, ULONG index);
+        explicit MemberIterator(IMetaDataImport2*, mdTypeDef, ULONG index);
 
         ~MemberIterator();
 
@@ -36,7 +36,7 @@ public:
         HCORENUM _enumerator;
     };
 
-    explicit EnumDeclaration(Microsoft::WRL::ComPtr<IMetaDataImport2>, mdTypeDef);
+    explicit EnumDeclaration(IMetaDataImport2*, mdTypeDef);
 
     size_t size() const;
 
