@@ -136,7 +136,7 @@
     <ClInclude Include="EnumMemberDeclaration.h" />
     <ClInclude Include="FieldDeclaration.h" />
     <ClInclude Include="IteratorRange.h" />
-    <ClInclude Include="MetadataDeclaration.h" />
+    <ClInclude Include="TypeDeclaration.h" />
     <ClInclude Include="MetadataReader.h" />
     <ClInclude Include="MethodDeclaration.h" />
     <ClInclude Include="NamespaceDeclaration.h" />
@@ -150,7 +150,7 @@
     <ClCompile Include="EnumDeclaration.cpp" />
     <ClCompile Include="EnumMemberDeclaration.cpp" />
     <ClCompile Include="FieldDeclaration.cpp" />
-    <ClCompile Include="MetadataDeclaration.cpp" />
+    <ClCompile Include="TypeDeclaration.cpp" />
     <ClCompile Include="MetadataReader.cpp" />
     <ClCompile Include="MethodDeclaration.cpp" />
     <ClCompile Include="pch.cpp">

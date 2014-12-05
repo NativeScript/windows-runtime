@@ -2,16 +2,16 @@
 
 #include <vector>
 
-#include "MetadataDeclaration.h"
+#include "TypeDeclaration.h"
 #include "FieldDeclaration.h"
 #include "IteratorRange.h"
 
 namespace NativeScript {
 namespace Metadata {
 
-class StructDeclaration final : public MetadataDeclaration {
+class StructDeclaration final : public TypeDeclaration {
 public:
-    typedef MetadataDeclaration Base;
+    typedef TypeDeclaration Base;
 
     using FieldIterator = std::vector<FieldDeclaration>::const_iterator;
 

@@ -1,14 +1,14 @@
 #pragma once
 
-#include "MetadataDeclaration.h"
+#include "TypeDeclaration.h"
 #include "EnumMemberDeclaration.h"
 
 namespace NativeScript {
 namespace Metadata {
 
-class EnumDeclaration final : public MetadataDeclaration {
+class EnumDeclaration final : public TypeDeclaration {
 public:
-    typedef MetadataDeclaration Base;
+    typedef TypeDeclaration Base;
 
     class MemberIterator final : public std::iterator<std::input_iterator_tag, EnumMemberDeclaration> {
     public:

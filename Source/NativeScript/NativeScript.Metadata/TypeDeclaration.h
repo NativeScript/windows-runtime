@@ -8,7 +8,7 @@
 namespace NativeScript {
 namespace Metadata {
 
-class MetadataDeclaration : public Declaration {
+class TypeDeclaration : public Declaration {
 public:
     typedef Declaration Base;
 
@@ -17,7 +17,7 @@ public:
     virtual std::wstring fullName() const override;
 
 protected:
-    explicit MetadataDeclaration(Microsoft::WRL::ComPtr<IMetaDataImport2>, mdTypeDef);
+    explicit TypeDeclaration(Microsoft::WRL::ComPtr<IMetaDataImport2>, mdTypeDef);
 
     Microsoft::WRL::ComPtr<IMetaDataImport2> _metadata;
     mdTypeDef _token;

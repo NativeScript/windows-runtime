@@ -24,9 +24,6 @@
     <ClCompile Include="Declaration.cpp">
       <Filter>Ast</Filter>
     </ClCompile>
-    <ClCompile Include="MetadataDeclaration.cpp">
-      <Filter>Ast</Filter>
-    </ClCompile>
     <ClCompile Include="ClassDeclaration.cpp">
       <Filter>Ast</Filter>
     </ClCompile>
@@ -40,6 +37,9 @@
       <Filter>Ast</Filter>
     </ClCompile>
     <ClCompile Include="FieldDeclaration.cpp">
+      <Filter>Ast</Filter>
+    </ClCompile>
+    <ClCompile Include="TypeDeclaration.cpp">
       <Filter>Ast</Filter>
     </ClCompile>
   </ItemGroup>
@@ -62,9 +62,6 @@
     <ClInclude Include="Declaration.h">
       <Filter>Ast</Filter>
     </ClInclude>
-    <ClInclude Include="MetadataDeclaration.h">
-      <Filter>Ast</Filter>
-    </ClInclude>
     <ClInclude Include="ClassDeclaration.h">
       <Filter>Ast</Filter>
     </ClInclude>
@@ -81,6 +78,9 @@
       <Filter>Ast</Filter>
     </ClInclude>
     <ClInclude Include="FieldDeclaration.h">
+      <Filter>Ast</Filter>
+    </ClInclude>
+    <ClInclude Include="TypeDeclaration.h">
       <Filter>Ast</Filter>
     </ClInclude>
   </ItemGroup>

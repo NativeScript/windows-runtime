@@ -2,7 +2,7 @@
 
 #include <vector>
 
-#include "MetadataDeclaration.h"
+#include "TypeDeclaration.h"
 #include "MethodDeclaration.h"
 #include "PropertyDeclaration.h"
 #include "IteratorRange.h"
@@ -10,9 +10,9 @@
 namespace NativeScript {
 namespace Metadata {
 
-class ClassDeclaration final : public MetadataDeclaration {
+class ClassDeclaration final : public TypeDeclaration {
 public:
-    typedef MetadataDeclaration Base;
+    typedef TypeDeclaration Base;
 
     using MethodIterator = std::vector<MethodDeclaration>::const_iterator;
     using PropertyIterator = std::vector<PropertyDeclaration>::const_iterator;

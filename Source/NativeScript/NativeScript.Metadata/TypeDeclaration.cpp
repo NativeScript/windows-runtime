@@ -1,5 +1,5 @@
 #include "pch.h"
-#include "MetadataDeclaration.h"
+#include "TypeDeclaration.h"
 
 namespace NativeScript {
 namespace Metadata {
@@ -7,7 +7,7 @@ namespace Metadata {
 using namespace std;
 using namespace Microsoft::WRL;
 
-MetadataDeclaration::MetadataDeclaration(ComPtr<IMetaDataImport2> metadata, mdTypeDef token)
+TypeDeclaration::TypeDeclaration(ComPtr<IMetaDataImport2> metadata, mdTypeDef token)
     : Base()
       , _metadata{metadata}
       , _token{token} {
@@ -15,7 +15,7 @@ MetadataDeclaration::MetadataDeclaration(ComPtr<IMetaDataImport2> metadata, mdTy
     ASSERT(token != mdTypeDefNil);
 }
 
-wstring MetadataDeclaration::name() const {
+wstring TypeDeclaration::name() const {
     wstring fullyQualifiedName(fullName());
     size_t dotIndex = fullyQualifiedName.rfind(L".");
     if (dotIndex != wstring::npos) {
@@ -24,7 +24,7 @@ wstring MetadataDeclaration::name() const {
     return fullyQualifiedName;
 }
 
-wstring MetadataDeclaration::fullName() const {
+wstring TypeDeclaration::fullName() const {
     identifier fullNameData;
     ULONG fullNameDataLength{0};
 
