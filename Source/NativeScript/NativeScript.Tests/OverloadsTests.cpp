@@ -26,12 +26,12 @@ public:
 
         shared_ptr<MethodDeclaration> methodWithDouble{dynamic_pointer_cast<MethodDeclaration>(declaration->findMembersWithName(L"MethodWithDouble")[0])};
         Assert::IsTrue(methodWithDouble->name() == L"MethodWithDouble");
-        Assert::IsTrue(methodWithDouble->overloadName() == L"");
+        Assert::IsTrue(methodWithDouble->overloadName().empty());
         Assert::IsTrue(methodWithDouble->isDefaultOverload() == false);
 
         shared_ptr<MethodDeclaration> methodWithInt{dynamic_pointer_cast<MethodDeclaration>(declaration->findMembersWithName(L"MethodWithInt")[0])};
         Assert::IsTrue(methodWithInt->name() == L"MethodWithInt");
-        Assert::IsTrue(methodWithInt->overloadName() == L"");
+        Assert::IsTrue(methodWithInt->overloadName().empty());
         Assert::IsTrue(methodWithInt->isDefaultOverload() == false);
     }
 };

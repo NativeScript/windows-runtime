@@ -1,5 +1,6 @@
 ﻿#include "pch.h"
 #include "ComHelpers.h"
+#include <codecvt>
 
 NO_RETURN void CRASH() {
     reinterpret_cast<void(*)()>(0xDEADDEAD)();
@@ -19,6 +20,46 @@ void DEBUG_LOG(_Printf_format_string_ const wchar_t* format, ...) {
     va_end(args);
 
     OutputDebugString((wstring{buffer.data()} + L'\n').data());
+}
+
+wstring getUnaryCustomAttributeStringValue(IMetaDataImport2* metadata, mdToken token, const wchar_t* attributeName) {
+    const uint8_t* data{nullptr};
+    HRESULT getAttributeResult{metadata->GetCustomAttributeByName(token, attributeName, reinterpret_cast<const void**>(&data), nullptr)};
+
+    ASSERT_SUCCESS(getAttributeResult);
+
+    if (getAttributeResult == S_FALSE) {
+        return wstring{};
+    }
+
+    // Skip prolog
+    data += 2;
+
+    // If it's null
+    if (*data == UINT8_MAX) {
+        return wstring{};
+    }
+
+    // Read size and advance
+    ULONG size{CorSigUncompressData(data)};
+
+    // TODO
+    wstring_convert<codecvt_utf8_utf16<wchar_t>> converter;
+    wstring value{converter.from_bytes(reinterpret_cast<const char*>(data), reinterpret_cast<const char*>(data) + size)};
+    return value;
+}
+
+const wchar_t* GUID_ATTRIBUTE_W{L"Windows.Foundation.Metadata.GuidAttribute"};
+
+GUID getGuidAttributeValue(IMetaDataImport2* metadata, mdToken token) {
+    const uint8_t* data{nullptr};
+    ASSERT_SUCCESS(metadata->GetCustomAttributeByName(token, GUID_ATTRIBUTE_W, reinterpret_cast<const void**>(&data), nullptr));
+
+    // Skip prolog
+    data += 2;
+
+    GUID guid(*reinterpret_cast<const GUID*>(data));
+    return guid;
 }
 #endif
 

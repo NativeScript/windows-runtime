@@ -44,8 +44,5 @@ public:
     MemberIterator end() const;
 };
 
-bool operator==(const EnumDeclaration::MemberIterator&, const EnumDeclaration::MemberIterator&);
-bool operator!=(const EnumDeclaration::MemberIterator&, const EnumDeclaration::MemberIterator&);
-
 }
 }

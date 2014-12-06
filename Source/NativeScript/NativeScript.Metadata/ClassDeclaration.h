@@ -2,6 +2,7 @@
 
 #include <vector>
 #include <memory>
+#include <guiddef.h>
 
 #include "TypeDeclaration.h"
 #include "MethodDeclaration.h"
@@ -25,6 +26,8 @@ public:
     // ImplementedIntefaces
     // Constructors
     // Events
+
+    IID staticInterfaceId() const;
 
     IteratorRange<MethodIterator> methods() const;
     IteratorRange<PropertyIterator> properties() const;

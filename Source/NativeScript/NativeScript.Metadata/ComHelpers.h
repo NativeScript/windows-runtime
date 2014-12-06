@@ -51,5 +51,9 @@ void DEBUG_LOG(_Printf_format_string_ const wchar_t* format, ...);
 #define DEBUG_LOG(format, ...)
 #endif
 
+std::wstring getUnaryCustomAttributeStringValue(IMetaDataImport2*, mdToken, const wchar_t* attributeName);
+
+GUID getGuidAttributeValue(IMetaDataImport2*, mdToken);
+
 }
 }

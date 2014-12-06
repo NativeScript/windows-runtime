@@ -7,6 +7,8 @@ namespace Metadata {
 using namespace std;
 using namespace Microsoft::WRL;
 
+const wchar_t* STATIC_ATTRIBUTE_W{L"Windows.Foundation.Metadata.StaticAttribute"};
+
 // TODO
 namespace {
 
@@ -89,6 +91,18 @@ wstring ClassDeclaration::baseFullName() const {
 
     wstring result{parentName.data(), parentNameLength - 1};
     return result;
+}
+
+IID ClassDeclaration::staticInterfaceId() const {
+    wstring staticInterfaceName{getUnaryCustomAttributeStringValue(_metadata.Get(), _token, STATIC_ATTRIBUTE_W)};
+
+    if (staticInterfaceName.empty()) {
+        return GUID{};
+    }
+
+    mdTypeDef staticsClassToken{mdTypeDefNil};
+    ASSERT_SUCCESS(_metadata->FindTypeDefByName(staticInterfaceName.data(), mdTokenNil, &staticsClassToken));
+    return getGuidAttributeValue(_metadata.Get(), staticsClassToken);
 }
 
 IteratorRange<ClassDeclaration::MethodIterator> ClassDeclaration::methods() const {

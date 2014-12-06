@@ -16,7 +16,7 @@ public:
         Assert::IsTrue(declaration->baseFullName() == L"System.Object");
     }
 
-    TEST_METHOD(SimpleClass_Methods) {
+    TEST_METHOD(Methods) {
         MetadataReader metadataReader;
 
         const wchar_t* name{L"NativeScript.Tests.Fixtures.SimpleClass"};
@@ -40,7 +40,7 @@ public:
         Assert::IsTrue(it == methods.end());
     }
 
-    TEST_METHOD(SimpleClass_Properties) {
+    TEST_METHOD(Properties) {
         MetadataReader metadataReader;
 
         const wchar_t* name{L"NativeScript.Tests.Fixtures.SimpleClass"};
@@ -66,6 +66,16 @@ public:
 
         ++it;
         Assert::IsTrue(it == properties.end());
+    }
+
+    TEST_METHOD(StaticInterfaceGuid) {
+        MetadataReader metadataReader;
+
+        shared_ptr<ClassDeclaration> emptyClass{dynamic_pointer_cast<ClassDeclaration>(metadataReader.findByName(L"NativeScript.Tests.Fixtures.EmptyClass"))};
+        Assert::IsTrue(emptyClass->staticInterfaceId() == IID());
+
+        shared_ptr<ClassDeclaration> simlpleClass{dynamic_pointer_cast<ClassDeclaration>(metadataReader.findByName(L"NativeScript.Tests.Fixtures.SimpleClass"))};
+        Assert::IsTrue(simlpleClass->staticInterfaceId() == IID{4034795602, 49651, 23528,{90, 111, 106, 197, 54, 222, 142, 235}});
     }
 };
 

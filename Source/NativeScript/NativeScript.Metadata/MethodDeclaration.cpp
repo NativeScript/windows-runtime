@@ -1,5 +1,4 @@
 #include "pch.h"
-#include <codecvt>
 #include "MethodDeclaration.h"
 
 namespace NativeScript {
@@ -94,30 +93,7 @@ IteratorRange<MethodDeclaration::ParameterIterator> MethodDeclaration::parameter
 }
 
 wstring MethodDeclaration::overloadName() const {
-    const uint8_t* data{nullptr};
-    HRESULT getAttributeResult{_metadata->GetCustomAttributeByName(_token, OVERLOAD_ATTRIBUTE_W, reinterpret_cast<const void**>(&data), nullptr)};
-
-    ASSERT_SUCCESS(getAttributeResult);
-
-    if (getAttributeResult == S_FALSE) {
-        return wstring();
-    }
-
-    // Skip prolog
-    data += 2;
-
-    // If it's null
-    if (*data == UINT8_MAX) {
-        return wstring();
-    }
-
-    // Read size and advance
-    ULONG size{CorSigUncompressData(data)};
-
-    // TODO
-    wstring_convert<codecvt_utf8_utf16<wchar_t>> converter;
-    wstring name{converter.from_bytes(reinterpret_cast<const char*>(data), reinterpret_cast<const char*>(data) + size)};
-    return name;
+    return getUnaryCustomAttributeStringValue(_metadata.Get(), _token, OVERLOAD_ATTRIBUTE_W);
 }
 
 bool MethodDeclaration::isDefaultOverload() const {
