@@ -1,4 +1,5 @@
 #include "pch.h"
+#include <codecvt>
 #include "MethodDeclaration.h"
 
 namespace NativeScript {
@@ -6,6 +7,9 @@ namespace Metadata {
 
 using namespace std;
 using namespace Microsoft::WRL;
+
+const wchar_t* OVERLOAD_ATTRIBUTE_W{L"Windows.Foundation.Metadata.OverloadAttribute"};
+const wchar_t* DEFAULT_OVERLOAD_ATTRIBUTE_W{L"Windows.Foundation.Metadata.DefaultOverloadAttribute"};
 
 // TODO
 namespace {
@@ -89,5 +93,39 @@ IteratorRange<MethodDeclaration::ParameterIterator> MethodDeclaration::parameter
     return IteratorRange<ParameterIterator>(_parameters.begin(), _parameters.end());
 }
 
+wstring MethodDeclaration::overloadName() const {
+    const uint8_t* data{nullptr};
+    HRESULT getAttributeResult{_metadata->GetCustomAttributeByName(_token, OVERLOAD_ATTRIBUTE_W, reinterpret_cast<const void**>(&data), nullptr)};
+
+    ASSERT_SUCCESS(getAttributeResult);
+
+    if (getAttributeResult == S_FALSE) {
+        return wstring();
+    }
+
+    // Skip prolog
+    data += 2;
+
+    // If it's null
+    if (*data == UINT8_MAX) {
+        return wstring();
+    }
+
+    // Read size and advance
+    ULONG size{CorSigUncompressData(data)};
+
+    // TODO
+    wstring_convert<codecvt_utf8_utf16<wchar_t>> converter;
+    wstring name{converter.from_bytes(reinterpret_cast<const char*>(data), reinterpret_cast<const char*>(data) + size)};
+    return name;
+}
+
+bool MethodDeclaration::isDefaultOverload() const {
+    HRESULT getAttributeResult{_metadata->GetCustomAttributeByName(_token, DEFAULT_OVERLOAD_ATTRIBUTE_W, nullptr, nullptr)};
+
+    ASSERT_SUCCESS(getAttributeResult);
+
+    return getAttributeResult == S_OK;
+}
 }
 }

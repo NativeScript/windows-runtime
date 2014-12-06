@@ -30,6 +30,10 @@ public:
 
     IteratorRange<ParameterIterator> parameters() const;
 
+    std::wstring overloadName() const;
+
+    bool isDefaultOverload() const;
+
 private:
     const Microsoft::WRL::ComPtr<IMetaDataImport2> _metadata;
     const mdMethodDef _token;

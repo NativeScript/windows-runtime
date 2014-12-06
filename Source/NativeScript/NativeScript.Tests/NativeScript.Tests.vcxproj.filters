@@ -17,6 +17,9 @@
     <ClCompile Include="MarshalingTests.cpp">
       <Filter>TestCases</Filter>
     </ClCompile>
+    <ClCompile Include="OverloadsTests.cpp">
+      <Filter>TestCases</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="pch.h" />
