@@ -8,7 +8,7 @@ namespace NativeScript.Tests.Fixtures
         {
         }
 
-        public void InOutParameter(int inParameter, out int outParameter)
+        public void InOutParameterMethod(int inParameter, out int outParameter)
         {
             throw new NotImplementedException();
         }

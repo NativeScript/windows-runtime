@@ -87,6 +87,7 @@
   <ItemGroup>
     <Compile Include="Classes.cs" />
     <Compile Include="Enums.cs" />
+    <Compile Include="InterfacesTests.cs" />
     <Compile Include="Marshaling.cs" />
     <Compile Include="Namespaces.cs" />
     <Compile Include="Overloads.cs" />

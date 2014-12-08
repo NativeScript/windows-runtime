@@ -112,7 +112,7 @@ shared_ptr<Declaration> MetadataReader::findByName(const wchar_t* fullName) cons
     }
 
     if (IsTdInterface(flags)) {
-        return nullptr;
+        return make_shared<InterfaceDeclaration>(metadata.Get(), token);
     }
 
     ASSERT_NOT_REACHED();

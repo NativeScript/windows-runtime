@@ -93,16 +93,16 @@ wstring ClassDeclaration::baseFullName() const {
     return result;
 }
 
-IID ClassDeclaration::staticInterfaceId() const {
+shared_ptr<InterfaceDeclaration> ClassDeclaration::staticInterface() const {
     wstring staticInterfaceName{getUnaryCustomAttributeStringValue(_metadata.Get(), _token, STATIC_ATTRIBUTE_W)};
 
     if (staticInterfaceName.empty()) {
-        return GUID{};
+        return nullptr;
     }
 
     mdTypeDef staticsClassToken{mdTypeDefNil};
     ASSERT_SUCCESS(_metadata->FindTypeDefByName(staticInterfaceName.data(), mdTokenNil, &staticsClassToken));
-    return getGuidAttributeValue(_metadata.Get(), staticsClassToken);
+    return make_shared<InterfaceDeclaration>(_metadata.Get(), staticsClassToken);
 }
 
 IteratorRange<ClassDeclaration::MethodIterator> ClassDeclaration::methods() const {

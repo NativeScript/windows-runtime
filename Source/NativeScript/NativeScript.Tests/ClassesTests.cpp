@@ -68,14 +68,15 @@ public:
         Assert::IsTrue(it == properties.end());
     }
 
-    TEST_METHOD(StaticInterfaceGuid) {
+    TEST_METHOD(StaticAttribute) {
         MetadataReader metadataReader;
 
         shared_ptr<ClassDeclaration> emptyClass{dynamic_pointer_cast<ClassDeclaration>(metadataReader.findByName(L"NativeScript.Tests.Fixtures.EmptyClass"))};
-        Assert::IsTrue(emptyClass->staticInterfaceId() == IID());
+        Assert::IsTrue(emptyClass->staticInterface() == nullptr);
 
-        shared_ptr<ClassDeclaration> simlpleClass{dynamic_pointer_cast<ClassDeclaration>(metadataReader.findByName(L"NativeScript.Tests.Fixtures.SimpleClass"))};
-        Assert::IsTrue(simlpleClass->staticInterfaceId() == IID{4034795602, 49651, 23528,{90, 111, 106, 197, 54, 222, 142, 235}});
+        shared_ptr<ClassDeclaration> simpleClass{dynamic_pointer_cast<ClassDeclaration>(metadataReader.findByName(L"NativeScript.Tests.Fixtures.SimpleClass"))};
+        Assert::IsTrue(simpleClass->staticInterface()->fullName() == L"NativeScript.Tests.Fixtures.ISimpleClassStatic");
+        Assert::IsTrue(simpleClass->staticInterface()->id() == IID{0xF07E1852, 0xC1F3, 0x5BE8,{0x5A, 0x6F, 0x6A, 0xC5, 0x36, 0xDE, 0x8E, 0xEB}});
     }
 };
 

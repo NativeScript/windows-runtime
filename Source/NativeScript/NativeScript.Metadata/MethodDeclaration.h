@@ -22,11 +22,11 @@ public:
 
     virtual bool isExported() const override;
 
-    bool isStatic() const;
-
     virtual std::wstring name() const override;
 
     virtual std::wstring fullName() const override;
+
+    bool isStatic() const;
 
     IteratorRange<ParameterIterator> parameters() const;
 

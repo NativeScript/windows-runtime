@@ -2,12 +2,12 @@
 
 #include <vector>
 #include <memory>
-#include <guiddef.h>
 
 #include "TypeDeclaration.h"
 #include "MethodDeclaration.h"
 #include "PropertyDeclaration.h"
 #include "IteratorRange.h"
+#include "InterfaceDeclaration.h"
 
 namespace NativeScript {
 namespace Metadata {
@@ -27,7 +27,7 @@ public:
     // Constructors
     // Events
 
-    IID staticInterfaceId() const;
+    std::shared_ptr<InterfaceDeclaration> staticInterface() const;
 
     IteratorRange<MethodIterator> methods() const;
     IteratorRange<PropertyIterator> properties() const;

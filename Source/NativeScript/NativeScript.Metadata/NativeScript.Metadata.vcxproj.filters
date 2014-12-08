@@ -45,6 +45,9 @@
     <ClCompile Include="ParameterDeclaration.cpp">
       <Filter>Ast</Filter>
     </ClCompile>
+    <ClCompile Include="InterfaceDeclaration.cpp">
+      <Filter>Ast</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="pch.h" />
@@ -87,6 +90,9 @@
       <Filter>Ast</Filter>
     </ClInclude>
     <ClInclude Include="ParameterDeclaration.h">
+      <Filter>Ast</Filter>
+    </ClInclude>
+    <ClInclude Include="InterfaceDeclaration.h">
       <Filter>Ast</Filter>
     </ClInclude>
   </ItemGroup>
