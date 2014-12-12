@@ -3,10 +3,10 @@
 #include <wrl.h>
 #include <windows.ui.xaml.h>
 
-namespace NativeGameraww {
+namespace CxxGameraww {
 
 class App : public Microsoft::WRL::RuntimeClass<ABI::Windows::UI::Xaml::IApplicationOverrides> {
-    InspectableClass(L"NativeGameraww.App", BaseTrust);
+    InspectableClass(L"CxxGameraww.App", BaseTrust);
 
 public:
     STDMETHOD(OnActivated)(ABI::Windows::ApplicationModel::Activation::IActivatedEventArgs*) override;

@@ -28,12 +28,22 @@
     <ClCompile Include="pch.cpp" />
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="App.cpp" />
+    <ClCompile Include="JsonPropertyProvider.cpp" />
+    <ClCompile Include="JsonProperty.cpp" />
+    <ClCompile Include="JsonVectorView.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="pch.h" />
     <ClInclude Include="App.h" />
+    <ClInclude Include="JsonPropertyProvider.h" />
+    <ClInclude Include="JsonProperty.h" />
+    <ClInclude Include="JsonVectorView.h" />
+    <ClInclude Include="AgileCallback.h" />
   </ItemGroup>
   <ItemGroup>
     <AppxManifest Include="Package.appxmanifest" />
+  </ItemGroup>
+  <ItemGroup>
+    <Midl Include="CxxGameraww.idl" />
   </ItemGroup>
 </Project>

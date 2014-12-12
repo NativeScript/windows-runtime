@@ -8,7 +8,7 @@
   <mp:PhoneIdentity PhoneProductId="d4aeb144-fd07-4f26-b9d6-27663edf8261" PhonePublisherId="00000000-0000-0000-0000-000000000000"/>
 
   <Properties>
-    <DisplayName>NativeGameraww</DisplayName>
+    <DisplayName>CxxGameraww</DisplayName>
     <PublisherDisplayName>jzhekov</PublisherDisplayName>
     <Logo>Assets\StoreLogo.png</Logo>
   </Properties>
@@ -17,7 +17,7 @@
     <OSMinVersion>6.3.1</OSMinVersion>
     <OSMaxVersionTested>6.3.1</OSMaxVersionTested>
   </Prerequisites>
-  
+
   <Resources>
     <Resource Language="x-generate"/>
   </Resources>
@@ -25,12 +25,12 @@
   <Applications>
     <Application Id="App"
         Executable="$targetnametoken$.exe"
-        EntryPoint="NativeGameraww.App">
+        EntryPoint="CxxGameraww.App">
         <m3:VisualElements
-            DisplayName="NativeGameraww"
+            DisplayName="CxxGameraww"
             Square150x150Logo="Assets\Logo.png"
             Square44x44Logo="Assets\SmallLogo.png"
-            Description="NativeGameraww"
+            Description="CxxGameraww"
             ForegroundText="light"
             BackgroundColor="transparent">
             <m3:DefaultTile Wide310x150Logo="Assets\WideLogo.png" Square71x71Logo="Assets\Square71x71Logo.png"/>

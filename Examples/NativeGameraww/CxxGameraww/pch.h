@@ -1,8 +1,5 @@
 ﻿#pragma once
 
-#include <wrl.h>
-#include <windows.ui.xaml.h>
-
 #ifdef _DEBUG
 #define ASSERT_SUCCESS(hr)                                                     \
     do {                                                                       \
