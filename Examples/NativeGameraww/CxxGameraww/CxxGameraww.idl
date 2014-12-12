@@ -1,0 +1,27 @@
+import "inspectable.idl";
+import "Windows.Foundation.idl";
+import "Windows.UI.Xaml.Data.idl";
+
+// Contains conflicting GUIDS
+// import "Windows.Data.Json.idl";
+
+#define COMPONENT_VERSION 1.0
+
+namespace CxxGameraww
+{
+    interface IJsonPropertyProvider;
+    runtimeclass JsonPropertyProvider;
+
+    [uuid(28944913-4C1C-4822-B336-88001704916B), version(COMPONENT_VERSION), exclusiveto(JsonPropertyProvider)]
+    interface IJsonPropertyProvider : IInspectable
+    {
+        [propget] HRESULT Object([out][retval] IInspectable** value);
+    }
+
+    [version(COMPONENT_VERSION)]
+    runtimeclass JsonPropertyProvider
+    {
+        [default] interface IJsonPropertyProvider;
+        interface Windows.UI.Xaml.Data.ICustomPropertyProvider;
+    }
+}
