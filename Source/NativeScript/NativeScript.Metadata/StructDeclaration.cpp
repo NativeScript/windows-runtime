@@ -10,7 +10,6 @@ using namespace Microsoft::WRL;
 // TODO
 namespace {
 
-// TODO: Use GetClassLayout
 vector<FieldDeclaration> makeFieldDeclarations(IMetaDataImport2* metadata, mdTypeDef token) {
     HCORENUM enumerator{nullptr};
     ULONG count{0};
