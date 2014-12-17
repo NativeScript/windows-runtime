@@ -147,6 +147,7 @@
     <ClInclude Include="StructDeclaration.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="ClassDeclaration.DeclaringInterfaceForMethod.cpp" />
     <ClCompile Include="ClassDeclaration.cpp" />
     <ClCompile Include="ComHelpers.cpp" />
     <ClCompile Include="EnumDeclaration.cpp" />

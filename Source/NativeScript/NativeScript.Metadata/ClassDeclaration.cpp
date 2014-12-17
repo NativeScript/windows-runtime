@@ -7,8 +7,6 @@ namespace Metadata {
 using namespace std;
 using namespace Microsoft::WRL;
 
-const wchar_t* STATIC_ATTRIBUTE_W{L"Windows.Foundation.Metadata.StaticAttribute"};
-
 // TODO
 namespace {
 
@@ -93,18 +91,6 @@ wstring ClassDeclaration::baseFullName() const {
     return result;
 }
 
-shared_ptr<InterfaceDeclaration> ClassDeclaration::staticInterface() const {
-    wstring staticInterfaceName{getUnaryCustomAttributeStringValue(_metadata.Get(), _token, STATIC_ATTRIBUTE_W)};
-
-    if (staticInterfaceName.empty()) {
-        return nullptr;
-    }
-
-    mdTypeDef staticsClassToken{mdTypeDefNil};
-    ASSERT_SUCCESS(_metadata->FindTypeDefByName(staticInterfaceName.data(), mdTokenNil, &staticsClassToken));
-    return make_shared<InterfaceDeclaration>(_metadata.Get(), staticsClassToken);
-}
-
 IteratorRange<ClassDeclaration::MethodIterator> ClassDeclaration::methods() const {
     return IteratorRange<MethodIterator>(_methods.begin(), _methods.end());
 }
@@ -141,6 +127,30 @@ vector<shared_ptr<Declaration>> ClassDeclaration::findMembersWithName(const wcha
             default:
                 ASSERT_NOT_REACHED();
         }
+
+        if (!declaration->isExported()) {
+            continue;
+        }
+
+        result.push_back(declaration);
+    }
+
+    return result;
+}
+
+vector<shared_ptr<MethodDeclaration>> ClassDeclaration::findMethodsWithName(const wchar_t* name) const {
+    HCORENUM enumerator{nullptr};
+    array<mdMethodDef, 1024> methodTokens;
+    ULONG methodsCount{0};
+    ASSERT_SUCCESS(_metadata->EnumMethodsWithName(&enumerator, _token, name, methodTokens.data(), methodTokens.size(), &methodsCount));
+    _metadata->CloseEnum(enumerator);
+
+    vector<shared_ptr<MethodDeclaration>> result;
+
+    for (size_t i = 0; i < methodsCount; ++i) {
+        mdMethodDef methodToken{methodTokens[i]};
+
+        shared_ptr<MethodDeclaration> declaration{make_shared<MethodDeclaration>(_metadata.Get(), methodToken)};
 
         if (!declaration->isExported()) {
             continue;

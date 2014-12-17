@@ -48,6 +48,9 @@
     <ClCompile Include="InterfaceDeclaration.cpp">
       <Filter>Ast</Filter>
     </ClCompile>
+    <ClCompile Include="ClassDeclaration.DeclaringInterfaceForMethod.cpp">
+      <Filter>Ast</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="pch.h" />

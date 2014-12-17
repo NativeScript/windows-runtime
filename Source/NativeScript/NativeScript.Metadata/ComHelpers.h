@@ -14,6 +14,12 @@ namespace Metadata {
 const size_t MAX_IDENTIFIER_LENGTH{511};
 using identifier = std::array<wchar_t, MAX_IDENTIFIER_LENGTH + 1>;
 
+#define NOT_IMPLEMENTED()                                                  \
+    do {                                                                   \
+        ::RaiseException(E_NOTIMPL, EXCEPTION_NONCONTINUABLE, 0, nullptr); \
+        ::CRASH();                                                         \
+    } while (0)
+
 #ifdef _DEBUG
 #define ASSERT(booleanExpression)                                                            \
     do {                                                                                     \
@@ -50,6 +56,8 @@ void DEBUG_LOG(_Printf_format_string_ const wchar_t* format, ...);
 #else
 #define DEBUG_LOG(format, ...)
 #endif
+
+std::wstring getStringValueFromBlob(IMetaDataImport2*, mdToken, PCCOR_SIGNATURE);
 
 std::wstring getUnaryCustomAttributeStringValue(IMetaDataImport2*, mdToken, const wchar_t* attributeName);
 

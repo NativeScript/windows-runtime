@@ -43,13 +43,14 @@ MethodDeclaration::MethodDeclaration(IMetaDataImport2* metadata, mdMethodDef tok
 
 bool MethodDeclaration::isExported() const {
     DWORD methodFlags{0};
-    ASSERT_SUCCESS(_metadata->GetMethodProps(_token, nullptr, nullptr, 0, nullptr, &methodFlags, nullptr, nullptr, nullptr, nullptr));
+    identifier name;
+    ASSERT_SUCCESS(_metadata->GetMethodProps(_token, nullptr, name.data(), name.size(), nullptr, &methodFlags, nullptr, nullptr, nullptr, nullptr));
 
     if (!(IsMdPublic(methodFlags) || IsMdFamily(methodFlags) || IsMdFamORAssem(methodFlags))) {
         return false;
     }
 
-    if (IsMdSpecialName(methodFlags)) {
+    if (IsMdSpecialName(methodFlags) && !IsMdInstanceInitializerW(methodFlags, name.data())) {
         return false;
     }
 
@@ -88,8 +89,25 @@ wstring MethodDeclaration::fullName() const {
     return fullName;
 }
 
+bool MethodDeclaration::isInstanceInitializer() const {
+    DWORD methodFlags{0};
+    identifier name;
+    ASSERT_SUCCESS(_metadata->GetMethodProps(_token, nullptr, name.data(), name.size(), nullptr, &methodFlags, nullptr, nullptr, nullptr, nullptr));
+
+    return IsMdInstanceInitializerW(methodFlags, name.data());
+}
+
 IteratorRange<MethodDeclaration::ParameterIterator> MethodDeclaration::parameters() const {
     return IteratorRange<ParameterIterator>(_parameters.begin(), _parameters.end());
+}
+
+size_t MethodDeclaration::numberOfArguments() const {
+    PCCOR_SIGNATURE signature{nullptr};
+    ULONG signatureSize{0};
+    ASSERT_SUCCESS(_metadata->GetMethodProps(_token, nullptr, nullptr, 0, nullptr, nullptr, &signature, &signatureSize, nullptr, nullptr));
+
+    CorSigUncompressData(signature);
+    return CorSigUncompressData(signature);
 }
 
 wstring MethodDeclaration::overloadName() const {
@@ -103,5 +121,6 @@ bool MethodDeclaration::isDefaultOverload() const {
 
     return getAttributeResult == S_OK;
 }
+
 }
 }

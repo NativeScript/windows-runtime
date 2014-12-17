@@ -26,15 +26,20 @@ public:
 
     virtual std::wstring fullName() const override;
 
+    bool isInstanceInitializer() const;
+
     bool isStatic() const;
 
     IteratorRange<ParameterIterator> parameters() const;
+    size_t numberOfArguments() const;
 
     std::wstring overloadName() const;
 
     bool isDefaultOverload() const;
 
 private:
+    friend class ClassDeclaration;
+
     const Microsoft::WRL::ComPtr<IMetaDataImport2> _metadata;
     const mdMethodDef _token;
 

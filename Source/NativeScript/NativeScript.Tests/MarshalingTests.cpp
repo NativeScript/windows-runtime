@@ -10,7 +10,7 @@ public:
 
         const wchar_t* name{L"NativeScript.Tests.Fixtures.MarshalingClass"};
         shared_ptr<ClassDeclaration> declaration{dynamic_pointer_cast<ClassDeclaration>(metadataReader.findByName(name))};
-        shared_ptr<MethodDeclaration> method{dynamic_pointer_cast<MethodDeclaration>(declaration->findMembersWithName(L"InOutParameterMethod")[0])};
+        shared_ptr<MethodDeclaration> method{declaration->findMethodsWithName(L"InOutParameterMethod")[0]};
         IteratorRange<MethodDeclaration::ParameterIterator> parameters{method->parameters()};
 
         MethodDeclaration::ParameterIterator it{parameters.begin()};

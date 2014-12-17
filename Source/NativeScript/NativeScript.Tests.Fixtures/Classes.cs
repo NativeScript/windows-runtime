@@ -35,4 +35,22 @@ namespace NativeScript.Tests.Fixtures
             throw new NotImplementedException();
         }
     }
+
+    public sealed class ActivatableClass
+    {
+        public ActivatableClass()
+        {
+            throw new NotImplementedException();
+        }
+
+        public ActivatableClass(object arg1)
+        {
+            throw new NotImplementedException();
+        }
+
+        public ActivatableClass(object arg1, object arg2)
+        {
+            throw new NotImplementedException();
+        }
+    }
 }

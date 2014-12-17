@@ -22,6 +22,21 @@ void DEBUG_LOG(_Printf_format_string_ const wchar_t* format, ...) {
     OutputDebugString((wstring{buffer.data()} + L'\n').data());
 }
 
+wstring getStringValueFromBlob(IMetaDataImport2* metadata, mdToken token, PCCOR_SIGNATURE signature) {
+    // If it's null
+    if (*signature == UINT8_MAX) {
+        return wstring{};
+    }
+
+    // Read size and advance
+    ULONG size{CorSigUncompressData(signature)};
+
+    // TODO
+    wstring_convert<codecvt_utf8_utf16<wchar_t>> converter;
+    wstring value{converter.from_bytes(reinterpret_cast<const char*>(signature), reinterpret_cast<const char*>(signature) + size)};
+    return value;
+}
+
 wstring getUnaryCustomAttributeStringValue(IMetaDataImport2* metadata, mdToken token, const wchar_t* attributeName) {
     const uint8_t* data{nullptr};
     HRESULT getAttributeResult{metadata->GetCustomAttributeByName(token, attributeName, reinterpret_cast<const void**>(&data), nullptr)};
@@ -32,21 +47,7 @@ wstring getUnaryCustomAttributeStringValue(IMetaDataImport2* metadata, mdToken t
         return wstring{};
     }
 
-    // Skip prolog
-    data += 2;
-
-    // If it's null
-    if (*data == UINT8_MAX) {
-        return wstring{};
-    }
-
-    // Read size and advance
-    ULONG size{CorSigUncompressData(data)};
-
-    // TODO
-    wstring_convert<codecvt_utf8_utf16<wchar_t>> converter;
-    wstring value{converter.from_bytes(reinterpret_cast<const char*>(data), reinterpret_cast<const char*>(data) + size)};
-    return value;
+    return getStringValueFromBlob(metadata, token, data + 2);
 }
 
 const wchar_t* GUID_ATTRIBUTE_W{L"Windows.Foundation.Metadata.GuidAttribute"};
