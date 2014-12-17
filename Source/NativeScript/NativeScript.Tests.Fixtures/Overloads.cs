@@ -3,33 +3,56 @@ using Windows.Foundation.Metadata;
 
 namespace NativeScript.Tests.Fixtures
 {
-    public sealed class MethodOverloads
+    public sealed class OverloadsClass
     {
-        private MethodOverloads()
+        private OverloadsClass()
         {
         }
 
         [DefaultOverload]
-        [Overload("MethodWithDouble")]
-        public double Method(double x)
+        [Overload("InstanceMethodWithDouble")]
+        public double InstanceMethod(double x)
         {
             throw new NotImplementedException();
         }
 
-        [Overload("MethodWithInt")]
-        public int Method(int x)
+        [Overload("InstanceMethodWithInt")]
+        public int InstanceMethod(int x)
         {
             throw new NotImplementedException();
         }
 
-        public double MethodWithDouble(double x)
+        public double InstanceMethodWithDouble(double x)
         {
-            return Method(x);
+            return InstanceMethod(x);
         }
 
-        public int MethodWithInt(int x)
+        public int InstanceMethodWithInt(int x)
         {
-            return Method(x);
+            return InstanceMethod(x);
+        }
+
+        [DefaultOverload]
+        [Overload("StaticMethodWithDouble")]
+        public static double StaticMethod(double x)
+        {
+            throw new NotImplementedException();
+        }
+
+        [Overload("StaticMethodWithInt")]
+        public static int StaticMethod(int x)
+        {
+            throw new NotImplementedException();
+        }
+
+        public static double StaticMethodWithDouble(double x)
+        {
+            return StaticMethod(x);
+        }
+
+        public static int StaticMethodWithInt(int x)
+        {
+            return StaticMethod(x);
         }
     }
 }
