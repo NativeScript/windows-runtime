@@ -27,35 +27,36 @@ using namespace ABI::Windows::UI::Xaml::Media;
 using namespace ABI::Windows::UI::Xaml::Markup;
 using namespace ABI::Windows::UI::Xaml;
 
-const wchar_t* MAINPAGE_XAML{L"\
-<Page \
-    xmlns=\"http://schemas.microsoft.com/winfx/2006/xaml/presentation\" \
-    xmlns:x=\"http://schemas.microsoft.com/winfx/2006/xaml\" \
-    Background=\"{ThemeResource ApplicationPageBackgroundThemeBrush}\"> \
-    <Grid Margin=\"10,0,10,0\"> \
-        <Grid.RowDefinitions> \
-            <RowDefinition Height=\"Auto\" /> \
-            <RowDefinition Height=\"*\" /> \
-        </Grid.RowDefinitions> \
-        <TextBlock Grid.Row=\"0\" Text=\"Gameraww\" Style=\"{ThemeResource HeaderTextBlockStyle}\" Margin=\"0,0,0,10\" /> \
-        <ListView Grid.Row=\"1\" ItemsSource=\"{Binding data.children}\"> \
-            <ListView.ItemTemplate> \
-                <DataTemplate> \
-                    <Grid Margin=\"0,0,0,10\"> \
-                        <Grid.ColumnDefinitions> \
-                            <ColumnDefinition Width=\"Auto\"/> \
-                            <ColumnDefinition Width=\"*\"/> \
-                        </Grid.ColumnDefinitions> \
-                        <Image Grid.Column=\"0\" Width=\"100\" Height=\"100\" Margin=\"0,0,10,0\" Source=\"{Binding data.thumbnail}\" Stretch=\"UniformToFill\" /> \
-                        <StackPanel Grid.Column=\"1\" Background=\"{StaticResource ApplicationPageBackgroundThemeBrush}\"> \
-                            <TextBlock Text=\"{Binding data.title}\" Style=\"{ThemeResource BaseTextBlockStyle}\" /> \
-                        </StackPanel> \
-                    </Grid> \
-                </DataTemplate> \
-            </ListView.ItemTemplate> \
-        </ListView> \
-    </Grid> \
-</Page>"};
+const wchar_t* MAINPAGE_XAML{LR"(
+<Page
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+    <Grid Margin="10,0,10,0">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+        <TextBlock Grid.Row="0" Text="Gameraww" Style="{ThemeResource HeaderTextBlockStyle}" Margin="0,0,0,10" />
+        <ListView Grid.Row="1" ItemsSource="{Binding data.children}">
+            <ListView.ItemTemplate>
+                <DataTemplate>
+                    <Grid Margin="0,0,0,10">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+                        <Image Grid.Column="0" Width="100" Height="100" Margin="0,0,10,0" Source="{Binding data.thumbnail}" Stretch="UniformToFill" />
+                        <StackPanel Grid.Column="1" Background="{StaticResource ApplicationPageBackgroundThemeBrush}">
+                            <TextBlock Text="{Binding data.title}" Style="{ThemeResource BaseTextBlockStyle}" />
+                        </StackPanel>
+                    </Grid>
+                </DataTemplate>
+            </ListView.ItemTemplate>
+        </ListView>
+    </Grid>
+</Page>
+)"};
 
 STDMETHODIMP App::OnActivated(IActivatedEventArgs* args) {
     return _base->OnActivated(args);
