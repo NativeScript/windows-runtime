@@ -13,7 +13,7 @@ class StructDeclaration final : public TypeDeclaration {
 public:
     typedef TypeDeclaration Base;
 
-    using FieldIterator = std::vector<FieldDeclaration>::const_iterator;
+    using FieldIterator = std::vector<const FieldDeclaration>::const_iterator;
 
     explicit StructDeclaration(IMetaDataImport2*, mdTypeDef);
 

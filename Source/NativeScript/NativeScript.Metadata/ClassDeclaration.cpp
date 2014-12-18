@@ -10,6 +10,23 @@ using namespace Microsoft::WRL;
 // TODO
 namespace {
 
+vector<MethodDeclaration> makeInitializerDeclarations(IMetaDataImport2* metadata, mdTypeDef token) {
+    HCORENUM enumerator{nullptr};
+    ULONG count{0};
+    array<mdProperty, 1024> tokens;
+
+    ASSERT_SUCCESS(metadata->EnumMethodsWithName(&enumerator, token, COR_CTOR_METHOD_NAME_W, tokens.data(), tokens.size(), &count));
+    ASSERT(count < tokens.size() - 1);
+    metadata->CloseEnum(enumerator);
+
+    vector<MethodDeclaration> result;
+    for (size_t i = 0; i < count; ++i) {
+        result.emplace_back(metadata, tokens[i]);
+    }
+
+    return result;
+}
+
 vector<MethodDeclaration> makeMethodDeclarations(IMetaDataImport2* metadata, mdTypeDef token) {
     HCORENUM enumerator{nullptr};
     ULONG count{0};
@@ -60,6 +77,7 @@ vector<PropertyDeclaration> makePropertyDeclarations(IMetaDataImport2* metadata,
 
 ClassDeclaration::ClassDeclaration(IMetaDataImport2* metadata, mdTypeDef token)
     : Base(metadata, token)
+    , _initializers(makeInitializerDeclarations(metadata, token))
     , _methods(makeMethodDeclarations(metadata, token))
     , _properties(makePropertyDeclarations(metadata, token)) {
 
@@ -106,6 +124,10 @@ ClassType ClassDeclaration::classType() {
     }
 
     return ClassType::Uninstantiable;
+}
+
+IteratorRange<ClassDeclaration::MethodIterator> ClassDeclaration::initializers() const {
+    return IteratorRange<MethodIterator>(_initializers.begin(), _initializers.end());
 }
 
 IteratorRange<ClassDeclaration::MethodIterator> ClassDeclaration::methods() const {

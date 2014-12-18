@@ -43,14 +43,13 @@ MethodDeclaration::MethodDeclaration(IMetaDataImport2* metadata, mdMethodDef tok
 
 bool MethodDeclaration::isExported() const {
     DWORD methodFlags{0};
-    identifier name;
-    ASSERT_SUCCESS(_metadata->GetMethodProps(_token, nullptr, name.data(), name.size(), nullptr, &methodFlags, nullptr, nullptr, nullptr, nullptr));
+    ASSERT_SUCCESS(_metadata->GetMethodProps(_token, nullptr, nullptr, 0, nullptr, &methodFlags, nullptr, nullptr, nullptr, nullptr));
 
     if (!(IsMdPublic(methodFlags) || IsMdFamily(methodFlags) || IsMdFamORAssem(methodFlags))) {
         return false;
     }
 
-    if (IsMdSpecialName(methodFlags) && !IsMdInstanceInitializerW(methodFlags, name.data())) {
+    if (IsMdSpecialName(methodFlags)) {
         return false;
     }
 
@@ -89,7 +88,7 @@ wstring MethodDeclaration::fullName() const {
     return fullName;
 }
 
-bool MethodDeclaration::isInstanceInitializer() const {
+bool MethodDeclaration::isInitializer() const {
     DWORD methodFlags{0};
     identifier name;
     ASSERT_SUCCESS(_metadata->GetMethodProps(_token, nullptr, name.data(), name.size(), nullptr, &methodFlags, nullptr, nullptr, nullptr, nullptr));

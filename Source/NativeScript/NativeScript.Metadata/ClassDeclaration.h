@@ -22,8 +22,8 @@ class ClassDeclaration final : public TypeDeclaration {
 public:
     typedef TypeDeclaration Base;
 
-    using MethodIterator = std::vector<MethodDeclaration>::const_iterator;
-    using PropertyIterator = std::vector<PropertyDeclaration>::const_iterator;
+    using MethodIterator = std::vector<const MethodDeclaration>::const_iterator;
+    using PropertyIterator = std::vector<const PropertyDeclaration>::const_iterator;
 
     explicit ClassDeclaration(IMetaDataImport2*, mdTypeDef);
 
@@ -34,6 +34,8 @@ public:
     ClassType classType();
 
     // TODO: Events
+
+    IteratorRange<MethodIterator> initializers() const;
 
     IteratorRange<MethodIterator> methods() const;
 
@@ -46,6 +48,7 @@ public:
 private:
     static std::unique_ptr<InterfaceDeclaration> declaringInterfaceForInstanceInitializer(const MethodDeclaration&, size_t*);
 
+    std::vector<MethodDeclaration> _initializers;
     std::vector<MethodDeclaration> _methods;
     std::vector<PropertyDeclaration> _properties;
 };

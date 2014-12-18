@@ -16,7 +16,7 @@ class MethodDeclaration final : public Declaration {
 public:
     typedef Declaration Base;
 
-    using ParameterIterator = std::vector<ParameterDeclaration>::const_iterator;
+    using ParameterIterator = std::vector<const ParameterDeclaration>::const_iterator;
 
     explicit MethodDeclaration(IMetaDataImport2*, mdMethodDef);
 
@@ -26,7 +26,7 @@ public:
 
     virtual std::wstring fullName() const override;
 
-    bool isInstanceInitializer() const;
+    bool isInitializer() const;
 
     bool isStatic() const;
 
