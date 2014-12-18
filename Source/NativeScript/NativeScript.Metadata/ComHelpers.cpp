@@ -50,7 +50,7 @@ wstring getUnaryCustomAttributeStringValue(IMetaDataImport2* metadata, mdToken t
     return getStringValueFromBlob(metadata, token, data + 2);
 }
 
-const wchar_t* GUID_ATTRIBUTE_W{L"Windows.Foundation.Metadata.GuidAttribute"};
+const wchar_t* const GUID_ATTRIBUTE_W{L"Windows.Foundation.Metadata.GuidAttribute"};
 
 GUID getGuidAttributeValue(IMetaDataImport2* metadata, mdToken token) {
     const uint8_t* data{nullptr};

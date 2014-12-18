@@ -7,8 +7,8 @@ namespace Metadata {
 using namespace std;
 using namespace Microsoft::WRL;
 
-const wchar_t* OVERLOAD_ATTRIBUTE_W{L"Windows.Foundation.Metadata.OverloadAttribute"};
-const wchar_t* DEFAULT_OVERLOAD_ATTRIBUTE_W{L"Windows.Foundation.Metadata.DefaultOverloadAttribute"};
+const wchar_t* const OVERLOAD_ATTRIBUTE_W{L"Windows.Foundation.Metadata.OverloadAttribute"};
+const wchar_t* const DEFAULT_OVERLOAD_ATTRIBUTE_W{L"Windows.Foundation.Metadata.DefaultOverloadAttribute"};
 
 // TODO
 namespace {

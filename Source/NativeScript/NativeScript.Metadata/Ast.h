@@ -5,3 +5,4 @@
 #include "ClassDeclaration.h"
 #include "StructDeclaration.h"
 #include "EnumDeclaration.h"
+#include "DelegateDeclaration.h"

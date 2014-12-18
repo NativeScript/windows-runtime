@@ -6,6 +6,7 @@ namespace Metadata {
 
 using namespace std;
 
+// TODO: Check deprecated?, obsolete
 bool Declaration::isExported() const {
     return true;
 }

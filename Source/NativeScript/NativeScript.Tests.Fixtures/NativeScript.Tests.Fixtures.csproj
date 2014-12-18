@@ -86,6 +86,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Classes.cs" />
+    <Compile Include="Delegates.cs" />
     <Compile Include="Enums.cs" />
     <Compile Include="InterfacesTests.cs" />
     <Compile Include="Marshaling.cs" />

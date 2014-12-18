@@ -143,6 +143,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ClassesTests.cpp" />
+    <ClCompile Include="DelegatesTests.cpp" />
     <ClCompile Include="EnumsTests.cpp" />
     <ClCompile Include="InterfacesTests.cpp" />
     <ClCompile Include="MarshalingTests.cpp" />

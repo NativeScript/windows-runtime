@@ -132,6 +132,7 @@
     <ClInclude Include="ClassDeclaration.h" />
     <ClInclude Include="ComHelpers.h" />
     <ClInclude Include="Declaration.h" />
+    <ClInclude Include="DelegateDeclaration.h" />
     <ClInclude Include="EnumDeclaration.h" />
     <ClInclude Include="EnumMemberDeclaration.h" />
     <ClInclude Include="FieldDeclaration.h" />
@@ -150,6 +151,7 @@
     <ClCompile Include="ClassDeclaration.DeclaringInterfaceForMethod.cpp" />
     <ClCompile Include="ClassDeclaration.cpp" />
     <ClCompile Include="ComHelpers.cpp" />
+    <ClCompile Include="DelegateDeclaration.cpp" />
     <ClCompile Include="EnumDeclaration.cpp" />
     <ClCompile Include="EnumMemberDeclaration.cpp" />
     <ClCompile Include="FieldDeclaration.cpp" />

@@ -51,6 +51,9 @@
     <ClCompile Include="ClassDeclaration.DeclaringInterfaceForMethod.cpp">
       <Filter>Ast</Filter>
     </ClCompile>
+    <ClCompile Include="DelegateDeclaration.cpp">
+      <Filter>Ast</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="pch.h" />
@@ -96,6 +99,9 @@
       <Filter>Ast</Filter>
     </ClInclude>
     <ClInclude Include="InterfaceDeclaration.h">
+      <Filter>Ast</Filter>
+    </ClInclude>
+    <ClInclude Include="DelegateDeclaration.h">
       <Filter>Ast</Filter>
     </ClInclude>
   </ItemGroup>

@@ -12,6 +12,9 @@
 #define SYSTEM_VALUETYPE_W             L"System.ValueType"
 #define SYSTEM_VALUETYPE                "System.ValueType"
 
+#define SYSTEM_MULTICASTDELEGATE_W     L"System.MulticastDelegate"
+#define SYSTEM_MULTICASTDELEGATE        "System.MulticastDelegate"
+
 namespace {
 template <typename T, typename U>
 bool equalToAny(T&& t, U&& u) {
@@ -69,12 +72,6 @@ shared_ptr<Declaration> MetadataReader::findByName(const wchar_t* fullName) cons
     mdToken parentToken{mdTokenNil};
     ASSERT_SUCCESS(metadata->GetTypeDefProps(token, nullptr, 0, nullptr, &flags, &parentToken));
 
-    if (!IsTdPublic(flags) || IsTdSpecialName(flags)) {
-        // TODO: Check deprecated?, obsolete
-
-        return nullptr;
-    }
-
     if (IsTdClass(flags)) {
         identifier parentName;
 
@@ -106,6 +103,10 @@ shared_ptr<Declaration> MetadataReader::findByName(const wchar_t* fullName) cons
 
         if (wcscmp(parentName.data(), SYSTEM_VALUETYPE_W) == 0) {
             return make_shared<StructDeclaration>(metadata.Get(), token);
+        }
+
+        if (wcscmp(parentName.data(), SYSTEM_MULTICASTDELEGATE_W) == 0) {
+            return make_shared<DelegateDeclaration>(metadata.Get(), token);
         }
 
         return make_shared<ClassDeclaration>(metadata.Get(), token);

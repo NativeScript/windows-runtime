@@ -15,6 +15,17 @@ TypeDeclaration::TypeDeclaration(IMetaDataImport2* metadata, mdTypeDef token)
     ASSERT(token != mdTypeDefNil);
 }
 
+bool TypeDeclaration::isExported() const {
+    DWORD flags{0};
+    ASSERT_SUCCESS(_metadata->GetTypeDefProps(_token, nullptr, 0, nullptr, &flags, nullptr));
+
+    if (!IsTdPublic(flags) || IsTdSpecialName(flags)) {
+        return false;
+    }
+
+    return true;
+}
+
 wstring TypeDeclaration::name() const {
     wstring fullyQualifiedName(fullName());
     size_t dotIndex = fullyQualifiedName.rfind(L".");

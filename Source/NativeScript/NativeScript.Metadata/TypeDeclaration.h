@@ -12,6 +12,8 @@ class TypeDeclaration : public Declaration {
 public:
     typedef Declaration Base;
 
+    virtual bool isExported() const override;
+
     virtual std::wstring name() const override;
 
     virtual std::wstring fullName() const override;
