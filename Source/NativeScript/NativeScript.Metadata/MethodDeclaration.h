@@ -31,7 +31,8 @@ public:
     bool isStatic() const;
 
     IteratorRange<ParameterIterator> parameters() const;
-    size_t numberOfArguments() const;
+
+    size_t numberOfParameters() const;
 
     std::wstring overloadName() const;
 

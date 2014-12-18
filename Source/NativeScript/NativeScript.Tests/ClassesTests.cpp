@@ -80,7 +80,7 @@ public:
         size_t index0{0};
         unique_ptr<InterfaceDeclaration> factory0{ClassDeclaration::declaringInterfaceForMethod(initializer0, &index0)};
         Assert::IsTrue(initializer0.isInitializer());
-        Assert::IsTrue(initializer0.numberOfArguments() == 0);
+        Assert::IsTrue(initializer0.numberOfParameters() == 0);
         Assert::IsTrue(factory0 == nullptr);
         Assert::IsTrue(index0 == SIZE_T_MAX);
 
@@ -89,7 +89,7 @@ public:
         size_t index1{0};
         unique_ptr<InterfaceDeclaration> factory1{ClassDeclaration::declaringInterfaceForMethod(initializer1, &index1)};
         Assert::IsTrue(initializer1.isInitializer());
-        Assert::IsTrue(initializer1.numberOfArguments() == 1);
+        Assert::IsTrue(initializer1.numberOfParameters() == 1);
         Assert::IsTrue(factory1->id() == IID{0XE1C8B4D2, 0XCA7C, 0X5558,{0X7B, 0X6C, 0XAB, 0XC7, 0X47, 0XB8, 0X71, 0X3B}});
         Assert::IsTrue(index1 == 0);
 
@@ -98,7 +98,7 @@ public:
         size_t index2{0};
         unique_ptr<InterfaceDeclaration> factory2{ClassDeclaration::declaringInterfaceForMethod(initializer2, &index2)};
         Assert::IsTrue(initializer2.isInitializer());
-        Assert::IsTrue(initializer2.numberOfArguments() == 2);
+        Assert::IsTrue(initializer2.numberOfParameters() == 2);
         Assert::IsTrue(factory2->id() == IID{0XE1C8B4D2, 0XCA7C, 0X5558,{0X7B, 0X6C, 0XAB, 0XC7, 0X47, 0XB8, 0X71, 0X3B}});
         Assert::IsTrue(index2 == 1);
 

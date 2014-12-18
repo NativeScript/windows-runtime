@@ -22,8 +22,20 @@ vector<ParameterDeclaration> makeParameterDeclarations(IMetaDataImport2* metadat
     ASSERT(count < tokens.size() - 1);
     metadata->CloseEnum(enumerator);
 
+    size_t parameterStartIndex{0};
+
+    // Skip return parameter
+    if (count > 0) {
+        ULONG firstParameterIndex{0};
+        ASSERT_SUCCESS(metadata->GetParamProps(tokens[0], nullptr, &firstParameterIndex, nullptr, 0, nullptr, nullptr, nullptr, nullptr, nullptr));
+
+        if (firstParameterIndex == 0) {
+            parameterStartIndex = 1;
+        }
+    }
+
     vector<ParameterDeclaration> result;
-    for (size_t i = 0; i < count; ++i) {
+    for (size_t i = parameterStartIndex; i < count; ++i) {
         result.emplace_back(metadata, tokens[i]);
     }
 
@@ -100,13 +112,20 @@ IteratorRange<MethodDeclaration::ParameterIterator> MethodDeclaration::parameter
     return IteratorRange<ParameterIterator>(_parameters.begin(), _parameters.end());
 }
 
-size_t MethodDeclaration::numberOfArguments() const {
+size_t MethodDeclaration::numberOfParameters() const {
     PCCOR_SIGNATURE signature{nullptr};
     ULONG signatureSize{0};
     ASSERT_SUCCESS(_metadata->GetMethodProps(_token, nullptr, nullptr, 0, nullptr, nullptr, &signature, &signatureSize, nullptr, nullptr));
 
     CorSigUncompressData(signature);
-    return CorSigUncompressData(signature);
+    ULONG numberOfArguments{CorSigUncompressData(signature)};
+
+#if _DEBUG
+    ptrdiff_t numberOfParameters{distance(parameters().begin(), parameters().end())};
+    ASSERT(numberOfArguments == numberOfParameters);
+#endif
+
+    return numberOfArguments;
 }
 
 wstring MethodDeclaration::overloadName() const {
