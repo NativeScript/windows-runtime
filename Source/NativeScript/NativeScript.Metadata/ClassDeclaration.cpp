@@ -50,7 +50,7 @@ vector<PropertyDeclaration> makePropertyDeclarations(IMetaDataImport2* metadata,
             continue;
         }
 
-        result.push_back(property);
+        result.push_back(move(property));
     }
 
     return result;
@@ -89,6 +89,23 @@ wstring ClassDeclaration::baseFullName() const {
 
     wstring result{parentName.data(), parentNameLength - 1};
     return result;
+}
+
+// TODO: Abstract class
+ClassType ClassDeclaration::classType() {
+    HRESULT isComposable{_metadata->GetCustomAttributeByName(_token, COMPOSABLE_ATTRIBUTE_W, nullptr, nullptr)};
+    ASSERT_SUCCESS(isComposable);
+    if (isComposable == S_OK) {
+        return ClassType::Subclassable;
+    }
+
+    HRESULT isInstantiable{_metadata->GetCustomAttributeByName(_token, ACTIVATABLE_ATTRIBUTE_W, nullptr, nullptr)};
+    ASSERT_SUCCESS(isInstantiable);
+    if (isInstantiable == S_OK) {
+        return ClassType::Instantiable;
+    }
+
+    return ClassType::Uninstantiable;
 }
 
 IteratorRange<ClassDeclaration::MethodIterator> ClassDeclaration::methods() const {

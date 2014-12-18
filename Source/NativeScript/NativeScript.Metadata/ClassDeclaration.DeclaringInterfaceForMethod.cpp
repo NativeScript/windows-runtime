@@ -9,9 +9,6 @@ using namespace std;
 
 namespace {
 
-const wchar_t* STATIC_ATTRIBUTE_W{L"Windows.Foundation.Metadata.StaticAttribute"};
-const wchar_t* ACTIVATABLE_ATTRIBUTE_W{L"Windows.Foundation.Metadata.ActivatableAttribute"};
-
 mdTypeDef getContainingClassToken(IMetaDataImport2* metadata, const mdMethodDef methodToken) {
     mdTypeDef parent{mdTypeDefNil};
     ASSERT_SUCCESS(metadata->GetMethodProps(methodToken, &parent, nullptr, 0, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr));

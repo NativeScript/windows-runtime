@@ -12,6 +12,12 @@
 namespace NativeScript {
 namespace Metadata {
 
+enum class ClassType {
+    Uninstantiable = 0x00,
+    Instantiable = 0x01,
+    Subclassable = 0x02
+};
+
 class ClassDeclaration final : public TypeDeclaration {
 public:
     typedef TypeDeclaration Base;
@@ -25,7 +31,9 @@ public:
 
     std::wstring baseFullName() const;
 
-    // Events
+    ClassType classType();
+
+    // TODO: Events
 
     IteratorRange<MethodIterator> methods() const;
 

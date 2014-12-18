@@ -68,6 +68,19 @@ public:
         Assert::IsTrue(it == properties.end());
     }
 
+    TEST_METHOD(ClassType) {
+        MetadataReader metadataReader;
+
+        shared_ptr<ClassDeclaration> emptyClass {dynamic_pointer_cast<ClassDeclaration>(metadataReader.findByName(L"NativeScript.Tests.Fixtures.EmptyClass"))};
+        Assert::IsTrue(emptyClass->classType() == ClassType::Uninstantiable);
+
+        shared_ptr<ClassDeclaration> activatableClass{dynamic_pointer_cast<ClassDeclaration>(metadataReader.findByName(L"NativeScript.Tests.Fixtures.ActivatableClass"))};
+        Assert::IsTrue(activatableClass->classType() == ClassType::Instantiable);
+
+        shared_ptr<ClassDeclaration> composableClass{dynamic_pointer_cast<ClassDeclaration>(metadataReader.findByName(L"Windows.UI.Xaml.Controls.ListView"))};
+        Assert::IsTrue(composableClass->classType() == ClassType::Subclassable);
+    }
+
     // TEST_METHOD(StaticAttribute) {
     //     MetadataReader metadataReader;
     //
