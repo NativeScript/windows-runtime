@@ -41,9 +41,9 @@ public:
 
     IteratorRange<PropertyIterator> properties() const;
 
-    std::vector<std::shared_ptr<Declaration>> findMembersWithName(const wchar_t*) const;
+    std::vector<std::unique_ptr<Declaration>> findMembersWithName(const wchar_t*) const;
 
-    std::vector<std::shared_ptr<MethodDeclaration>> findMethodsWithName(const wchar_t*) const;
+    std::vector<MethodDeclaration> findMethodsWithName(const wchar_t*) const;
 
 private:
     static std::unique_ptr<InterfaceDeclaration> declaringInterfaceForInstanceInitializer(const MethodDeclaration&, size_t*);

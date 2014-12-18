@@ -138,27 +138,27 @@ IteratorRange<ClassDeclaration::PropertyIterator> ClassDeclaration::properties()
     return IteratorRange<PropertyIterator>(_properties.begin(), _properties.end());
 }
 
-vector<shared_ptr<Declaration>> ClassDeclaration::findMembersWithName(const wchar_t* name) const {
+vector<unique_ptr<Declaration>> ClassDeclaration::findMembersWithName(const wchar_t* name) const {
     HCORENUM enumerator{nullptr};
     array<mdToken, 1024> memberTokens;
     ULONG membersSize{0};
     ASSERT_SUCCESS(_metadata->EnumMembersWithName(&enumerator, _token, name, memberTokens.data(), memberTokens.size(), &membersSize));
     _metadata->CloseEnum(enumerator);
 
-    vector<shared_ptr<Declaration>> result;
+    vector<unique_ptr<Declaration>> result;
 
     for (size_t i = 0; i < membersSize; ++i) {
         mdToken memberToken{memberTokens[i]};
 
-        shared_ptr<Declaration> declaration;
+        unique_ptr<Declaration> declaration;
 
         switch (TypeFromToken(memberToken)) {
             case mdtMethodDef:
-                declaration = make_shared<MethodDeclaration>(_metadata.Get(), memberToken);
+                declaration = make_unique<MethodDeclaration>(_metadata.Get(), memberToken);
                 break;
 
             case mdtProperty:
-                declaration = make_shared<PropertyDeclaration>(_metadata.Get(), memberToken);
+                declaration = make_unique<PropertyDeclaration>(_metadata.Get(), memberToken);
                 break;
 
                 // TODO: Add others
@@ -171,27 +171,27 @@ vector<shared_ptr<Declaration>> ClassDeclaration::findMembersWithName(const wcha
             continue;
         }
 
-        result.push_back(declaration);
+        result.push_back(move(declaration));
     }
 
     return result;
 }
 
-vector<shared_ptr<MethodDeclaration>> ClassDeclaration::findMethodsWithName(const wchar_t* name) const {
+vector<MethodDeclaration> ClassDeclaration::findMethodsWithName(const wchar_t* name) const {
     HCORENUM enumerator{nullptr};
     array<mdMethodDef, 1024> methodTokens;
     ULONG methodsCount{0};
     ASSERT_SUCCESS(_metadata->EnumMethodsWithName(&enumerator, _token, name, methodTokens.data(), methodTokens.size(), &methodsCount));
     _metadata->CloseEnum(enumerator);
 
-    vector<shared_ptr<MethodDeclaration>> result;
+    vector<MethodDeclaration> result;
 
     for (size_t i = 0; i < methodsCount; ++i) {
         mdMethodDef methodToken{methodTokens[i]};
 
-        shared_ptr<MethodDeclaration> declaration{make_shared<MethodDeclaration>(_metadata.Get(), methodToken)};
+        MethodDeclaration declaration{_metadata.Get(), methodToken};
 
-        if (!declaration->isExported()) {
+        if (!declaration.isExported()) {
             continue;
         }
 
