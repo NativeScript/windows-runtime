@@ -27,13 +27,13 @@ public:
 
         MethodDeclaration staticMethod = *it;
         Assert::IsTrue(staticMethod.name() == L"StaticMethod");
-        Assert::IsTrue(staticMethod.fullName() == L"NativeScript.Tests.Fixtures.SimpleClass.StaticMethod");
+        Assert::IsTrue(staticMethod.fullName() == L"StaticMethod");
         Assert::IsTrue(staticMethod.isStatic() == true);
 
         ++it;
         MethodDeclaration instanceMethod = *it;
         Assert::IsTrue(instanceMethod.name() == L"InstanceMethod");
-        Assert::IsTrue(instanceMethod.fullName() == L"NativeScript.Tests.Fixtures.SimpleClass.InstanceMethod");
+        Assert::IsTrue(instanceMethod.fullName() == L"InstanceMethod");
         Assert::IsTrue(instanceMethod.isStatic() == false);
 
         ++it;
@@ -51,7 +51,7 @@ public:
 
         PropertyDeclaration staticReadonlyProperty = *it;
         Assert::IsTrue(staticReadonlyProperty.name() == L"StaticReadonlyProperty");
-        Assert::IsTrue(staticReadonlyProperty.fullName() == L"NativeScript.Tests.Fixtures.SimpleClass.StaticReadonlyProperty");
+        Assert::IsTrue(staticReadonlyProperty.fullName() == L"StaticReadonlyProperty");
         Assert::IsTrue(staticReadonlyProperty.getter()->name() == L"get_StaticReadonlyProperty");
         Assert::IsTrue(staticReadonlyProperty.setter() == nullptr);
         Assert::IsTrue(staticReadonlyProperty.isStatic() == true);
@@ -59,7 +59,7 @@ public:
         ++it;
         PropertyDeclaration instanceReadonlyProperty = *it;
         Assert::IsTrue(instanceReadonlyProperty.name() == L"InstanceReadonlyProperty");
-        Assert::IsTrue(instanceReadonlyProperty.fullName() == L"NativeScript.Tests.Fixtures.SimpleClass.InstanceReadonlyProperty");
+        Assert::IsTrue(instanceReadonlyProperty.fullName() == L"InstanceReadonlyProperty");
         Assert::IsTrue(instanceReadonlyProperty.getter()->name() == L"get_InstanceReadonlyProperty");
         Assert::IsTrue(instanceReadonlyProperty.setter() == nullptr);
         Assert::IsTrue(instanceReadonlyProperty.isStatic() == false);

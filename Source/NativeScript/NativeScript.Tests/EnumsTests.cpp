@@ -29,19 +29,19 @@ public:
         EnumMemberDeclaration member1{*it};
         Assert::IsTrue(member1.value() == -1);
         Assert::IsTrue(member1.name() == L"Value1");
-        Assert::IsTrue(member1.fullName() == L"NativeScript.Tests.Fixtures.SimpleEnum.Value1");
+        Assert::IsTrue(member1.fullName() == L"Value1");
 
         ++it;
         EnumMemberDeclaration member2{*it};
         Assert::IsTrue(member2.value() == 0);
         Assert::IsTrue(member2.name() == L"Value2");
-        Assert::IsTrue(member2.fullName() == L"NativeScript.Tests.Fixtures.SimpleEnum.Value2");
+        Assert::IsTrue(member2.fullName() == L"Value2");
 
         ++it;
         EnumMemberDeclaration member3{*it};
         Assert::IsTrue(member3.value() == 1);
         Assert::IsTrue(member3.name() == L"Value3");
-        Assert::IsTrue(member3.fullName() == L"NativeScript.Tests.Fixtures.SimpleEnum.Value3");
+        Assert::IsTrue(member3.fullName() == L"Value3");
 
         ++it;
         Assert::IsTrue(it == declaration->end());

@@ -15,6 +15,10 @@ ParameterDeclaration::ParameterDeclaration(IMetaDataImport2* metadata, mdParamDe
 }
 
 wstring ParameterDeclaration::name() const {
+    return fullName();
+}
+
+wstring ParameterDeclaration::fullName() const {
     identifier nameData;
     ULONG nameLength{0};
 
@@ -22,25 +26,6 @@ wstring ParameterDeclaration::name() const {
 
     wstring result{nameData.data(), nameLength - 1};
     return result;
-}
-
-wstring ParameterDeclaration::fullName() const {
-    mdMethodDef methodToken{mdMethodDefNil};
-    ASSERT_SUCCESS(_metadata->GetParamProps(_token, &methodToken, nullptr, nullptr, 0, nullptr, nullptr, nullptr, nullptr, nullptr));
-
-    mdTypeDef parentToken{mdTypeDefNil};
-
-    identifier methodNameData;
-    ULONG methodNameDataLength{0};
-    ASSERT_SUCCESS(_metadata->GetMethodProps(methodToken, &parentToken, methodNameData.data(), methodNameData.size(), &methodNameDataLength, nullptr, nullptr, nullptr, nullptr, nullptr));
-
-    identifier parentFullNameData;
-    ULONG parentFullNameDataLength{0};
-    ASSERT_SUCCESS(_metadata->GetTypeDefProps(parentToken, parentFullNameData.data(), parentFullNameData.size(), &parentFullNameDataLength, nullptr, nullptr));
-
-    wstring fullName{parentFullNameData.data(), parentFullNameDataLength - 1};
-    fullName.append(L".").append(methodNameData.data(), methodNameDataLength - 1).append(L".").append(name());
-    return fullName;
 }
 
 bool ParameterDeclaration::isIn() const {

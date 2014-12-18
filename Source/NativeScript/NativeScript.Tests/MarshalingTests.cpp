@@ -16,14 +16,14 @@ public:
         MethodDeclaration::ParameterIterator it{parameters.begin()};
         ParameterDeclaration inParameter{*it};
         Assert::IsTrue(inParameter.name() == L"inParameter");
-        Assert::IsTrue(inParameter.fullName() == L"NativeScript.Tests.Fixtures.MarshalingClass.InOutParameterMethod.inParameter");
+        Assert::IsTrue(inParameter.fullName() == L"inParameter");
         Assert::IsTrue(inParameter.isIn());
         Assert::IsTrue(!inParameter.isOut());
 
         ++it;
         ParameterDeclaration outParameter{*it};
         Assert::IsTrue(outParameter.name() == L"outParameter");
-        Assert::IsTrue(outParameter.fullName() == L"NativeScript.Tests.Fixtures.MarshalingClass.InOutParameterMethod.outParameter");
+        Assert::IsTrue(outParameter.fullName() == L"outParameter");
         Assert::IsTrue(!outParameter.isIn());
         Assert::IsTrue(outParameter.isOut());
 

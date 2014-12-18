@@ -16,6 +16,10 @@ FieldDeclaration::FieldDeclaration(IMetaDataImport2* metadata, mdFieldDef token)
 }
 
 wstring FieldDeclaration::name() const {
+    return fullName();
+}
+
+wstring FieldDeclaration::fullName() const {
     identifier nameData;
     ULONG nameLength{0};
 
@@ -23,21 +27,6 @@ wstring FieldDeclaration::name() const {
 
     wstring result{nameData.data(), nameLength - 1};
     return result;
-}
-
-wstring FieldDeclaration::fullName() const {
-    mdTypeDef parentToken{mdTypeDefNil};
-
-    ASSERT_SUCCESS(_metadata->GetFieldProps(_token, &parentToken, nullptr, 0, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr));
-
-    identifier parentFullNameData;
-    ULONG parentFullNameDataLength{0};
-
-    ASSERT_SUCCESS(_metadata->GetTypeDefProps(parentToken, parentFullNameData.data(), parentFullNameData.size(), &parentFullNameDataLength, nullptr, nullptr));
-
-    wstring fullName{parentFullNameData.data(), parentFullNameDataLength - 1};
-    fullName.append(L".").append(name());
-    return fullName;
 }
 
 }
