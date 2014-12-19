@@ -5,7 +5,9 @@
 #include <array>
 
 #define NO_RETURN __declspec(noreturn)
+
 NO_RETURN void CRASH();
+NO_RETURN void CRASH(HRESULT);
 
 namespace NativeScript {
 namespace Metadata {
@@ -14,19 +16,17 @@ namespace Metadata {
 const size_t MAX_IDENTIFIER_LENGTH{511};
 using identifier = std::array<wchar_t, MAX_IDENTIFIER_LENGTH + 1>;
 
-#define NOT_IMPLEMENTED()                                                  \
-    do {                                                                   \
-        ::RaiseException(E_NOTIMPL, EXCEPTION_NONCONTINUABLE, 0, nullptr); \
-        ::CRASH();                                                         \
+#define NOT_IMPLEMENTED()   \
+    do {                    \
+        ::CRASH(E_NOTIMPL); \
     } while (0)
 
 #ifdef _DEBUG
-#define ASSERT(booleanExpression)                                                            \
-    do {                                                                                     \
-        if (!(booleanExpression)) {                                                          \
-            ::RaiseException(ERROR_ASSERTION_FAILURE, EXCEPTION_NONCONTINUABLE, 0, nullptr); \
-            ::CRASH();                                                                       \
-        }                                                                                    \
+#define ASSERT(booleanExpression)             \
+    do {                                      \
+        if (!(booleanExpression)) {           \
+            ::CRASH(ERROR_ASSERTION_FAILURE); \
+        }                                     \
     } while (0)
 #else
 #define ASSERT(booleanExpression)
@@ -39,13 +39,12 @@ using identifier = std::array<wchar_t, MAX_IDENTIFIER_LENGTH + 1>;
 #endif
 
 #ifdef _DEBUG
-#define ASSERT_SUCCESS(hr)                                                     \
-    do {                                                                       \
-        HRESULT __hresult{ hr };                                               \
-        if (FAILED(__hresult)) {                                               \
-            ::RaiseException(__hresult, EXCEPTION_NONCONTINUABLE, 0, nullptr); \
-            ::CRASH();                                                         \
-        }                                                                      \
+#define ASSERT_SUCCESS(hr)       \
+    do {                         \
+        HRESULT __hresult{ hr }; \
+        if (FAILED(__hresult)) { \
+            ::CRASH(__hresult);  \
+        }                        \
     } while (0)
 #else
 #define ASSERT_SUCCESS(hr) ((void)hr)

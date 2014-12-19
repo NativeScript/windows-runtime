@@ -3,6 +3,16 @@
 #include <codecvt>
 
 NO_RETURN void CRASH() {
+    CRASH(E_FAIL);
+}
+
+NO_RETURN void CRASH(HRESULT hresult) {
+#if _DEBUG
+    if (IsDebuggerPresent()) {
+        __debugbreak();
+    }
+#endif
+
     reinterpret_cast<void(*)()>(0xDEADDEAD)();
 }
 
