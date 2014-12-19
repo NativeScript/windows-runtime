@@ -86,16 +86,9 @@ shared_ptr<Declaration> MetadataReader::findByName(const wchar_t* fullName) cons
                 break;
             }
 
-            case mdtTypeSpec: {
-                // TODO
-                break;
-            }
-
             default:
                 ASSERT_NOT_REACHED();
         }
-
-        ASSERT(parentName.data());
 
         if (wcscmp(parentName.data(), SYSTEM_ENUM_W) == 0) {
             return make_shared<EnumDeclaration>(metadata.Get(), token);

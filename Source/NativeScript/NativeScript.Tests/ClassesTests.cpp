@@ -25,13 +25,13 @@ public:
         IteratorRange<ClassDeclaration::MethodIterator> methods{declaration->methods()};
         ClassDeclaration::MethodIterator it{methods.begin()};
 
-        MethodDeclaration staticMethod = *it;
+        MethodDeclaration staticMethod{*it};
         Assert::IsTrue(staticMethod.name() == L"StaticMethod");
         Assert::IsTrue(staticMethod.fullName() == L"StaticMethod");
         Assert::IsTrue(staticMethod.isStatic() == true);
 
         ++it;
-        MethodDeclaration instanceMethod = *it;
+        MethodDeclaration instanceMethod{*it};
         Assert::IsTrue(instanceMethod.name() == L"InstanceMethod");
         Assert::IsTrue(instanceMethod.fullName() == L"InstanceMethod");
         Assert::IsTrue(instanceMethod.isStatic() == false);
@@ -49,7 +49,7 @@ public:
         IteratorRange<ClassDeclaration::PropertyIterator> properties{declaration->properties()};
         ClassDeclaration::PropertyIterator it{properties.begin()};
 
-        PropertyDeclaration staticReadonlyProperty = *it;
+        PropertyDeclaration staticReadonlyProperty{*it};
         Assert::IsTrue(staticReadonlyProperty.name() == L"StaticReadonlyProperty");
         Assert::IsTrue(staticReadonlyProperty.fullName() == L"StaticReadonlyProperty");
         Assert::IsTrue(staticReadonlyProperty.getter()->name() == L"get_StaticReadonlyProperty");
@@ -57,7 +57,7 @@ public:
         Assert::IsTrue(staticReadonlyProperty.isStatic() == true);
 
         ++it;
-        PropertyDeclaration instanceReadonlyProperty = *it;
+        PropertyDeclaration instanceReadonlyProperty{*it};
         Assert::IsTrue(instanceReadonlyProperty.name() == L"InstanceReadonlyProperty");
         Assert::IsTrue(instanceReadonlyProperty.fullName() == L"InstanceReadonlyProperty");
         Assert::IsTrue(instanceReadonlyProperty.getter()->name() == L"get_InstanceReadonlyProperty");

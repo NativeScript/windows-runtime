@@ -73,13 +73,37 @@ vector<PropertyDeclaration> makePropertyDeclarations(IMetaDataImport2* metadata,
     return result;
 }
 
+vector<EventDeclaration> makeEventDeclarations(IMetaDataImport2* metadata, mdTypeDef token) {
+    HCORENUM enumerator{nullptr};
+    ULONG count{0};
+    array<mdEvent, 1024> tokens;
+
+    ASSERT_SUCCESS(metadata->EnumEvents(&enumerator, token, tokens.data(), tokens.size(), &count));
+    ASSERT(count < tokens.size() - 1);
+    metadata->CloseEnum(enumerator);
+
+    vector<EventDeclaration> result;
+    for (size_t i = 0; i < count; ++i) {
+        EventDeclaration event{metadata, tokens[i]};
+
+        if (!event.isExported()) {
+            continue;
+        }
+
+        result.push_back(move(event));
+    }
+
+    return result;
+}
+
 }
 
 ClassDeclaration::ClassDeclaration(IMetaDataImport2* metadata, mdTypeDef token)
     : Base(metadata, token)
     , _initializers(makeInitializerDeclarations(metadata, token))
     , _methods(makeMethodDeclarations(metadata, token))
-    , _properties(makePropertyDeclarations(metadata, token)) {
+    , _properties(makePropertyDeclarations(metadata, token))
+    , _events(makeEventDeclarations(metadata, token)) {
 
 }
 
@@ -138,40 +162,27 @@ IteratorRange<ClassDeclaration::PropertyIterator> ClassDeclaration::properties()
     return IteratorRange<PropertyIterator>(_properties.begin(), _properties.end());
 }
 
-vector<unique_ptr<Declaration>> ClassDeclaration::findMembersWithName(const wchar_t* name) const {
-    HCORENUM enumerator{nullptr};
-    array<mdToken, 1024> memberTokens;
-    ULONG membersSize{0};
-    ASSERT_SUCCESS(_metadata->EnumMembersWithName(&enumerator, _token, name, memberTokens.data(), memberTokens.size(), &membersSize));
-    _metadata->CloseEnum(enumerator);
+IteratorRange<ClassDeclaration::EventIterator> ClassDeclaration::events() const {
+    return IteratorRange<EventIterator>(_events.begin(), _events.end());
+}
 
+vector<unique_ptr<Declaration>> ClassDeclaration::findMembersWithName(const wchar_t* name) const {
     vector<unique_ptr<Declaration>> result;
 
-    for (size_t i = 0; i < membersSize; ++i) {
-        mdToken memberToken{memberTokens[i]};
+    for (const MethodDeclaration& method : findMethodsWithName(name)) {
+        result.push_back(make_unique<MethodDeclaration>(method));
+    }
 
-        unique_ptr<Declaration> declaration;
-
-        switch (TypeFromToken(memberToken)) {
-            case mdtMethodDef:
-                declaration = make_unique<MethodDeclaration>(_metadata.Get(), memberToken);
-                break;
-
-            case mdtProperty:
-                declaration = make_unique<PropertyDeclaration>(_metadata.Get(), memberToken);
-                break;
-
-                // TODO: Add others
-
-            default:
-                ASSERT_NOT_REACHED();
+    for (const PropertyDeclaration& property : _properties) {
+        if (property.fullName() == name) {
+            result.push_back(make_unique<PropertyDeclaration>(property));
         }
+    }
 
-        if (!declaration->isExported()) {
-            continue;
+    for (const EventDeclaration& event : _events) {
+        if (event.fullName() == name) {
+            result.push_back(make_unique<EventDeclaration>(event));
         }
-
-        result.push_back(move(declaration));
     }
 
     return result;

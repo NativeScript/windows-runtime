@@ -28,7 +28,7 @@ bool TypeDeclaration::isExported() const {
 
 wstring TypeDeclaration::name() const {
     wstring fullyQualifiedName(fullName());
-    size_t dotIndex = fullyQualifiedName.rfind(L".");
+    size_t dotIndex{fullyQualifiedName.rfind(L".")};
     if (dotIndex != wstring::npos) {
         fullyQualifiedName = fullyQualifiedName.substr(dotIndex + 1);
     }

@@ -135,6 +135,7 @@
     <ClInclude Include="DelegateDeclaration.h" />
     <ClInclude Include="EnumDeclaration.h" />
     <ClInclude Include="EnumMemberDeclaration.h" />
+    <ClInclude Include="EventDeclaration.h" />
     <ClInclude Include="FieldDeclaration.h" />
     <ClInclude Include="InterfaceDeclaration.h" />
     <ClInclude Include="IteratorRange.h" />
@@ -154,6 +155,7 @@
     <ClCompile Include="DelegateDeclaration.cpp" />
     <ClCompile Include="EnumDeclaration.cpp" />
     <ClCompile Include="EnumMemberDeclaration.cpp" />
+    <ClCompile Include="EventDeclaration.cpp" />
     <ClCompile Include="FieldDeclaration.cpp" />
     <ClCompile Include="InterfaceDeclaration.cpp" />
     <ClCompile Include="ParameterDeclaration.cpp" />

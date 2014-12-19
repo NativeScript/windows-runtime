@@ -26,6 +26,9 @@
     <ClCompile Include="DelegatesTests.cpp">
       <Filter>TestCases</Filter>
     </ClCompile>
+    <ClCompile Include="EventsTests.cpp">
+      <Filter>TestCases</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="pch.h" />

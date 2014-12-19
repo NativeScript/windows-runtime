@@ -6,8 +6,9 @@
 #include "TypeDeclaration.h"
 #include "MethodDeclaration.h"
 #include "PropertyDeclaration.h"
-#include "IteratorRange.h"
+#include "EventDeclaration.h"
 #include "InterfaceDeclaration.h"
+#include "IteratorRange.h"
 
 namespace NativeScript {
 namespace Metadata {
@@ -24,6 +25,7 @@ public:
 
     using MethodIterator = std::vector<const MethodDeclaration>::const_iterator;
     using PropertyIterator = std::vector<const PropertyDeclaration>::const_iterator;
+    using EventIterator = std::vector<const EventDeclaration>::const_iterator;
 
     explicit ClassDeclaration(IMetaDataImport2*, mdTypeDef);
 
@@ -33,13 +35,13 @@ public:
 
     ClassType classType();
 
-    // TODO: Events
-
     IteratorRange<MethodIterator> initializers() const;
 
     IteratorRange<MethodIterator> methods() const;
 
     IteratorRange<PropertyIterator> properties() const;
+
+    IteratorRange<EventIterator> events() const;
 
     std::vector<std::unique_ptr<Declaration>> findMembersWithName(const wchar_t*) const;
 
@@ -51,6 +53,7 @@ private:
     std::vector<MethodDeclaration> _initializers;
     std::vector<MethodDeclaration> _methods;
     std::vector<PropertyDeclaration> _properties;
+    std::vector<EventDeclaration> _events;
 };
 
 }
