@@ -12,6 +12,7 @@ TypeDeclaration::TypeDeclaration(IMetaDataImport2* metadata, mdTypeDef token)
     , _metadata{metadata}
     , _token{token} {
 
+    ASSERT(TypeFromToken(token) == mdtTypeDef);
     ASSERT(token != mdTypeDefNil);
 }
 

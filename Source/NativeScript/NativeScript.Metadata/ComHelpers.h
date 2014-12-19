@@ -67,5 +67,7 @@ std::wstring getUnaryCustomAttributeStringValue(IMetaDataImport2*, mdToken, cons
 
 GUID getGuidAttributeValue(IMetaDataImport2*, mdToken);
 
+bool resolveTypeRef(IMetaDataImport2*, mdTypeRef, IMetaDataImport2**, mdTypeDef*);
+
 }
 }

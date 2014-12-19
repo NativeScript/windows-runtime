@@ -50,6 +50,7 @@ MethodDeclaration::MethodDeclaration(IMetaDataImport2* metadata, mdMethodDef tok
     , _token{token}
     , _parameters(makeParameterDeclarations(metadata, token)) {
 
+    ASSERT(TypeFromToken(token) == mdtMethodDef);
     ASSERT(token != mdMethodDefNil);
 }
 

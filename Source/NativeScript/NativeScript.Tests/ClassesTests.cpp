@@ -16,6 +16,26 @@ public:
         Assert::IsTrue(declaration->baseFullName() == L"System.Object");
     }
 
+    TEST_METHOD(ImplementedInterfaces) {
+        MetadataReader metadataReader;
+
+        const wchar_t* name{L"NativeScript.Tests.Fixtures.SimpleClass"};
+        shared_ptr<ClassDeclaration> declaration{dynamic_pointer_cast<ClassDeclaration>(metadataReader.findByName(name))};
+
+        IteratorRange<ClassDeclaration::InterfaceIterator> interfaces{declaration->implementedInterfaces()};
+        ClassDeclaration::InterfaceIterator it{interfaces.begin()};
+
+        InterfaceDeclaration implementedInterface1{*it};
+        Assert::IsTrue(implementedInterface1.fullName() == L"NativeScript.Tests.Fixtures.ISimpleClassClass");
+
+        ++it;
+        InterfaceDeclaration implementedInterface2{*it};
+        Assert::IsTrue(implementedInterface2.fullName() == L"Windows.Foundation.IStringable");
+
+        ++it;
+        Assert::IsTrue(it == interfaces.end());
+    }
+
     TEST_METHOD(Methods) {
         MetadataReader metadataReader;
 

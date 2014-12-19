@@ -10,6 +10,49 @@ using namespace Microsoft::WRL;
 // TODO
 namespace {
 
+vector<InterfaceDeclaration> makeImplementedInterfacesDeclarations(IMetaDataImport2* metadata, mdTypeDef token) {
+    HCORENUM enumerator{nullptr};
+    ULONG count{0};
+    array<mdInterfaceImpl, 1024> tokens;
+
+    ASSERT_SUCCESS(metadata->EnumInterfaceImpls(&enumerator, token, tokens.data(), tokens.size(), &count));
+    ASSERT(count < tokens.size() - 1);
+    metadata->CloseEnum(enumerator);
+
+    vector<InterfaceDeclaration> result;
+    for (size_t i = 0; i < count; ++i) {
+        mdToken interfaceToken{mdTokenNil};
+        ASSERT_SUCCESS(metadata->GetInterfaceImplProps(tokens[i], nullptr, &interfaceToken));
+
+        switch (TypeFromToken(interfaceToken)) {
+            case mdtTypeDef: {
+                result.emplace_back(metadata, interfaceToken);
+                break;
+            }
+
+            case mdtTypeRef: {
+                ComPtr<IMetaDataImport2> externalMetadata;
+                mdTypeDef externalInterfaceToken{mdTypeDefNil};
+                
+                bool isResolved{resolveTypeRef(metadata, interfaceToken, externalMetadata.GetAddressOf(), &externalInterfaceToken)};
+                ASSERT(isResolved);
+
+                result.emplace_back(externalMetadata.Get(), externalInterfaceToken);
+                break;
+            }
+
+            case mdtTypeSpec: {
+                NOT_IMPLEMENTED();
+            }
+
+            default:
+                ASSERT_NOT_REACHED();
+        }
+    }
+
+    return result;
+}
+
 vector<MethodDeclaration> makeInitializerDeclarations(IMetaDataImport2* metadata, mdTypeDef token) {
     HCORENUM enumerator{nullptr};
     ULONG count{0};
@@ -100,6 +143,7 @@ vector<EventDeclaration> makeEventDeclarations(IMetaDataImport2* metadata, mdTyp
 
 ClassDeclaration::ClassDeclaration(IMetaDataImport2* metadata, mdTypeDef token)
     : Base(metadata, token)
+    , _implementedInterfaces(makeImplementedInterfacesDeclarations(metadata, token))
     , _initializers(makeInitializerDeclarations(metadata, token))
     , _methods(makeMethodDeclarations(metadata, token))
     , _properties(makePropertyDeclarations(metadata, token))
@@ -148,6 +192,10 @@ ClassType ClassDeclaration::classType() {
     }
 
     return ClassType::Uninstantiable;
+}
+
+IteratorRange<ClassDeclaration::InterfaceIterator> ClassDeclaration::implementedInterfaces() const {
+    return IteratorRange<InterfaceIterator>(_implementedInterfaces.begin(), _implementedInterfaces.end());
 }
 
 IteratorRange<ClassDeclaration::MethodIterator> ClassDeclaration::initializers() const {

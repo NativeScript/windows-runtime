@@ -12,6 +12,7 @@ FieldDeclaration::FieldDeclaration(IMetaDataImport2* metadata, mdFieldDef token)
     , _metadata{metadata}
     , _token{token} {
 
+    ASSERT(TypeFromToken(token) == mdtFieldDef);
     ASSERT(token != mdFieldDefNil);
 }
 

@@ -23,6 +23,7 @@ class ClassDeclaration final : public TypeDeclaration {
 public:
     typedef TypeDeclaration Base;
 
+    using InterfaceIterator = std::vector<const InterfaceDeclaration>::const_iterator;
     using MethodIterator = std::vector<const MethodDeclaration>::const_iterator;
     using PropertyIterator = std::vector<const PropertyDeclaration>::const_iterator;
     using EventIterator = std::vector<const EventDeclaration>::const_iterator;
@@ -34,6 +35,8 @@ public:
     std::wstring baseFullName() const;
 
     ClassType classType();
+
+    IteratorRange<InterfaceIterator> implementedInterfaces() const;
 
     IteratorRange<MethodIterator> initializers() const;
 
@@ -50,9 +53,14 @@ public:
 private:
     static std::unique_ptr<InterfaceDeclaration> declaringInterfaceForInstanceInitializer(const MethodDeclaration&, size_t*);
 
+    std::vector<InterfaceDeclaration> _implementedInterfaces;
+
     std::vector<MethodDeclaration> _initializers;
+
     std::vector<MethodDeclaration> _methods;
+
     std::vector<PropertyDeclaration> _properties;
+
     std::vector<EventDeclaration> _events;
 };
 

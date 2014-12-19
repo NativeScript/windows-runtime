@@ -12,6 +12,7 @@ PropertyDeclaration::PropertyDeclaration(IMetaDataImport2* metadata, mdProperty 
     , _metadata{metadata}
     , _token{token} {
 
+    ASSERT(TypeFromToken(token) == mdtProperty);
     ASSERT(token != mdPropertyNil);
 }
 

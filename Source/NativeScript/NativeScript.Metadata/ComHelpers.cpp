@@ -11,6 +11,9 @@ namespace Metadata {
 
 using namespace std;
 
+using namespace Microsoft::WRL::Wrappers;
+using namespace Microsoft::WRL;
+
 #ifdef _DEBUG
 void DEBUG_LOG(_Printf_format_string_ const wchar_t* format, ...) {
     va_list args;
@@ -61,6 +64,20 @@ GUID getGuidAttributeValue(IMetaDataImport2* metadata, mdToken token) {
 
     GUID guid(*reinterpret_cast<const GUID*>(data));
     return guid;
+}
+
+bool resolveTypeRef(IMetaDataImport2* metadata, mdTypeRef token, IMetaDataImport2** externalMetadata, mdTypeDef* externalToken) {
+    ASSERT(metadata);
+    ASSERT(TypeFromToken(token) == mdtTypeRef);
+    ASSERT(externalMetadata);
+    ASSERT(externalToken);
+
+    identifier name;
+    ASSERT_SUCCESS(metadata->GetTypeRefProps(token, nullptr, name.data(), name.size(), nullptr));
+
+    HRESULT getMetadataFileResult{RoGetMetaDataFile(HStringReference(name.data()).Get(), nullptr, nullptr, externalMetadata, externalToken)};
+
+    return getMetadataFileResult == S_OK;
 }
 #endif
 

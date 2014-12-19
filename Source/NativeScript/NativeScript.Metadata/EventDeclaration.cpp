@@ -13,6 +13,7 @@ EventDeclaration::EventDeclaration(IMetaDataImport2* metadata, mdEvent token)
     : _metadata{metadata}
     , _token{token} {
 
+    ASSERT(TypeFromToken(token) == mdtEvent);
     ASSERT(token != mdEventNil);
 }
 
@@ -52,12 +53,11 @@ DelegateDeclaration EventDeclaration::type() const {
         }
 
         case mdtTypeRef: {
-            identifier nameData;
-            ASSERT_SUCCESS(_metadata->GetTypeRefProps(delegateToken, nullptr, nameData.data(), nameData.size(), nullptr));
-
             ComPtr<IMetaDataImport2> externalMetadata;
             mdTypeDef externalDelegateToken{mdTypeDefNil};
-            ASSERT_SUCCESS(RoGetMetaDataFile(HStringReference(nameData.data()).Get(), nullptr, nullptr, externalMetadata.GetAddressOf(), &externalDelegateToken));
+
+            bool isResolved{resolveTypeRef(_metadata.Get(), delegateToken, externalMetadata.GetAddressOf(), &externalDelegateToken)};
+            ASSERT(isResolved);
 
             return DelegateDeclaration(externalMetadata.Get(), externalDelegateToken);
         }

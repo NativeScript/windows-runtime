@@ -11,6 +11,7 @@ ParameterDeclaration::ParameterDeclaration(IMetaDataImport2* metadata, mdParamDe
     , _metadata{metadata}
     , _token{token} {
 
+    ASSERT(TypeFromToken(token) == mdtParamDef);
     ASSERT(token != mdParamDefNil);
 }
 
