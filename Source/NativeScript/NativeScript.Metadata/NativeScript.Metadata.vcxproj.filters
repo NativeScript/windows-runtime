@@ -57,6 +57,9 @@
     <ClCompile Include="EventDeclaration.cpp">
       <Filter>Ast</Filter>
     </ClCompile>
+    <ClCompile Include="BaseClassDeclaration.cpp">
+      <Filter>Ast</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="pch.h" />
@@ -108,6 +111,9 @@
       <Filter>Ast</Filter>
     </ClInclude>
     <ClInclude Include="EventDeclaration.h">
+      <Filter>Ast</Filter>
+    </ClInclude>
+    <ClInclude Include="BaseClassDeclaration.h">
       <Filter>Ast</Filter>
     </ClInclude>
   </ItemGroup>

@@ -3,10 +3,7 @@
 #include <vector>
 #include <memory>
 
-#include "TypeDeclaration.h"
-#include "MethodDeclaration.h"
-#include "PropertyDeclaration.h"
-#include "EventDeclaration.h"
+#include "BaseClassDeclaration.h"
 #include "InterfaceDeclaration.h"
 #include "IteratorRange.h"
 
@@ -19,36 +16,23 @@ enum class ClassType {
     Subclassable = 0x02
 };
 
-class ClassDeclaration final : public TypeDeclaration {
+class ClassDeclaration final : public BaseClassDeclaration {
 public:
-    typedef TypeDeclaration Base;
+    typedef BaseClassDeclaration Base;
 
     using InterfaceIterator = std::vector<const InterfaceDeclaration>::const_iterator;
-    using MethodIterator = std::vector<const MethodDeclaration>::const_iterator;
-    using PropertyIterator = std::vector<const PropertyDeclaration>::const_iterator;
-    using EventIterator = std::vector<const EventDeclaration>::const_iterator;
 
     explicit ClassDeclaration(IMetaDataImport2*, mdTypeDef);
 
     static std::unique_ptr<InterfaceDeclaration> declaringInterfaceForMethod(const MethodDeclaration&, size_t* outIndex);
 
+    IteratorRange<InterfaceIterator> implementedInterfaces() const;
+
     std::wstring baseFullName() const;
 
     ClassType classType();
 
-    IteratorRange<InterfaceIterator> implementedInterfaces() const;
-
     IteratorRange<MethodIterator> initializers() const;
-
-    IteratorRange<MethodIterator> methods() const;
-
-    IteratorRange<PropertyIterator> properties() const;
-
-    IteratorRange<EventIterator> events() const;
-
-    std::vector<std::unique_ptr<Declaration>> findMembersWithName(const wchar_t*) const;
-
-    std::vector<MethodDeclaration> findMethodsWithName(const wchar_t*) const;
 
 private:
     static std::unique_ptr<InterfaceDeclaration> declaringInterfaceForInstanceInitializer(const MethodDeclaration&, size_t*);
@@ -56,12 +40,6 @@ private:
     std::vector<InterfaceDeclaration> _implementedInterfaces;
 
     std::vector<MethodDeclaration> _initializers;
-
-    std::vector<MethodDeclaration> _methods;
-
-    std::vector<PropertyDeclaration> _properties;
-
-    std::vector<EventDeclaration> _events;
 };
 
 }

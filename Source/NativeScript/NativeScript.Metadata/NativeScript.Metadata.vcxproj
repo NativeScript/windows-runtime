@@ -129,6 +129,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="Ast.h" />
+    <ClInclude Include="BaseClassDeclaration.h" />
     <ClInclude Include="ClassDeclaration.h" />
     <ClInclude Include="ComHelpers.h" />
     <ClInclude Include="Declaration.h" />
@@ -149,6 +150,7 @@
     <ClInclude Include="StructDeclaration.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="BaseClassDeclaration.cpp" />
     <ClCompile Include="ClassDeclaration.DeclaringInterfaceForMethod.cpp" />
     <ClCompile Include="ClassDeclaration.cpp" />
     <ClCompile Include="ComHelpers.cpp" />

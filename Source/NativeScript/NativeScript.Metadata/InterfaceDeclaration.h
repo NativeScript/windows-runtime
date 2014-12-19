@@ -2,14 +2,14 @@
 
 #include <guiddef.h>
 
-#include "TypeDeclaration.h"
+#include "BaseClassDeclaration.h"
 
 namespace NativeScript {
 namespace Metadata {
 
-class InterfaceDeclaration final : public TypeDeclaration {
+class InterfaceDeclaration final : public BaseClassDeclaration {
 public:
-    typedef TypeDeclaration Base;
+    typedef BaseClassDeclaration Base;
 
     explicit InterfaceDeclaration(IMetaDataImport2*, mdTypeDef);
 
