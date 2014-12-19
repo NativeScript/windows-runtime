@@ -59,11 +59,7 @@ public:
         Assert::IsTrue(externalEvent.removeMethod().fullName() == L"remove_ExternalEvent");
     }
 
-    BEGIN_TEST_METHOD_ATTRIBUTE(GenericEvent)
-        TEST_IGNORE()
-        END_TEST_METHOD_ATTRIBUTE()
-
-    TEST_METHOD(GenericEvent) {
+    TEST_METHOD(ExternalGenericEvent) {
         MetadataReader metadataReader;
 
         const wchar_t* name{L"NativeScript.Tests.Fixtures.EventsClass"};
@@ -73,9 +69,24 @@ public:
         EventDeclaration typedEvent{*dynamic_cast<EventDeclaration*>(declaration->findMembersWithName(eventName)[0].get())};
         Assert::IsTrue(typedEvent.name() == eventName);
         Assert::IsTrue(typedEvent.fullName() == eventName);
-        Assert::IsTrue(typedEvent.type().fullName() == L"");
+        Assert::IsTrue(typedEvent.type().fullName() == L"Windows.Foundation.TypedEventHandler`2");
         Assert::IsTrue(typedEvent.addMethod().fullName() == L"add_GenericEvent");
         Assert::IsTrue(typedEvent.removeMethod().fullName() == L"remove_GenericEvent");
+    }
+
+    TEST_METHOD(GenericEvent) {
+        MetadataReader metadataReader;
+
+        const wchar_t* name{L"Windows.Media.Playback.IMediaPlayer"};
+        shared_ptr<InterfaceDeclaration> declaration{dynamic_pointer_cast<InterfaceDeclaration>(metadataReader.findByName(name))};
+
+        const wchar_t* eventName{L"MediaOpened"};
+        EventDeclaration typedEvent{*dynamic_cast<EventDeclaration*>(declaration->findMembersWithName(eventName)[0].get())};
+        Assert::IsTrue(typedEvent.name() == eventName);
+        Assert::IsTrue(typedEvent.fullName() == eventName);
+        Assert::IsTrue(typedEvent.type().fullName() == L"Windows.Foundation.TypedEventHandler`2");
+        Assert::IsTrue(typedEvent.addMethod().fullName() == L"add_MediaOpened");
+        Assert::IsTrue(typedEvent.removeMethod().fullName() == L"remove_MediaOpened");
     }
 };
 

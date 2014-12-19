@@ -63,31 +63,35 @@ DelegateDeclaration EventDeclaration::type() const {
         }
 
         case mdtTypeSpec: {
-            // PCCOR_SIGNATURE signature{nullptr};
-            // ULONG signatureSize{0};
-            // ASSERT_SUCCESS(_metadata->GetTypeSpecFromToken(delegateToken, &signature, &signatureSize));
-            //
-            // ULONG type1{CorSigUncompressData(signature)};
-            // ASSERT(type1 == ELEMENT_TYPE_GENERICINST);
-            //
-            // ULONG type2{CorSigUncompressData(signature)};
-            // ASSERT(type2 == ELEMENT_TYPE_CLASS);
-            //
-            // mdToken openGenericDelegateToken{CorSigUncompressToken(signature)};
-            // switch (TypeFromToken(openGenericDelegateToken)) {
-            //     case mdtTypeDef:
-            //         break;
-            //
-            //     case mdtTypeRef:
-            //         break;
-            //
-            //     default:
-            //         ASSERT_NOT_REACHED();
-            // }
-            //
-            // ULONG numberOfGenericParameters{CorSigUncompressData(signature)};
+            PCCOR_SIGNATURE signature{nullptr};
+            ULONG signatureSize{0};
+            ASSERT_SUCCESS(_metadata->GetTypeSpecFromToken(delegateToken, &signature, &signatureSize));
 
-            NOT_IMPLEMENTED();
+            ULONG type1{CorSigUncompressData(signature)};
+            ASSERT(type1 == ELEMENT_TYPE_GENERICINST);
+
+            ULONG type2{CorSigUncompressData(signature)};
+            ASSERT(type2 == ELEMENT_TYPE_CLASS);
+
+            mdToken openGenericDelegateToken{CorSigUncompressToken(signature)};
+            switch (TypeFromToken(openGenericDelegateToken)) {
+                case mdtTypeDef: {
+                    return DelegateDeclaration(_metadata.Get(), openGenericDelegateToken);
+                }
+
+                case mdtTypeRef: {
+                    ComPtr<IMetaDataImport2> externalMetadata;
+                    mdTypeDef externalDelegateToken{mdTypeDefNil};
+
+                    bool isResolved{resolveTypeRef(_metadata.Get(), openGenericDelegateToken, externalMetadata.GetAddressOf(), &externalDelegateToken)};
+                    ASSERT(isResolved);
+
+                    return DelegateDeclaration(externalMetadata.Get(), externalDelegateToken);
+                }
+
+                default:
+                    ASSERT_NOT_REACHED();
+            }
         }
 
         default:
