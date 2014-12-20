@@ -11,6 +11,7 @@ namespace NativeScript.Tests.Fixtures
             throw new NotImplementedException();
         }
 
+        public static event EmptyDelegate StaticEvent;
         public event EmptyDelegate EmptyEvent;
         public event Windows.UI.Xaml.RoutedEventHandler ExternalEvent;
         public event TypedEventHandler<object, int> GenericEvent;

@@ -42,6 +42,10 @@ wstring EventDeclaration::fullName() const {
     return name;
 }
 
+bool EventDeclaration::isStatic() const {
+    return addMethod().isStatic();
+}
+
 DelegateDeclaration EventDeclaration::type() const {
     mdToken delegateToken{mdTokenNil};
 

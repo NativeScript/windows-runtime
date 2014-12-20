@@ -23,6 +23,8 @@ public:
 
     virtual std::wstring fullName() const override;
 
+    bool isStatic() const;
+
     DelegateDeclaration type() const;
 
     MethodDeclaration addMethod() const;
