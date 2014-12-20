@@ -49,15 +49,27 @@ public:
         Assert::IsTrue(staticMethod.name() == L"StaticMethod");
         Assert::IsTrue(staticMethod.fullName() == L"StaticMethod");
         Assert::IsTrue(staticMethod.isStatic() == true);
+        Assert::IsTrue(staticMethod.isOverridable() == false);
 
         ++it;
         MethodDeclaration instanceMethod{*it};
         Assert::IsTrue(instanceMethod.name() == L"InstanceMethod");
         Assert::IsTrue(instanceMethod.fullName() == L"InstanceMethod");
         Assert::IsTrue(instanceMethod.isStatic() == false);
+        Assert::IsTrue(instanceMethod.isOverridable() == false);
 
         ++it;
         Assert::IsTrue(it == methods.end());
+    }
+
+    TEST_METHOD(OverrideableMethods) {
+        MetadataReader metadataReader;
+
+        const wchar_t* name{L"Windows.UI.Xaml.Application"};
+        shared_ptr<ClassDeclaration> declaration{dynamic_pointer_cast<ClassDeclaration>(metadataReader.findByName(name))};
+
+        MethodDeclaration overridableMethod{declaration->findMethodsWithName(L"OnActivated")[0]};
+        Assert::IsTrue(overridableMethod.isOverridable() == true);
     }
 
     TEST_METHOD(Properties) {

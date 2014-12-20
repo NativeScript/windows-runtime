@@ -24,6 +24,8 @@ public:
 
     bool isStatic() const;
 
+    bool isOverridable() const;
+
     std::unique_ptr<MethodDeclaration> getter() const;
 
     std::unique_ptr<MethodDeclaration> setter() const;

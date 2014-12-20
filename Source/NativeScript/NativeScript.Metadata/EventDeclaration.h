@@ -25,6 +25,8 @@ public:
 
     bool isStatic() const;
 
+    bool isOverridable() const;
+
     DelegateDeclaration type() const;
 
     MethodDeclaration addMethod() const;

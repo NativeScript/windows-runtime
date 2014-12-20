@@ -52,6 +52,18 @@ bool PropertyDeclaration::isStatic() const {
     return (signature[0] & IMAGE_CEE_CS_CALLCONV_HASTHIS) == 0;
 }
 
+bool PropertyDeclaration::isOverridable() const {
+    if (unique_ptr<MethodDeclaration> method{getter()}) {
+        return method->isOverridable();
+    }
+    
+    if (unique_ptr<MethodDeclaration> method{setter()}) {
+        return method->isOverridable();
+    }
+
+    ASSERT_NOT_REACHED();
+}
+
 unique_ptr<MethodDeclaration> PropertyDeclaration::getter() const {
     mdMethodDef getterToken{mdMethodDefNil};
 

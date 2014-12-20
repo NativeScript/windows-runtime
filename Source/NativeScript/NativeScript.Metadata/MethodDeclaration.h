@@ -30,6 +30,8 @@ public:
 
     bool isStatic() const;
 
+    bool isOverridable() const;
+
     IteratorRange<ParameterIterator> parameters() const;
 
     size_t numberOfParameters() const;

@@ -46,6 +46,10 @@ bool EventDeclaration::isStatic() const {
     return addMethod().isStatic();
 }
 
+bool EventDeclaration::isOverridable() const {
+    return addMethod().isOverridable();
+}
+
 DelegateDeclaration EventDeclaration::type() const {
     mdToken delegateToken{mdTokenNil};
 
