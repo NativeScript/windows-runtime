@@ -67,6 +67,26 @@ public:
         Assert::IsTrue(it == declaration->end());
     }
 
+    TEST_METHOD(UInt32Enum) {
+        MetadataReader metadataReader;
+
+        const wchar_t* name{L"NativeScript.Tests.Fixtures.UInt32Enum"};
+        shared_ptr<EnumDeclaration> declaration{dynamic_pointer_cast<EnumDeclaration>(metadataReader.findByName(name))};
+
+        EnumDeclaration::MemberIterator it{declaration->begin()};
+        EnumMemberDeclaration member1{*it};
+        Assert::IsTrue(member1.value() == 0);
+        Assert::IsTrue(member1.name() == L"MinValue");
+
+        ++it;
+        EnumMemberDeclaration member2{*it};
+        Assert::IsTrue(member2.value() == UINT32_MAX);
+        Assert::IsTrue(member2.name() == L"MaxValue");
+
+        ++it;
+        Assert::IsTrue(it == declaration->end());
+    }
+
     TEST_METHOD(ManyMembersEnum) {
         MetadataReader metadataReader;
 

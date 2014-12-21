@@ -1,4 +1,6 @@
-﻿namespace NativeScript.Tests.Fixtures
+﻿using System;
+
+namespace NativeScript.Tests.Fixtures
 {
     public enum EmptyEnum
     {
@@ -11,16 +13,7 @@
         Value3,
     }
 
-    // TODO: The following enums crash the test runner application
-
-    // [Flags]
-    // public enum FlagsEnum
-    // {
-    //     Flag1 = 0x00,
-    //     Flag2 = 0x01,
-    //     Flag3 = 0x02,
-    //     Flag4 = 0x04,
-    // }
+    // [Flags] must not be present if enum is int; required if enum is uint
 
     public enum Int32Enum : int
     {
@@ -28,13 +21,12 @@
         MaxValue = int.MaxValue,
     }
 
-    // public enum UInt32Enum : uint
-    // {
-    //     MinValue = uint.MinValue,
-    //     MaxValue = uint.MaxValue,
-    // }
-
-    // bool, byte, char, int16, uint16, int64 and uint64 enums are not allowed in C# WinRT components.
+    [Flags]
+    public enum UInt32Enum : uint
+    {
+        MinValue = uint.MinValue,
+        MaxValue = uint.MaxValue,
+    }
 
     public enum ManyMembersEnum
     {
