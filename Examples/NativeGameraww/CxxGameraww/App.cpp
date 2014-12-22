@@ -83,6 +83,10 @@ STDMETHODIMP App::OnLaunched(ILaunchActivatedEventArgs* args) {
             HString jsonContents;
             ASSERT_SUCCESS(downloadOperationCb->GetResults(jsonContents.GetAddressOf()));
 
+            ComPtr<IAsyncInfo> downloadOperationIAsyncInfo;
+            ASSERT_SUCCESS(downloadOperationCb->QueryInterface(__uuidof(downloadOperationIAsyncInfo), &downloadOperationIAsyncInfo));
+            ASSERT_SUCCESS(downloadOperationIAsyncInfo->Close());
+
             ComPtr<IClosable> httpClientClosable;
             ASSERT_SUCCESS(httpClient.As(&httpClientClosable));
             ASSERT_SUCCESS(httpClientClosable->Close());

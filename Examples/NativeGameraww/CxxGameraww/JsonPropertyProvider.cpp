@@ -22,8 +22,8 @@ STDMETHODIMP JsonPropertyProvider::GetCustomProperty(HSTRING name, ICustomProper
     ASSERT_SUCCESS(map->HasKey(name, &hasKey));
 
     if (hasKey) {
-        ComPtr<JsonProperty> jsonProperty = Make<JsonProperty>(name);
-        return jsonProperty.Detach()->QueryInterface(IID_ICustomProperty, reinterpret_cast<void**>(returnValue));
+        ComPtr<JsonProperty> jsonProperty{Make<JsonProperty>(name)};
+        return jsonProperty.Get()->QueryInterface(IID_ICustomProperty, reinterpret_cast<void**>(returnValue));
     }
 
     *returnValue = nullptr;

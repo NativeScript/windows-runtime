@@ -96,7 +96,7 @@ STDMETHODIMP JsonProperty::GetValue(IInspectable* target, IInspectable** returnV
     HString runtimeClassName;
     target->GetRuntimeClassName(runtimeClassName.GetAddressOf());
 
-    ASSERT_SUCCESS(target->QueryInterface(ABI::CxxGameraww::IID_IJsonPropertyProvider, reinterpret_cast<void**>(jsonPropertyProvider.GetAddressOf())));
+    ASSERT_SUCCESS(target->QueryInterface(ABI::CxxGameraww::IID_IJsonPropertyProvider, &jsonPropertyProvider));
 
     ComPtr<IInspectable> objectInspectable;
     ASSERT_SUCCESS(jsonPropertyProvider->get_Object(&objectInspectable));
