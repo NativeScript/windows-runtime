@@ -34,6 +34,7 @@ void DEBUG_LOG(_Printf_format_string_ const wchar_t* format, ...) {
 
     OutputDebugString((wstring{buffer.data()} + L'\n').data());
 }
+#endif
 
 wstring getStringValueFromBlob(IMetaDataImport2* metadata, mdToken token, PCCOR_SIGNATURE signature) {
     // If it's null
@@ -89,7 +90,6 @@ bool resolveTypeRef(IMetaDataImport2* metadata, mdTypeRef token, IMetaDataImport
 
     return getMetadataFileResult == S_OK;
 }
-#endif
 
 }
 }
