@@ -44,26 +44,26 @@ STDMETHODIMP JsonVectorView::First(IIterator<IInspectable*>** first) {
     ComPtr<IIterator<IJsonValue*>> iterator;
     ASSERT_SUCCESS(iterable->First(iterator.GetAddressOf()));
 
-    *first = Make<JsonVectorViewIterator>(iterator.Get()).Detach();
+    *first = Make<Iterator>(iterator.Get()).Detach();
     return S_OK;
 }
 
-JsonVectorViewIterator::JsonVectorViewIterator(IIterator<IJsonValue*>* jsonValueIterator)
+JsonVectorView::Iterator::Iterator(IIterator<IJsonValue*>* jsonValueIterator)
     : _jsonValueIterator(jsonValueIterator) {
 }
 
-STDMETHODIMP JsonVectorViewIterator::get_Current(IInspectable** current) {
+STDMETHODIMP JsonVectorView::Iterator::get_Current(IInspectable** current) {
     ComPtr<IJsonValue> value;
     ASSERT_SUCCESS(_jsonValueIterator->get_Current(value.GetAddressOf()));
 
     return ValueToObject(value.Get(), current);
 }
 
-STDMETHODIMP JsonVectorViewIterator::get_HasCurrent(boolean* hasCurrent) {
+STDMETHODIMP JsonVectorView::Iterator::get_HasCurrent(boolean* hasCurrent) {
     return _jsonValueIterator->get_HasCurrent(hasCurrent);
 }
 
-STDMETHODIMP JsonVectorViewIterator::MoveNext(boolean* hasCurrent) {
+STDMETHODIMP JsonVectorView::Iterator::MoveNext(boolean* hasCurrent) {
     return _jsonValueIterator->MoveNext(hasCurrent);
 }
 

@@ -12,6 +12,22 @@ class JsonVectorView : public Microsoft::WRL::RuntimeClass<
     InspectableClass(ABI::Windows::Foundation::Collections::IVectorView<IInspectable*>::z_get_rc_name_impl(), BaseTrust);
 
 public:
+    class Iterator : public Microsoft::WRL::RuntimeClass<ABI::Windows::Foundation::Collections::IIterator<IInspectable*>> {
+        InspectableClass(ABI::Windows::Foundation::Collections::IIterator<IInspectable*>::z_get_rc_name_impl(), BaseTrust);
+
+    public:
+        explicit Iterator(IIterator<ABI::Windows::Data::Json::IJsonValue*>* jsonValueIterator);
+
+        virtual HRESULT STDMETHODCALLTYPE get_Current(_Out_ IInspectable** current) override;
+
+        virtual HRESULT STDMETHODCALLTYPE get_HasCurrent(_Out_ boolean* hasCurrent) override;
+
+        virtual HRESULT STDMETHODCALLTYPE MoveNext(_Out_ boolean* hasCurrent) override;
+
+    private:
+        Microsoft::WRL::ComPtr<IIterator<ABI::Windows::Data::Json::IJsonValue*>> _jsonValueIterator;
+    };
+
     explicit JsonVectorView(ABI::Windows::Data::Json::IJsonArray*);
 
     virtual HRESULT STDMETHODCALLTYPE GetAt(_In_ unsigned index, _Out_ IInspectable** item) override;
@@ -24,22 +40,6 @@ public:
 
 private:
     Microsoft::WRL::ComPtr<ABI::Windows::Data::Json::IJsonArray> _array;
-};
-
-class JsonVectorViewIterator : public Microsoft::WRL::RuntimeClass<ABI::Windows::Foundation::Collections::IIterator<IInspectable*>> {
-    InspectableClass(ABI::Windows::Foundation::Collections::IIterator<IInspectable*>::z_get_rc_name_impl(), BaseTrust);
-
-public:
-    explicit JsonVectorViewIterator(IIterator<ABI::Windows::Data::Json::IJsonValue*>* jsonValueIterator);
-
-    virtual HRESULT STDMETHODCALLTYPE get_Current(_Out_ IInspectable** current) override;
-
-    virtual HRESULT STDMETHODCALLTYPE get_HasCurrent(_Out_ boolean* hasCurrent) override;
-
-    virtual HRESULT STDMETHODCALLTYPE MoveNext(_Out_ boolean* hasCurrent) override;
-
-private:
-    Microsoft::WRL::ComPtr<IIterator<ABI::Windows::Data::Json::IJsonValue*>> _jsonValueIterator;
 };
 
 }
