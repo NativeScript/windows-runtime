@@ -25,12 +25,12 @@ public:
         IteratorRange<ClassDeclaration::InterfaceIterator> interfaces{declaration->implementedInterfaces()};
         ClassDeclaration::InterfaceIterator it{interfaces.begin()};
 
-        InterfaceDeclaration implementedInterface1{*it};
-        Assert::IsTrue(implementedInterface1.fullName() == L"NativeScript.Tests.Fixtures.ISimpleClassClass");
+        const unique_ptr<InterfaceDeclaration>& implementedInterface1{*it};
+        Assert::IsTrue(implementedInterface1->fullName() == L"NativeScript.Tests.Fixtures.ISimpleClassClass");
 
         ++it;
-        InterfaceDeclaration implementedInterface2{*it};
-        Assert::IsTrue(implementedInterface2.fullName() == L"Windows.Foundation.IStringable");
+        const unique_ptr<InterfaceDeclaration>& implementedInterface2{*it};
+        Assert::IsTrue(implementedInterface2->fullName() == L"Windows.Foundation.IStringable");
 
         ++it;
         Assert::IsTrue(it == interfaces.end());

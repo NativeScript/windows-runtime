@@ -1,5 +1,6 @@
 #include "pch.h"
 #include "BaseClassDeclaration.h"
+#include "InterfaceDeclaration.h"
 
 namespace NativeScript {
 namespace Metadata {
@@ -9,6 +10,49 @@ using namespace Microsoft::WRL;
 
 // TODO
 namespace {
+
+vector<unique_ptr<InterfaceDeclaration>> makeImplementedInterfacesDeclarations(IMetaDataImport2* metadata, mdTypeDef token) {
+    HCORENUM enumerator{nullptr};
+    ULONG count{0};
+    array<mdInterfaceImpl, 1024> tokens;
+
+    ASSERT_SUCCESS(metadata->EnumInterfaceImpls(&enumerator, token, tokens.data(), tokens.size(), &count));
+    ASSERT(count < tokens.size() - 1);
+    metadata->CloseEnum(enumerator);
+
+    vector<unique_ptr<InterfaceDeclaration>> result;
+    for (size_t i = 0; i < count; ++i) {
+        mdToken interfaceToken{mdTokenNil};
+        ASSERT_SUCCESS(metadata->GetInterfaceImplProps(tokens[i], nullptr, &interfaceToken));
+
+        switch (TypeFromToken(interfaceToken)) {
+            case mdtTypeDef: {
+                result.push_back(make_unique<InterfaceDeclaration>(metadata, interfaceToken));
+                break;
+            }
+
+            case mdtTypeRef: {
+                ComPtr<IMetaDataImport2> externalMetadata;
+                mdTypeDef externalInterfaceToken{mdTokenNil};
+
+                bool isResolved{resolveTypeRef(metadata, interfaceToken, externalMetadata.GetAddressOf(), &externalInterfaceToken)};
+                ASSERT(isResolved);
+
+                result.push_back(make_unique<InterfaceDeclaration>(externalMetadata.Get(), externalInterfaceToken));
+                break;
+            }
+
+            case mdtTypeSpec: {
+                NOT_IMPLEMENTED();
+            }
+
+            default:
+                ASSERT_NOT_REACHED();
+        }
+    }
+
+    return result;
+}
 
 vector<MethodDeclaration> makeMethodDeclarations(IMetaDataImport2* metadata, mdTypeDef token) {
     HCORENUM enumerator{nullptr};
@@ -83,10 +127,15 @@ vector<EventDeclaration> makeEventDeclarations(IMetaDataImport2* metadata, mdTyp
 
 BaseClassDeclaration::BaseClassDeclaration(IMetaDataImport2* metadata, mdTypeDef token)
     : Base(metadata, token)
+    , _implementedInterfaces(makeImplementedInterfacesDeclarations(metadata, token))
     , _methods(makeMethodDeclarations(metadata, token))
     , _properties(makePropertyDeclarations(metadata, token))
     , _events(makeEventDeclarations(metadata, token)) {
 
+}
+
+IteratorRange<BaseClassDeclaration::InterfaceIterator> BaseClassDeclaration::implementedInterfaces() const {
+    return IteratorRange<InterfaceIterator>(_implementedInterfaces.begin(), _implementedInterfaces.end());
 }
 
 IteratorRange<BaseClassDeclaration::MethodIterator> BaseClassDeclaration::methods() const {

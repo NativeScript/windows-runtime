@@ -20,13 +20,9 @@ class ClassDeclaration final : public BaseClassDeclaration {
 public:
     typedef BaseClassDeclaration Base;
 
-    using InterfaceIterator = std::vector<const InterfaceDeclaration>::const_iterator;
-
     explicit ClassDeclaration(IMetaDataImport2*, mdTypeDef);
 
     static std::unique_ptr<InterfaceDeclaration> declaringInterfaceForMethod(const MethodDeclaration&, size_t* outIndex);
-
-    IteratorRange<InterfaceIterator> implementedInterfaces() const;
 
     std::wstring baseFullName() const;
 
@@ -36,8 +32,6 @@ public:
 
 private:
     static std::unique_ptr<InterfaceDeclaration> declaringInterfaceForInstanceInitializer(const MethodDeclaration&, size_t*);
-
-    std::vector<InterfaceDeclaration> _implementedInterfaces;
 
     std::vector<MethodDeclaration> _initializers;
 };

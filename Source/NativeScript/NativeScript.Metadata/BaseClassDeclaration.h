@@ -10,15 +10,22 @@
 namespace NativeScript {
 namespace Metadata {
 
+class InterfaceDeclaration;
+
 class BaseClassDeclaration : public TypeDeclaration {
 public:
     typedef TypeDeclaration Base;
+
+    // TODO: Remove smart pointer from here
+    using InterfaceIterator = std::vector<const std::unique_ptr<InterfaceDeclaration>>::const_iterator;
 
     using MethodIterator = std::vector<const MethodDeclaration>::const_iterator;
 
     using PropertyIterator = std::vector<const PropertyDeclaration>::const_iterator;
 
     using EventIterator = std::vector<const EventDeclaration>::const_iterator;
+
+    IteratorRange<InterfaceIterator> implementedInterfaces() const;
 
     IteratorRange<MethodIterator> methods() const;
 
@@ -34,6 +41,8 @@ protected:
     explicit BaseClassDeclaration(IMetaDataImport2*, mdTypeDef);
 
 private:
+    std::vector<std::unique_ptr<InterfaceDeclaration>> _implementedInterfaces;
+
     std::vector<MethodDeclaration> _methods;
 
     std::vector<PropertyDeclaration> _properties;
