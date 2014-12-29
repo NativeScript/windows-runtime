@@ -21,7 +21,17 @@ vector<MethodDeclaration> makeInitializerDeclarations(IMetaDataImport2* metadata
 
     vector<MethodDeclaration> result;
     for (size_t i = 0; i < count; ++i) {
-        result.emplace_back(metadata, tokens[i]);
+        mdMethodDef methodToken{tokens[i]};
+
+        // TODO: Make a InstanceInitializerDeclaration and check this in it's isExported method
+        DWORD flags{0};
+        ASSERT_SUCCESS(metadata->GetMethodProps(methodToken, nullptr, nullptr, 0, nullptr, &flags, nullptr, nullptr, nullptr, nullptr));
+
+        if (!IsMdPublic(flags)) {
+            continue;
+        }
+
+        result.emplace_back(metadata, methodToken);
     }
 
     return result;
@@ -61,21 +71,15 @@ wstring ClassDeclaration::baseFullName() const {
     return result;
 }
 
-// TODO: Abstract class
-ClassType ClassDeclaration::classType() const {
-    HRESULT isComposable{_metadata->GetCustomAttributeByName(_token, COMPOSABLE_ATTRIBUTE_W, nullptr, nullptr)};
-    ASSERT_SUCCESS(isComposable);
-    if (isComposable == S_OK) {
-        return ClassType::Subclassable;
-    }
+bool ClassDeclaration::isInstantiable() const {
+    IteratorRange<MethodIterator> constructors{initializers()};
+    return constructors.begin() != constructors.end();
+}
 
-    HRESULT isInstantiable{_metadata->GetCustomAttributeByName(_token, ACTIVATABLE_ATTRIBUTE_W, nullptr, nullptr)};
-    ASSERT_SUCCESS(isInstantiable);
-    if (isInstantiable == S_OK) {
-        return ClassType::Instantiable;
-    }
-
-    return ClassType::Uninstantiable;
+bool ClassDeclaration::isSealed() const {
+    DWORD flags{0};
+    ASSERT_SUCCESS(_metadata->GetTypeDefProps(_token, nullptr, 0, nullptr, &flags, nullptr));
+    return IsTdSealed(flags) != 0;
 }
 
 IteratorRange<ClassDeclaration::MethodIterator> ClassDeclaration::initializers() const {

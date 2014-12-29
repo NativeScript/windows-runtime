@@ -142,13 +142,20 @@ public:
         MetadataReader metadataReader;
 
         shared_ptr<ClassDeclaration> emptyClass{dynamic_pointer_cast<ClassDeclaration>(metadataReader.findByName(L"NativeScript.Tests.Fixtures.EmptyClass"))};
-        Assert::IsTrue(emptyClass->classType() == ClassType::Uninstantiable);
+        Assert::IsTrue(emptyClass->isInstantiable() == false);
+        Assert::IsTrue(emptyClass->isSealed() == true);
 
         shared_ptr<ClassDeclaration> activatableClass{dynamic_pointer_cast<ClassDeclaration>(metadataReader.findByName(L"NativeScript.Tests.Fixtures.ActivatableClass"))};
-        Assert::IsTrue(activatableClass->classType() == ClassType::Instantiable);
+        Assert::IsTrue(activatableClass->isInstantiable() == true);
+        Assert::IsTrue(activatableClass->isSealed() == true);
 
         shared_ptr<ClassDeclaration> composableClass{dynamic_pointer_cast<ClassDeclaration>(metadataReader.findByName(L"Windows.UI.Xaml.Controls.ListView"))};
-        Assert::IsTrue(composableClass->classType() == ClassType::Subclassable);
+        Assert::IsTrue(composableClass->isInstantiable() == true);
+        Assert::IsTrue(composableClass->isSealed() == false);
+
+        shared_ptr<ClassDeclaration> abstractClass{dynamic_pointer_cast<ClassDeclaration>(metadataReader.findByName(L"Windows.UI.Xaml.Controls.Control"))};
+        Assert::IsTrue(abstractClass->isInstantiable() == false);
+        Assert::IsTrue(abstractClass->isSealed() == false);
     }
 
     // TEST_METHOD(StaticAttribute) {

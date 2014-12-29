@@ -10,12 +10,6 @@
 namespace NativeScript {
 namespace Metadata {
 
-enum class ClassType {
-    Uninstantiable = 0x00,
-    Instantiable = 0x01,
-    Subclassable = 0x02
-};
-
 class ClassDeclaration final : public BaseClassDeclaration {
 public:
     typedef BaseClassDeclaration Base;
@@ -26,7 +20,9 @@ public:
 
     std::wstring baseFullName() const;
 
-    ClassType classType() const;
+    bool isInstantiable() const;
+
+    bool isSealed() const;
 
     IteratorRange<MethodIterator> initializers() const;
 
