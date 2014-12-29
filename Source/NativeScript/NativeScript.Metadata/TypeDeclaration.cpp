@@ -30,10 +30,17 @@ bool TypeDeclaration::isExported() const {
 
 wstring TypeDeclaration::name() const {
     wstring fullyQualifiedName(fullName());
+
+    size_t backtickIndex{fullyQualifiedName.rfind(L"`")};
+    if (backtickIndex != wstring::npos) {
+        fullyQualifiedName.erase(backtickIndex);
+    }
+
     size_t dotIndex{fullyQualifiedName.rfind(L".")};
     if (dotIndex != wstring::npos) {
-        fullyQualifiedName = fullyQualifiedName.substr(dotIndex + 1);
+        fullyQualifiedName.erase(0, dotIndex + 1);
     }
+
     return fullyQualifiedName;
 }
 
