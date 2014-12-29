@@ -9,6 +9,8 @@ using namespace std;
 NamespaceDeclaration::NamespaceDeclaration(const wchar_t* fullName)
     : Base()
     , _fullName(fullName) {
+
+    ASSERT(fullName);
 }
 
 wstring NamespaceDeclaration::name() const {

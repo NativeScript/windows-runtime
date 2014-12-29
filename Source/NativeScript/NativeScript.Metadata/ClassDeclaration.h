@@ -30,7 +30,7 @@ public:
 
     std::wstring baseFullName() const;
 
-    ClassType classType();
+    ClassType classType() const;
 
     IteratorRange<MethodIterator> initializers() const;
 

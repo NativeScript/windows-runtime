@@ -11,7 +11,7 @@ namespace {
 const wchar_t* const INVOKE_METHOD_NAME_W{L"Invoke"};
 
 mdMethodDef getInvokeMethodToken(IMetaDataImport2* metaData, mdTypeDef token) {
-    mdMethodDef invokeMethodToken{mdMethodDefNil};
+    mdMethodDef invokeMethodToken{mdTokenNil};
     ASSERT_SUCCESS(metaData->FindMethod(token, INVOKE_METHOD_NAME_W, nullptr, 0, &invokeMethodToken));
     return invokeMethodToken;
 }

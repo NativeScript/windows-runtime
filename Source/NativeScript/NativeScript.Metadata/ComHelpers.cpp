@@ -36,7 +36,10 @@ void DEBUG_LOG(_Printf_format_string_ const wchar_t* format, ...) {
 }
 #endif
 
-wstring getStringValueFromBlob(IMetaDataImport2* metadata, mdToken token, PCCOR_SIGNATURE signature) {
+wstring getStringValueFromBlob(IMetaDataImport2* metadata, PCCOR_SIGNATURE signature) {
+    ASSERT(metadata);
+    ASSERT(signature);
+
     // If it's null
     if (*signature == UINT8_MAX) {
         return wstring{};
@@ -52,6 +55,10 @@ wstring getStringValueFromBlob(IMetaDataImport2* metadata, mdToken token, PCCOR_
 }
 
 wstring getUnaryCustomAttributeStringValue(IMetaDataImport2* metadata, mdToken token, const wchar_t* attributeName) {
+    ASSERT(metadata);
+    ASSERT(token != mdTokenNil);
+    ASSERT(attributeName);
+
     const uint8_t* data{nullptr};
     HRESULT getAttributeResult{metadata->GetCustomAttributeByName(token, attributeName, reinterpret_cast<const void**>(&data), nullptr)};
 
@@ -61,12 +68,15 @@ wstring getUnaryCustomAttributeStringValue(IMetaDataImport2* metadata, mdToken t
         return wstring{};
     }
 
-    return getStringValueFromBlob(metadata, token, data + 2);
+    return getStringValueFromBlob(metadata, data + 2);
 }
 
 const wchar_t* const GUID_ATTRIBUTE_W{L"Windows.Foundation.Metadata.GuidAttribute"};
 
 GUID getGuidAttributeValue(IMetaDataImport2* metadata, mdToken token) {
+    ASSERT(metadata);
+    ASSERT(token != mdTokenNil);
+
     const uint8_t* data{nullptr};
     ASSERT_SUCCESS(metadata->GetCustomAttributeByName(token, GUID_ATTRIBUTE_W, reinterpret_cast<const void**>(&data), nullptr));
 

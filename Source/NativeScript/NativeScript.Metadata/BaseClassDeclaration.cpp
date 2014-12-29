@@ -102,6 +102,8 @@ IteratorRange<BaseClassDeclaration::EventIterator> BaseClassDeclaration::events(
 }
 
 vector<unique_ptr<Declaration>> BaseClassDeclaration::findMembersWithName(const wchar_t* name) const {
+    ASSERT(name);
+
     vector<unique_ptr<Declaration>> result;
 
     for (const MethodDeclaration& method : findMethodsWithName(name)) {
@@ -124,6 +126,8 @@ vector<unique_ptr<Declaration>> BaseClassDeclaration::findMembersWithName(const 
 }
 
 vector<MethodDeclaration> BaseClassDeclaration::findMethodsWithName(const wchar_t* name) const {
+    ASSERT(name);
+
     HCORENUM enumerator{nullptr};
     array<mdMethodDef, 1024> methodTokens;
     ULONG methodsCount{0};
@@ -141,7 +145,7 @@ vector<MethodDeclaration> BaseClassDeclaration::findMethodsWithName(const wchar_
             continue;
         }
 
-        result.push_back(declaration);
+        result.push_back(move(declaration));
     }
 
     return result;

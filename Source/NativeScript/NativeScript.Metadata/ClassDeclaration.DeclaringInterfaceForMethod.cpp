@@ -10,7 +10,7 @@ using namespace std;
 namespace {
 
 mdTypeDef getContainingClassToken(IMetaDataImport2* metadata, const mdMethodDef methodToken) {
-    mdTypeDef parent{mdTypeDefNil};
+    mdTypeDef parent{mdTokenNil};
     ASSERT_SUCCESS(metadata->GetMethodProps(methodToken, &parent, nullptr, 0, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr));
     return parent;
 }
@@ -53,7 +53,7 @@ unique_ptr<InterfaceDeclaration> ClassDeclaration::declaringInterfaceForInstance
         mdToken attributeConstructorToken{mdTokenNil};
         ASSERT_SUCCESS(metadata->GetCustomAttributeProps(classAttributes[i], nullptr, &attributeConstructorToken, nullptr, nullptr));
 
-        mdTypeDef attributeClassToken{mdTypeDefNil};
+        mdTypeDef attributeClassToken{mdTokenNil};
         PCCOR_SIGNATURE attributeConstructorSignature{nullptr};
         switch (TypeFromToken(attributeConstructorToken)) {
             case mdtMethodDef:
@@ -103,8 +103,8 @@ unique_ptr<InterfaceDeclaration> ClassDeclaration::declaringInterfaceForInstance
         ULONG attributeValueSize{0};
         ASSERT_SUCCESS(metadata->GetCustomAttributeProps(classAttributes[i], nullptr, nullptr, reinterpret_cast<const void**>(&attributeValue), &attributeValueSize));
 
-        wstring factoryName{getStringValueFromBlob(metadata, classToken, attributeValue + 2)};
-        mdTypeDef factoryToken{mdTypeDefNil};
+        wstring factoryName{getStringValueFromBlob(metadata, attributeValue + 2)};
+        mdTypeDef factoryToken{mdTokenNil};
         ASSERT_SUCCESS(metadata->FindTypeDefByName(factoryName.data(), NULL, &factoryToken));
 
         array<mdMethodDef, 512> factoryMethods;

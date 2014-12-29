@@ -17,15 +17,13 @@ public:
         ParameterDeclaration inParameter{*it};
         Assert::IsTrue(inParameter.name() == L"inParameter");
         Assert::IsTrue(inParameter.fullName() == L"inParameter");
-        Assert::IsTrue(inParameter.isIn());
-        Assert::IsTrue(!inParameter.isOut());
+        Assert::IsTrue(inParameter.isOut() == false);
 
         ++it;
         ParameterDeclaration outParameter{*it};
         Assert::IsTrue(outParameter.name() == L"outParameter");
         Assert::IsTrue(outParameter.fullName() == L"outParameter");
-        Assert::IsTrue(!outParameter.isIn());
-        Assert::IsTrue(outParameter.isOut());
+        Assert::IsTrue(outParameter.isOut() == true);
 
         ++it;
         Assert::IsTrue(it == parameters.end());

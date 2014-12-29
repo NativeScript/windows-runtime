@@ -11,6 +11,7 @@ ParameterDeclaration::ParameterDeclaration(IMetaDataImport2* metadata, mdParamDe
     , _metadata{metadata}
     , _token{token} {
 
+    ASSERT(metadata);
     ASSERT(TypeFromToken(token) == mdtParamDef);
     ASSERT(token != mdParamDefNil);
 }
@@ -27,13 +28,6 @@ wstring ParameterDeclaration::fullName() const {
 
     wstring result{nameData.data(), nameLength - 1};
     return result;
-}
-
-bool ParameterDeclaration::isIn() const {
-    DWORD flags{0};
-    ASSERT_SUCCESS(_metadata->GetParamProps(_token, nullptr, nullptr, nullptr, 0, nullptr, &flags, nullptr, nullptr, nullptr));
-
-    return IsPdIn(flags) != 0;
 }
 
 bool ParameterDeclaration::isOut() const {

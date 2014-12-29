@@ -32,7 +32,7 @@ vector<InterfaceDeclaration> makeImplementedInterfacesDeclarations(IMetaDataImpo
 
             case mdtTypeRef: {
                 ComPtr<IMetaDataImport2> externalMetadata;
-                mdTypeDef externalInterfaceToken{mdTypeDefNil};
+                mdTypeDef externalInterfaceToken{mdTokenNil};
 
                 bool isResolved{resolveTypeRef(metadata, interfaceToken, externalMetadata.GetAddressOf(), &externalInterfaceToken)};
                 ASSERT(isResolved);
@@ -106,7 +106,7 @@ wstring ClassDeclaration::baseFullName() const {
 }
 
 // TODO: Abstract class
-ClassType ClassDeclaration::classType() {
+ClassType ClassDeclaration::classType() const {
     HRESULT isComposable{_metadata->GetCustomAttributeByName(_token, COMPOSABLE_ATTRIBUTE_W, nullptr, nullptr)};
     ASSERT_SUCCESS(isComposable);
     if (isComposable == S_OK) {

@@ -3,17 +3,10 @@
 
 #include "Ast.h"
 
-#define WINDOWS_W                      L"Windows"
-#define WINDOWS                         "Windows"
-
-#define SYSTEM_ENUM_W                  L"System.Enum"
-#define SYSTEM_ENUM                     "System.Enum"
-
-#define SYSTEM_VALUETYPE_W             L"System.ValueType"
-#define SYSTEM_VALUETYPE                "System.ValueType"
-
-#define SYSTEM_MULTICASTDELEGATE_W     L"System.MulticastDelegate"
-#define SYSTEM_MULTICASTDELEGATE        "System.MulticastDelegate"
+const wchar_t* const WINDOWS_W{L"Windows"};
+const wchar_t* const SYSTEM_ENUM_W{L"System.Enum"};
+const wchar_t* const SYSTEM_VALUETYPE_W{L"System.ValueType"};
+const wchar_t* const SYSTEM_MULTICASTDELEGATE_W{L"System.MulticastDelegate"};
 
 namespace {
 template <typename T, typename U>
@@ -46,23 +39,23 @@ shared_ptr<Declaration> MetadataReader::findByName(const wchar_t* fullName) cons
     }
 
     ComPtr<IMetaDataImport2> metadata;
-    mdTypeDef token{mdTypeDefNil};
+    mdTypeDef token{mdTokenNil};
 
     HStringReference fullNameRef{fullName};
     HRESULT getMetadataFileResult{RoGetMetaDataFile(fullNameRef.Get(), nullptr, nullptr, metadata.GetAddressOf(), &token)};
 
     if (FAILED(getMetadataFileResult)) {
-        if (equalToAny(getMetadataFileResult, E_INVALIDARG, RO_E_METADATA_INVALID_TYPE_FORMAT, RO_E_METADATA_NAME_NOT_FOUND, RO_E_INVALID_METADATA_FILE)) {
-            // TODO: Check generics by appending `1, `2 ...
-            return nullptr;
-        }
-
         if (getMetadataFileResult == RO_E_METADATA_NAME_IS_NAMESPACE) {
             // TODO
             // RoResolveNamespace gives incomplete results.
             // The search for the "Windows" namespace on Windows Phone 8.1 fails both on a device and on an emulator with corrupted metadata error.
 
             return make_shared<NamespaceDeclaration>(fullName);
+        }
+
+        if (equalToAny(getMetadataFileResult, E_INVALIDARG, RO_E_METADATA_INVALID_TYPE_FORMAT, RO_E_METADATA_NAME_NOT_FOUND, RO_E_INVALID_METADATA_FILE)) {
+            // TODO: Check generics by appending `1, `2 ...
+            return nullptr;
         }
     }
 

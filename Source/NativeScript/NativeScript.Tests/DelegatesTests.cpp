@@ -31,13 +31,11 @@ public:
         DelegateDeclaration::ParameterIterator it{parameters.begin()};
         ParameterDeclaration inParameter{*it};
         Assert::IsTrue(inParameter.name() == L"inParameter");
-        Assert::IsTrue(inParameter.isIn() == true);
         Assert::IsTrue(inParameter.isOut() == false);
 
         ++it;
         ParameterDeclaration outParameter{*it};
         Assert::IsTrue(outParameter.name() == L"outParameter");
-        Assert::IsTrue(outParameter.isIn() == false);
         Assert::IsTrue(outParameter.isOut() == true);
 
         ++it;

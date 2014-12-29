@@ -60,7 +60,7 @@ const wchar_t* const STATIC_ATTRIBUTE_W{L"Windows.Foundation.Metadata.StaticAttr
 const wchar_t* const ACTIVATABLE_ATTRIBUTE_W{L"Windows.Foundation.Metadata.ActivatableAttribute"};
 const wchar_t* const COMPOSABLE_ATTRIBUTE_W{L"Windows.Foundation.Metadata.ComposableAttribute"};
 
-std::wstring getStringValueFromBlob(IMetaDataImport2*, mdToken, PCCOR_SIGNATURE);
+std::wstring getStringValueFromBlob(IMetaDataImport2*, PCCOR_SIGNATURE);
 
 std::wstring getUnaryCustomAttributeStringValue(IMetaDataImport2*, mdToken, const wchar_t* attributeName);
 

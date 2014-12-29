@@ -50,6 +50,7 @@ MethodDeclaration::MethodDeclaration(IMetaDataImport2* metadata, mdMethodDef tok
     , _token{token}
     , _parameters(makeParameterDeclarations(metadata, token)) {
 
+    ASSERT(metadata);
     ASSERT(TypeFromToken(token) == mdtMethodDef);
     ASSERT(token != mdMethodDefNil);
 }
@@ -98,8 +99,8 @@ wstring MethodDeclaration::fullName() const {
 }
 
 bool MethodDeclaration::isInitializer() const {
-    DWORD methodFlags{0};
     identifier name;
+    DWORD methodFlags{0};
     ASSERT_SUCCESS(_metadata->GetMethodProps(_token, nullptr, name.data(), name.size(), nullptr, &methodFlags, nullptr, nullptr, nullptr, nullptr));
 
     return IsMdInstanceInitializerW(methodFlags, name.data());
@@ -131,9 +132,7 @@ wstring MethodDeclaration::overloadName() const {
 
 bool MethodDeclaration::isDefaultOverload() const {
     HRESULT getAttributeResult{_metadata->GetCustomAttributeByName(_token, DEFAULT_OVERLOAD_ATTRIBUTE_W, nullptr, nullptr)};
-
     ASSERT_SUCCESS(getAttributeResult);
-
     return getAttributeResult == S_OK;
 }
 

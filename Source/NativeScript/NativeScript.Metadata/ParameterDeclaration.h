@@ -18,8 +18,6 @@ public:
 
     virtual std::wstring fullName() const override;
 
-    bool isIn() const;
-
     bool isOut() const;
 
 private:

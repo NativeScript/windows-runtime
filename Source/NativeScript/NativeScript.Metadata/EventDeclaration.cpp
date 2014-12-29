@@ -13,6 +13,7 @@ EventDeclaration::EventDeclaration(IMetaDataImport2* metadata, mdEvent token)
     : _metadata{metadata}
     , _token{token} {
 
+    ASSERT(metadata);
     ASSERT(TypeFromToken(token) == mdtEvent);
     ASSERT(token != mdEventNil);
 }
@@ -62,7 +63,7 @@ DelegateDeclaration EventDeclaration::type() const {
 
         case mdtTypeRef: {
             ComPtr<IMetaDataImport2> externalMetadata;
-            mdTypeDef externalDelegateToken{mdTypeDefNil};
+            mdTypeDef externalDelegateToken{mdTokenNil};
 
             bool isResolved{resolveTypeRef(_metadata.Get(), delegateToken, externalMetadata.GetAddressOf(), &externalDelegateToken)};
             ASSERT(isResolved);
@@ -89,7 +90,7 @@ DelegateDeclaration EventDeclaration::type() const {
 
                 case mdtTypeRef: {
                     ComPtr<IMetaDataImport2> externalMetadata;
-                    mdTypeDef externalDelegateToken{mdTypeDefNil};
+                    mdTypeDef externalDelegateToken{mdTokenNil};
 
                     bool isResolved{resolveTypeRef(_metadata.Get(), openGenericDelegateToken, externalMetadata.GetAddressOf(), &externalDelegateToken)};
                     ASSERT(isResolved);
@@ -108,14 +109,14 @@ DelegateDeclaration EventDeclaration::type() const {
 }
 
 MethodDeclaration EventDeclaration::addMethod() const {
-    mdMethodDef addMethodToken{mdMethodDefNil};
+    mdMethodDef addMethodToken{mdTokenNil};
     ASSERT_SUCCESS(_metadata->GetEventProps(_token, nullptr, nullptr, 0, nullptr, nullptr, nullptr, &addMethodToken, nullptr, nullptr, nullptr, 0, nullptr));
 
     return MethodDeclaration{_metadata.Get(), addMethodToken};
 }
 
 MethodDeclaration EventDeclaration::removeMethod() const {
-    mdMethodDef removeMethodToken{mdMethodDefNil};
+    mdMethodDef removeMethodToken{mdTokenNil};
     ASSERT_SUCCESS(_metadata->GetEventProps(_token, nullptr, nullptr, 0, nullptr, nullptr, nullptr, nullptr, &removeMethodToken, nullptr, nullptr, 0, nullptr));
 
     return MethodDeclaration{_metadata.Get(), removeMethodToken};

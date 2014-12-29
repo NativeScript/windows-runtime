@@ -12,6 +12,7 @@ PropertyDeclaration::PropertyDeclaration(IMetaDataImport2* metadata, mdProperty 
     , _metadata{metadata}
     , _token{token} {
 
+    ASSERT(metadata);
     ASSERT(TypeFromToken(token) == mdtProperty);
     ASSERT(token != mdPropertyNil);
 }
@@ -65,7 +66,7 @@ bool PropertyDeclaration::isOverridable() const {
 }
 
 unique_ptr<MethodDeclaration> PropertyDeclaration::getter() const {
-    mdMethodDef getterToken{mdMethodDefNil};
+    mdMethodDef getterToken{mdTokenNil};
 
     ASSERT_SUCCESS(_metadata->GetPropertyProps(_token, nullptr, nullptr, 0, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, &getterToken, nullptr, 0, nullptr));
 
@@ -77,7 +78,7 @@ unique_ptr<MethodDeclaration> PropertyDeclaration::getter() const {
 }
 
 unique_ptr<MethodDeclaration> PropertyDeclaration::setter() const {
-    mdMethodDef setterToken{mdMethodDefNil};
+    mdMethodDef setterToken{mdTokenNil};
 
     ASSERT_SUCCESS(_metadata->GetPropertyProps(_token, nullptr, nullptr, 0, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, &setterToken, nullptr, nullptr, 0, nullptr));
 
