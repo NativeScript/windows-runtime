@@ -17,5 +17,26 @@ IID InterfaceDeclaration::id() const {
     return getGuidAttributeValue(_metadata.Get(), _token);
 }
 
+GenericInterfaceInstanceDeclaration::GenericInterfaceInstanceDeclaration(IMetaDataImport2* openMetadata, mdTypeDef openToken, IMetaDataImport2* closedMetadata, mdTypeSpec closedToken)
+    : Base(openMetadata, openToken)
+    , _closedMetadata{closedMetadata}
+    , _closedToken{_closedToken} {
+
+    ASSERT(closedMetadata);
+    ASSERT(TypeFromToken(closedToken) == mdtTypeSpec);
+    ASSERT(closedToken != mdTypeSpecNil);
+}
+
+wstring GenericInterfaceInstanceDeclaration::fullName() const {
+    // TODO
+    return Base::fullName();
+}
+
+IID GenericInterfaceInstanceDeclaration::id() const {
+    // TODO: RoGetParameterizedTypeInstanceIID
+
+    NOT_IMPLEMENTED();
+}
+
 }
 }

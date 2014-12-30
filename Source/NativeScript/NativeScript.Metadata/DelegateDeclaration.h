@@ -30,6 +30,8 @@ public:
 
     explicit GenericDelegateInstanceDeclaration(IMetaDataImport2*, mdTypeDef, IMetaDataImport2*, mdTypeSpec);
 
+    virtual std::wstring fullName() const override;
+
     virtual CLSID id() const override;
 
     virtual IteratorRange<ParameterIterator> parameters() const override;

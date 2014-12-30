@@ -42,6 +42,11 @@ GenericDelegateInstanceDeclaration::GenericDelegateInstanceDeclaration(IMetaData
     ASSERT(closedToken != mdTypeSpecNil);
 }
 
+wstring GenericDelegateInstanceDeclaration::fullName() const {
+    // TODO
+    return Base::fullName();
+}
+
 CLSID GenericDelegateInstanceDeclaration::id() const {
     // TODO: RoGetParameterizedTypeInstanceIID
 

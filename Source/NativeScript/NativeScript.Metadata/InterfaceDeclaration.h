@@ -7,13 +7,30 @@
 namespace NativeScript {
 namespace Metadata {
 
-class InterfaceDeclaration final : public BaseClassDeclaration {
+class InterfaceDeclaration : public BaseClassDeclaration {
 public:
     typedef BaseClassDeclaration Base;
 
     explicit InterfaceDeclaration(IMetaDataImport2*, mdTypeDef);
 
-    IID id() const;
+    virtual IID id() const;
+};
+
+class GenericInterfaceInstanceDeclaration final : public InterfaceDeclaration {
+public:
+    typedef InterfaceDeclaration Base;
+
+    explicit GenericInterfaceInstanceDeclaration(IMetaDataImport2*, mdTypeDef, IMetaDataImport2*, mdTypeSpec);
+
+    virtual std::wstring fullName() const override;
+
+    virtual IID id() const override;
+
+    // TODO: Override methods, properties, events
+
+private:
+    const Microsoft::WRL::ComPtr<IMetaDataImport2> _closedMetadata;
+    mdTypeSpec _closedToken;
 };
 
 }

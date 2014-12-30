@@ -43,7 +43,39 @@ vector<unique_ptr<InterfaceDeclaration>> makeImplementedInterfacesDeclarations(I
             }
 
             case mdtTypeSpec: {
-                NOT_IMPLEMENTED();
+                PCCOR_SIGNATURE signature{nullptr};
+                ULONG signatureSize{0};
+                ASSERT_SUCCESS(metadata->GetTypeSpecFromToken(interfaceToken, &signature, &signatureSize));
+
+                ULONG type1{CorSigUncompressData(signature)};
+                ASSERT(type1 == ELEMENT_TYPE_GENERICINST);
+
+                ULONG type2{CorSigUncompressData(signature)};
+                ASSERT(type2 == ELEMENT_TYPE_CLASS);
+
+                mdToken openGenericDelegateToken{CorSigUncompressToken(signature)};
+                switch (TypeFromToken(openGenericDelegateToken)) {
+                    case mdtTypeDef: {
+                        result.push_back(make_unique<GenericInterfaceInstanceDeclaration>(metadata, openGenericDelegateToken, metadata, interfaceToken));
+                        break;
+                    }
+
+                    case mdtTypeRef: {
+                        ComPtr<IMetaDataImport2> externalMetadata;
+                        mdTypeDef externalDelegateToken{mdTokenNil};
+
+                        bool isResolved{resolveTypeRef(metadata, openGenericDelegateToken, externalMetadata.GetAddressOf(), &externalDelegateToken)};
+                        ASSERT(isResolved);
+
+                        result.push_back(make_unique<GenericInterfaceInstanceDeclaration>(externalMetadata.Get(), externalDelegateToken, metadata, interfaceToken));
+                        break;
+                    }
+
+                    default:
+                        ASSERT_NOT_REACHED();
+                }
+
+                break;
             }
 
             default:
