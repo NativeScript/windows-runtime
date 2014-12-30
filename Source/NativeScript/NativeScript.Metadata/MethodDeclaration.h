@@ -30,7 +30,7 @@ public:
 
     bool isStatic() const;
 
-    bool isOverridable() const;
+    bool isSealed() const;
 
     IteratorRange<ParameterIterator> parameters() const;
 

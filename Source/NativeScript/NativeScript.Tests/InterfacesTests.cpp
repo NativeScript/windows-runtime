@@ -35,7 +35,7 @@ public:
 
         IteratorRange<ClassDeclaration::InterfaceIterator> interfaces{declaration->implementedInterfaces()};
 
-        ClassDeclaration::InterfaceIterator it{find_if(interfaces.begin(), interfaces.end(), [](const unique_ptr<InterfaceDeclaration>& i) {
+        ClassDeclaration::InterfaceIterator it{find_if(interfaces.begin(), interfaces.end(), [](const unique_ptr<const InterfaceDeclaration>& i) {
             return i->fullName() == L"Windows.Foundation.Collections.IIterable`1";
         })};
 

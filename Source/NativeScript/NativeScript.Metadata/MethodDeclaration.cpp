@@ -77,11 +77,11 @@ bool MethodDeclaration::isStatic() const {
     return IsMdStatic(methodFlags) != 0;
 }
 
-bool MethodDeclaration::isOverridable() const {
+bool MethodDeclaration::isSealed() const {
     DWORD methodFlags{0};
     ASSERT_SUCCESS(_metadata->GetMethodProps(_token, nullptr, nullptr, 0, nullptr, &methodFlags, nullptr, nullptr, nullptr, nullptr));
 
-    return !IsMdStatic(methodFlags) && !IsMdFinal(methodFlags);
+    return IsMdStatic(methodFlags) || IsMdFinal(methodFlags);
 }
 
 wstring MethodDeclaration::name() const {

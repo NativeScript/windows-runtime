@@ -7,10 +7,37 @@ namespace Metadata {
 using namespace std;
 using namespace Microsoft::WRL;
 
+namespace {
+
+MethodDeclaration makeGetter(IMetaDataImport2* metadata, mdProperty token) {
+    mdMethodDef getterToken{mdTokenNil};
+
+    ASSERT_SUCCESS(metadata->GetPropertyProps(token, nullptr, nullptr, 0, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, &getterToken, nullptr, 0, nullptr));
+    ASSERT(getterToken != mdMethodDefNil);
+
+    return MethodDeclaration{metadata, getterToken};
+}
+
+unique_ptr<MethodDeclaration> makeSetter(IMetaDataImport2* metadata, mdProperty token) {
+    mdMethodDef setterToken{mdTokenNil};
+
+    ASSERT_SUCCESS(metadata->GetPropertyProps(token, nullptr, nullptr, 0, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, &setterToken, nullptr, nullptr, 0, nullptr));
+
+    if (setterToken == mdMethodDefNil) {
+        return nullptr;
+    }
+
+    return make_unique<MethodDeclaration>(metadata, setterToken);
+}
+
+}
+
 PropertyDeclaration::PropertyDeclaration(IMetaDataImport2* metadata, mdProperty token)
     : Base()
     , _metadata{metadata}
-    , _token{token} {
+    , _token{token}
+    , _getter{makeGetter(metadata, token)}
+    , _setter{makeSetter(metadata, token)} {
 
     ASSERT(metadata);
     ASSERT(TypeFromToken(token) == mdtProperty);
@@ -53,30 +80,16 @@ bool PropertyDeclaration::isStatic() const {
     return (signature[0] & IMAGE_CEE_CS_CALLCONV_HASTHIS) == 0;
 }
 
-bool PropertyDeclaration::isOverridable() const {
-    return getter().isOverridable();
+bool PropertyDeclaration::isSealed() const {
+    return _getter.isSealed();
 }
 
-MethodDeclaration PropertyDeclaration::getter() const {
-    mdMethodDef getterToken{mdTokenNil};
-
-    ASSERT_SUCCESS(_metadata->GetPropertyProps(_token, nullptr, nullptr, 0, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, &getterToken, nullptr, 0, nullptr));
-
-    ASSERT(getterToken != mdMethodDefNil);
-
-    return MethodDeclaration{_metadata.Get(), getterToken};
+const MethodDeclaration& PropertyDeclaration::getter() const {
+    return _getter;
 }
 
-unique_ptr<MethodDeclaration> PropertyDeclaration::setter() const {
-    mdMethodDef setterToken{mdTokenNil};
-
-    ASSERT_SUCCESS(_metadata->GetPropertyProps(_token, nullptr, nullptr, 0, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, &setterToken, nullptr, nullptr, 0, nullptr));
-
-    if (setterToken == mdMethodDefNil) {
-        return nullptr;
-    }
-
-    return make_unique<MethodDeclaration>(_metadata.Get(), setterToken);
+const MethodDeclaration* PropertyDeclaration::setter() const {
+    return _setter.get();
 }
 
 }

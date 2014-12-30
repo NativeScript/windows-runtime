@@ -4,7 +4,6 @@
 
 #include "TypeDeclaration.h"
 #include "StructFieldDeclaration.h"
-#include "IteratorRange.h"
 
 namespace NativeScript {
 namespace Metadata {

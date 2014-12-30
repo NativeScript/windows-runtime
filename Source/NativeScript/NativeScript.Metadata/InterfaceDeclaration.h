@@ -26,8 +26,6 @@ public:
 
     virtual IID id() const override;
 
-    // TODO: Override methods, properties, events
-
 private:
     const Microsoft::WRL::ComPtr<IMetaDataImport2> _closedMetadata;
     mdTypeSpec _closedToken;

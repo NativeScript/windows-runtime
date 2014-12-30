@@ -11,7 +11,7 @@ using namespace Microsoft::WRL;
 // TODO
 namespace {
 
-vector<unique_ptr<InterfaceDeclaration>> makeImplementedInterfacesDeclarations(IMetaDataImport2* metadata, mdTypeDef token) {
+vector<const unique_ptr<const InterfaceDeclaration>> makeImplementedInterfacesDeclarations(IMetaDataImport2* metadata, mdTypeDef token) {
     HCORENUM enumerator{nullptr};
     ULONG count{0};
     array<mdInterfaceImpl, 1024> tokens;
@@ -20,7 +20,7 @@ vector<unique_ptr<InterfaceDeclaration>> makeImplementedInterfacesDeclarations(I
     ASSERT(count < tokens.size() - 1);
     metadata->CloseEnum(enumerator);
 
-    vector<unique_ptr<InterfaceDeclaration>> result;
+    vector<const unique_ptr<const InterfaceDeclaration>> result;
     for (size_t i = 0; i < count; ++i) {
         mdToken interfaceToken{mdTokenNil};
         ASSERT_SUCCESS(metadata->GetInterfaceImplProps(tokens[i], nullptr, &interfaceToken));
@@ -182,10 +182,10 @@ IteratorRange<BaseClassDeclaration::EventIterator> BaseClassDeclaration::events(
     return IteratorRange<EventIterator>(_events.begin(), _events.end());
 }
 
-vector<unique_ptr<Declaration>> BaseClassDeclaration::findMembersWithName(const wchar_t* name) const {
+vector<const unique_ptr<const Declaration>> BaseClassDeclaration::findMembersWithName(const wchar_t* name) const {
     ASSERT(name);
 
-    vector<unique_ptr<Declaration>> result;
+    vector<const unique_ptr<const Declaration>> result;
 
     for (const MethodDeclaration& method : findMethodsWithName(name)) {
         result.push_back(make_unique<MethodDeclaration>(method));
@@ -206,7 +206,7 @@ vector<unique_ptr<Declaration>> BaseClassDeclaration::findMembersWithName(const 
     return result;
 }
 
-vector<MethodDeclaration> BaseClassDeclaration::findMethodsWithName(const wchar_t* name) const {
+vector<const MethodDeclaration> BaseClassDeclaration::findMethodsWithName(const wchar_t* name) const {
     ASSERT(name);
 
     HCORENUM enumerator{nullptr};
@@ -215,7 +215,7 @@ vector<MethodDeclaration> BaseClassDeclaration::findMethodsWithName(const wchar_
     ASSERT_SUCCESS(_metadata->EnumMethodsWithName(&enumerator, _token, name, methodTokens.data(), methodTokens.size(), &methodsCount));
     _metadata->CloseEnum(enumerator);
 
-    vector<MethodDeclaration> result;
+    vector<const MethodDeclaration> result;
 
     for (size_t i = 0; i < methodsCount; ++i) {
         mdMethodDef methodToken{methodTokens[i]};

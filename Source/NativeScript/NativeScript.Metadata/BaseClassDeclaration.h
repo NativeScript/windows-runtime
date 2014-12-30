@@ -17,7 +17,7 @@ public:
     typedef TypeDeclaration Base;
 
     // TODO: Remove smart pointer from here
-    using InterfaceIterator = std::vector<const std::unique_ptr<InterfaceDeclaration>>::const_iterator;
+    using InterfaceIterator = std::vector<const std::unique_ptr<const InterfaceDeclaration>>::const_iterator;
 
     using MethodIterator = std::vector<const MethodDeclaration>::const_iterator;
 
@@ -33,15 +33,15 @@ public:
 
     IteratorRange<EventIterator> events() const;
 
-    std::vector<std::unique_ptr<Declaration>> findMembersWithName(const wchar_t*) const;
+    std::vector<const std::unique_ptr<const Declaration>> findMembersWithName(const wchar_t*) const;
 
-    std::vector<MethodDeclaration> findMethodsWithName(const wchar_t*) const;
+    std::vector<const MethodDeclaration> findMethodsWithName(const wchar_t*) const;
 
 protected:
     explicit BaseClassDeclaration(IMetaDataImport2*, mdTypeDef);
 
 private:
-    std::vector<std::unique_ptr<InterfaceDeclaration>> _implementedInterfaces;
+    std::vector<const std::unique_ptr<const InterfaceDeclaration>> _implementedInterfaces;
 
     std::vector<MethodDeclaration> _methods;
 

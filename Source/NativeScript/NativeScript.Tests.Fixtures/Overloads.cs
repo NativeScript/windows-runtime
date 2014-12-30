@@ -10,7 +10,7 @@ namespace NativeScript.Tests.Fixtures
         }
 
         [DefaultOverload]
-        [Overload("InstanceMethodWithDouble")]
+        [Overload("InstanceMethod")]
         public double InstanceMethod(double x)
         {
             throw new NotImplementedException();
@@ -22,18 +22,8 @@ namespace NativeScript.Tests.Fixtures
             throw new NotImplementedException();
         }
 
-        public double InstanceMethodWithDouble(double x)
-        {
-            return InstanceMethod(x);
-        }
-
-        public int InstanceMethodWithInt(int x)
-        {
-            return InstanceMethod(x);
-        }
-
         [DefaultOverload]
-        [Overload("StaticMethodWithDouble")]
+        [Overload("StaticMethod")]
         public static double StaticMethod(double x)
         {
             throw new NotImplementedException();
@@ -43,16 +33,6 @@ namespace NativeScript.Tests.Fixtures
         public static int StaticMethod(int x)
         {
             throw new NotImplementedException();
-        }
-
-        public static double StaticMethodWithDouble(double x)
-        {
-            return StaticMethod(x);
-        }
-
-        public static int StaticMethodWithInt(int x)
-        {
-            return StaticMethod(x);
         }
     }
 }

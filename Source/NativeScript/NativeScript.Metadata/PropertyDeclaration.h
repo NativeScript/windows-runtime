@@ -24,15 +24,18 @@ public:
 
     bool isStatic() const;
 
-    bool isOverridable() const;
+    bool isSealed() const;
 
-    MethodDeclaration getter() const;
+    const MethodDeclaration& getter() const;
 
-    std::unique_ptr<MethodDeclaration> setter() const;
+    const MethodDeclaration* setter() const;
 
 private:
     const Microsoft::WRL::ComPtr<IMetaDataImport2> _metadata;
     const mdProperty _token;
+
+    MethodDeclaration _getter;
+    std::shared_ptr<MethodDeclaration> _setter;
 };
 
 }

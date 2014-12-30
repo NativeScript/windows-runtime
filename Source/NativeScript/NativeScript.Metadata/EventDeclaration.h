@@ -25,17 +25,21 @@ public:
 
     bool isStatic() const;
 
-    bool isOverridable() const;
+    bool isSealed() const;
 
-    std::unique_ptr<DelegateDeclaration> type() const;
+    const DelegateDeclaration* type() const;
 
-    MethodDeclaration addMethod() const;
+    const MethodDeclaration& addMethod() const;
 
-    MethodDeclaration removeMethod() const;
+    const MethodDeclaration& removeMethod() const;
 
 private:
     const Microsoft::WRL::ComPtr<IMetaDataImport2> _metadata;
     const mdEvent _token;
+
+    std::shared_ptr<DelegateDeclaration> _type;
+    MethodDeclaration _addMethod;
+    MethodDeclaration _removeMethod;
 };
 
 }

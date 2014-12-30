@@ -29,7 +29,7 @@ mdTypeDef getContainingClassToken(IMetaDataImport2* metadata, const mdMethodDef 
 //     public extern ActivatableClass([In] object arg1);
 //     public extern ActivatableClass([In] object arg1, [In] object arg2);
 // }
-unique_ptr<InterfaceDeclaration> ClassDeclaration::declaringInterfaceForInstanceInitializer(const MethodDeclaration& instanceInitializer, size_t* outIndex) {
+unique_ptr<const InterfaceDeclaration> ClassDeclaration::declaringInterfaceForInstanceInitializer(const MethodDeclaration& instanceInitializer, size_t* outIndex) {
     size_t initializerArgumentsCount{instanceInitializer.numberOfParameters()};
 
     if (initializerArgumentsCount == 0) {
@@ -133,7 +133,7 @@ unique_ptr<InterfaceDeclaration> ClassDeclaration::declaringInterfaceForInstance
     ASSERT_NOT_REACHED();
 }
 
-unique_ptr<InterfaceDeclaration> ClassDeclaration::declaringInterfaceForMethod(const MethodDeclaration& method, size_t* outIndex) {
+unique_ptr<const InterfaceDeclaration> ClassDeclaration::declaringInterfaceForMethod(const MethodDeclaration& method, size_t* outIndex) {
     ASSERT(outIndex);
 
     if (method.isInitializer()) {

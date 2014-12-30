@@ -1,7 +1,5 @@
 #pragma once
 
-#include <stdint.h>
-
 #include "FieldDeclaration.h"
 
 namespace NativeScript {

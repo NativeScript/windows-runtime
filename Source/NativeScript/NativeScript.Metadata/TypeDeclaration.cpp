@@ -50,7 +50,7 @@ wstring TypeDeclaration::fullName() const {
 
     ASSERT_SUCCESS(_metadata->GetTypeDefProps(_token, fullNameData.data(), fullNameData.size(), &fullNameDataLength, nullptr, nullptr));
 
-    wstring fullName(fullNameData.data(), fullNameDataLength - 1);
+    wstring fullName{fullNameData.data(), fullNameDataLength - 1};
     return fullName;
 }
 

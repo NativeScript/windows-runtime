@@ -9,9 +9,88 @@ using namespace std;
 using namespace Microsoft::WRL::Wrappers;
 using namespace Microsoft::WRL;
 
+namespace {
+
+MethodDeclaration makeAddMethod(IMetaDataImport2* metadata, mdEvent token) {
+    mdMethodDef addMethodToken{mdTokenNil};
+    ASSERT_SUCCESS(metadata->GetEventProps(token, nullptr, nullptr, 0, nullptr, nullptr, nullptr, &addMethodToken, nullptr, nullptr, nullptr, 0, nullptr));
+
+    return MethodDeclaration{metadata, addMethodToken};
+}
+
+MethodDeclaration makeRemoveMethod(IMetaDataImport2* metadata, mdEvent token) {
+    mdMethodDef removeMethodToken{mdTokenNil};
+    ASSERT_SUCCESS(metadata->GetEventProps(token, nullptr, nullptr, 0, nullptr, nullptr, nullptr, nullptr, &removeMethodToken, nullptr, nullptr, 0, nullptr));
+
+    return MethodDeclaration{metadata, removeMethodToken};
+}
+
+shared_ptr<DelegateDeclaration> makeType(IMetaDataImport2* metadata, mdEvent token) {
+    mdToken delegateToken{mdTokenNil};
+
+    ASSERT_SUCCESS(metadata->GetEventProps(token, nullptr, nullptr, 0, nullptr, nullptr, &delegateToken, nullptr, nullptr, nullptr, nullptr, 0, nullptr));
+
+    switch (TypeFromToken(delegateToken)) {
+        case mdtTypeDef: {
+            return make_shared<DelegateDeclaration>(metadata, delegateToken);
+        }
+
+        case mdtTypeRef: {
+            ComPtr<IMetaDataImport2> externalMetadata;
+            mdTypeDef externalDelegateToken{mdTokenNil};
+
+            bool isResolved{resolveTypeRef(metadata, delegateToken, externalMetadata.GetAddressOf(), &externalDelegateToken)};
+            ASSERT(isResolved);
+
+            return make_shared<DelegateDeclaration>(externalMetadata.Get(), externalDelegateToken);
+        }
+
+        case mdtTypeSpec: {
+            PCCOR_SIGNATURE signature{nullptr};
+            ULONG signatureSize{0};
+            ASSERT_SUCCESS(metadata->GetTypeSpecFromToken(delegateToken, &signature, &signatureSize));
+
+            ULONG type1{CorSigUncompressData(signature)};
+            ASSERT(type1 == ELEMENT_TYPE_GENERICINST);
+
+            ULONG type2{CorSigUncompressData(signature)};
+            ASSERT(type2 == ELEMENT_TYPE_CLASS);
+
+            mdToken openGenericDelegateToken{CorSigUncompressToken(signature)};
+            switch (TypeFromToken(openGenericDelegateToken)) {
+                case mdtTypeDef: {
+                    return make_shared<GenericDelegateInstanceDeclaration>(metadata, openGenericDelegateToken, metadata, delegateToken);
+                }
+
+                case mdtTypeRef: {
+                    ComPtr<IMetaDataImport2> externalMetadata;
+                    mdTypeDef externalDelegateToken{mdTokenNil};
+
+                    bool isResolved{resolveTypeRef(metadata, openGenericDelegateToken, externalMetadata.GetAddressOf(), &externalDelegateToken)};
+                    ASSERT(isResolved);
+
+                    return make_shared<GenericDelegateInstanceDeclaration>(externalMetadata.Get(), externalDelegateToken, metadata, delegateToken);
+                }
+
+                default:
+                    ASSERT_NOT_REACHED();
+            }
+        }
+
+        default:
+            ASSERT_NOT_REACHED();
+    }
+}
+
+}
+
+
 EventDeclaration::EventDeclaration(IMetaDataImport2* metadata, mdEvent token)
     : _metadata{metadata}
-    , _token{token} {
+    , _token{token}
+    , _type{makeType(metadata, token)}
+    , _addMethod{makeAddMethod(metadata, token)}
+    , _removeMethod{makeRemoveMethod(metadata, token)} {
 
     ASSERT(metadata);
     ASSERT(TypeFromToken(token) == mdtEvent);
@@ -47,79 +126,20 @@ bool EventDeclaration::isStatic() const {
     return addMethod().isStatic();
 }
 
-bool EventDeclaration::isOverridable() const {
-    return addMethod().isOverridable();
+bool EventDeclaration::isSealed() const {
+    return addMethod().isSealed();
 }
 
-std::unique_ptr<DelegateDeclaration> EventDeclaration::type() const {
-    mdToken delegateToken{mdTokenNil};
-
-    ASSERT_SUCCESS(_metadata->GetEventProps(_token, nullptr, nullptr, 0, nullptr, nullptr, &delegateToken, nullptr, nullptr, nullptr, nullptr, 0, nullptr));
-
-    switch (TypeFromToken(delegateToken)) {
-        case mdtTypeDef: {
-            return make_unique<DelegateDeclaration>(_metadata.Get(), delegateToken);
-        }
-
-        case mdtTypeRef: {
-            ComPtr<IMetaDataImport2> externalMetadata;
-            mdTypeDef externalDelegateToken{mdTokenNil};
-
-            bool isResolved{resolveTypeRef(_metadata.Get(), delegateToken, externalMetadata.GetAddressOf(), &externalDelegateToken)};
-            ASSERT(isResolved);
-
-            return make_unique<DelegateDeclaration>(externalMetadata.Get(), externalDelegateToken);
-        }
-
-        case mdtTypeSpec: {
-            PCCOR_SIGNATURE signature{nullptr};
-            ULONG signatureSize{0};
-            ASSERT_SUCCESS(_metadata->GetTypeSpecFromToken(delegateToken, &signature, &signatureSize));
-
-            ULONG type1{CorSigUncompressData(signature)};
-            ASSERT(type1 == ELEMENT_TYPE_GENERICINST);
-
-            ULONG type2{CorSigUncompressData(signature)};
-            ASSERT(type2 == ELEMENT_TYPE_CLASS);
-
-            mdToken openGenericDelegateToken{CorSigUncompressToken(signature)};
-            switch (TypeFromToken(openGenericDelegateToken)) {
-                case mdtTypeDef: {
-                    return make_unique<GenericDelegateInstanceDeclaration>(_metadata.Get(), openGenericDelegateToken, _metadata.Get(), delegateToken);
-                }
-
-                case mdtTypeRef: {
-                    ComPtr<IMetaDataImport2> externalMetadata;
-                    mdTypeDef externalDelegateToken{mdTokenNil};
-
-                    bool isResolved{resolveTypeRef(_metadata.Get(), openGenericDelegateToken, externalMetadata.GetAddressOf(), &externalDelegateToken)};
-                    ASSERT(isResolved);
-
-                    return make_unique<GenericDelegateInstanceDeclaration>(externalMetadata.Get(), externalDelegateToken, _metadata.Get(), delegateToken);
-                }
-
-                default:
-                    ASSERT_NOT_REACHED();
-            }
-        }
-
-        default:
-            ASSERT_NOT_REACHED();
-    }
+const DelegateDeclaration* EventDeclaration::type() const {
+    return _type.get();
 }
 
-MethodDeclaration EventDeclaration::addMethod() const {
-    mdMethodDef addMethodToken{mdTokenNil};
-    ASSERT_SUCCESS(_metadata->GetEventProps(_token, nullptr, nullptr, 0, nullptr, nullptr, nullptr, &addMethodToken, nullptr, nullptr, nullptr, 0, nullptr));
-
-    return MethodDeclaration{_metadata.Get(), addMethodToken};
+const MethodDeclaration& EventDeclaration::addMethod() const {
+    return _addMethod;
 }
 
-MethodDeclaration EventDeclaration::removeMethod() const {
-    mdMethodDef removeMethodToken{mdTokenNil};
-    ASSERT_SUCCESS(_metadata->GetEventProps(_token, nullptr, nullptr, 0, nullptr, nullptr, nullptr, nullptr, &removeMethodToken, nullptr, nullptr, 0, nullptr));
-
-    return MethodDeclaration{_metadata.Get(), removeMethodToken};
+const MethodDeclaration& EventDeclaration::removeMethod() const {
+    return _removeMethod;
 }
 
 }

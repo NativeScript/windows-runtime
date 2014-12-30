@@ -42,6 +42,10 @@ namespace NativeScript.Tests.Fixtures
 
     public sealed class SingleGenericImplementationClass : IEnumerable<Int32>
     {
+        private SingleGenericImplementationClass()
+        {
+        }
+
         public IEnumerator<int> GetEnumerator()
         {
             throw new NotImplementedException();

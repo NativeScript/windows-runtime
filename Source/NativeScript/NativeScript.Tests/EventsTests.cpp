@@ -44,7 +44,7 @@ public:
         shared_ptr<ClassDeclaration> declaration{dynamic_pointer_cast<ClassDeclaration>(metadataReader.findByName(name))};
 
         const wchar_t* eventName{L"EmptyEvent"};
-        EventDeclaration emptyEvent{*dynamic_cast<EventDeclaration*>(declaration->findMembersWithName(eventName)[0].get())};
+        EventDeclaration emptyEvent{*dynamic_cast<const EventDeclaration*>(declaration->findMembersWithName(eventName)[0].get())};
         Assert::IsTrue(emptyEvent.name() == eventName);
         Assert::IsTrue(emptyEvent.fullName() == eventName);
         Assert::IsTrue(emptyEvent.type()->fullName() == L"NativeScript.Tests.Fixtures.EmptyDelegate");
@@ -59,7 +59,7 @@ public:
         shared_ptr<ClassDeclaration> declaration{dynamic_pointer_cast<ClassDeclaration>(metadataReader.findByName(name))};
 
         const wchar_t* eventName{L"ExternalEvent"};
-        EventDeclaration externalEvent{*dynamic_cast<EventDeclaration*>(declaration->findMembersWithName(eventName)[0].get())};
+        EventDeclaration externalEvent{*dynamic_cast<const EventDeclaration*>(declaration->findMembersWithName(eventName)[0].get())};
         Assert::IsTrue(externalEvent.name() == eventName);
         Assert::IsTrue(externalEvent.fullName() == eventName);
         Assert::IsTrue(externalEvent.type()->fullName() == L"Windows.UI.Xaml.RoutedEventHandler");
@@ -74,7 +74,7 @@ public:
         shared_ptr<ClassDeclaration> declaration{dynamic_pointer_cast<ClassDeclaration>(metadataReader.findByName(name))};
 
         const wchar_t* eventName{L"GenericEvent"};
-        EventDeclaration typedEvent{*dynamic_cast<EventDeclaration*>(declaration->findMembersWithName(eventName)[0].get())};
+        EventDeclaration typedEvent{*dynamic_cast<const EventDeclaration*>(declaration->findMembersWithName(eventName)[0].get())};
         Assert::IsTrue(typedEvent.name() == eventName);
         Assert::IsTrue(typedEvent.fullName() == eventName);
         Assert::IsTrue(typedEvent.type()->fullName() == L"Windows.Foundation.TypedEventHandler`2");
@@ -89,7 +89,7 @@ public:
         shared_ptr<InterfaceDeclaration> declaration{dynamic_pointer_cast<InterfaceDeclaration>(metadataReader.findByName(name))};
 
         const wchar_t* eventName{L"MediaOpened"};
-        EventDeclaration typedEvent{*dynamic_cast<EventDeclaration*>(declaration->findMembersWithName(eventName)[0].get())};
+        EventDeclaration typedEvent{*dynamic_cast<const EventDeclaration*>(declaration->findMembersWithName(eventName)[0].get())};
         Assert::IsTrue(typedEvent.name() == eventName);
         Assert::IsTrue(typedEvent.fullName() == eventName);
         Assert::IsTrue(typedEvent.type()->fullName() == L"Windows.Foundation.TypedEventHandler`2");

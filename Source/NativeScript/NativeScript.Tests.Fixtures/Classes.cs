@@ -11,9 +11,21 @@ namespace NativeScript.Tests.Fixtures
 
     public sealed class SimpleClass
     {
+        public int InstanceProperty
+        {
+            get { throw new NotImplementedException(); }
+            set { throw new NotImplementedException(); }
+        }
+
         public int InstanceReadonlyProperty
         {
             get { throw new NotImplementedException(); }
+        }
+
+        public static int StaticProperty
+        {
+            get { throw new NotImplementedException(); }
+            set { throw new NotImplementedException(); }
         }
 
         public static int StaticReadonlyProperty

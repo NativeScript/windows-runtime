@@ -25,11 +25,11 @@ public:
         IteratorRange<ClassDeclaration::InterfaceIterator> interfaces{declaration->implementedInterfaces()};
         ClassDeclaration::InterfaceIterator it{interfaces.begin()};
 
-        const unique_ptr<InterfaceDeclaration>& implementedInterface1{*it};
+        const unique_ptr<const InterfaceDeclaration>& implementedInterface1{*it};
         Assert::IsTrue(implementedInterface1->fullName() == L"NativeScript.Tests.Fixtures.ISimpleClassClass");
 
         ++it;
-        const unique_ptr<InterfaceDeclaration>& implementedInterface2{*it};
+        const unique_ptr<const InterfaceDeclaration>& implementedInterface2{*it};
         Assert::IsTrue(implementedInterface2->fullName() == L"Windows.Foundation.IStringable");
 
         ++it;
@@ -49,14 +49,14 @@ public:
         Assert::IsTrue(staticMethod.name() == L"StaticMethod");
         Assert::IsTrue(staticMethod.fullName() == L"StaticMethod");
         Assert::IsTrue(staticMethod.isStatic() == true);
-        Assert::IsTrue(staticMethod.isOverridable() == false);
+        Assert::IsTrue(staticMethod.isSealed() == true);
 
         ++it;
         const MethodDeclaration& instanceMethod{*it};
         Assert::IsTrue(instanceMethod.name() == L"InstanceMethod");
         Assert::IsTrue(instanceMethod.fullName() == L"InstanceMethod");
         Assert::IsTrue(instanceMethod.isStatic() == false);
-        Assert::IsTrue(instanceMethod.isOverridable() == false);
+        Assert::IsTrue(instanceMethod.isSealed() == true);
 
         ++it;
         Assert::IsTrue(it == methods.end());
@@ -69,7 +69,7 @@ public:
         shared_ptr<ClassDeclaration> declaration{dynamic_pointer_cast<ClassDeclaration>(metadataReader.findByName(name))};
 
         MethodDeclaration overridableMethod{declaration->findMethodsWithName(L"OnActivated")[0]};
-        Assert::IsTrue(overridableMethod.isOverridable() == true);
+        Assert::IsTrue(overridableMethod.isSealed() == false);
     }
 
     TEST_METHOD(Properties) {
@@ -81,12 +81,30 @@ public:
         IteratorRange<ClassDeclaration::PropertyIterator> properties{declaration->properties()};
         ClassDeclaration::PropertyIterator it{properties.begin()};
 
+        const PropertyDeclaration& staticProperty{*it};
+        Assert::IsTrue(staticProperty.name() == L"StaticProperty");
+        Assert::IsTrue(staticProperty.fullName() == L"StaticProperty");
+        Assert::IsTrue(staticProperty.getter().name() == L"get_StaticProperty");
+        Assert::IsTrue(staticProperty.setter()->name() == L"put_StaticProperty");
+        Assert::IsTrue(staticProperty.isStatic() == true);
+        Assert::IsTrue(staticProperty.isSealed() == true);
+
+        ++it;
         const PropertyDeclaration& staticReadonlyProperty{*it};
         Assert::IsTrue(staticReadonlyProperty.name() == L"StaticReadonlyProperty");
         Assert::IsTrue(staticReadonlyProperty.fullName() == L"StaticReadonlyProperty");
         Assert::IsTrue(staticReadonlyProperty.getter().name() == L"get_StaticReadonlyProperty");
         Assert::IsTrue(staticReadonlyProperty.setter() == nullptr);
         Assert::IsTrue(staticReadonlyProperty.isStatic() == true);
+        Assert::IsTrue(staticReadonlyProperty.isSealed() == true);
+
+        ++it;
+        const PropertyDeclaration& instanceProperty{*it};
+        Assert::IsTrue(instanceProperty.name() == L"InstanceProperty");
+        Assert::IsTrue(instanceProperty.fullName() == L"InstanceProperty");
+        Assert::IsTrue(instanceProperty.getter().name() == L"get_InstanceProperty");
+        Assert::IsTrue(instanceProperty.setter()->name() == L"put_InstanceProperty");
+        Assert::IsTrue(instanceProperty.isStatic() == false);
 
         ++it;
         const PropertyDeclaration& instanceReadonlyProperty{*it};
@@ -110,7 +128,7 @@ public:
         ClassDeclaration::MethodIterator it{initializers.begin()};
         const MethodDeclaration& initializer0{*it};
         size_t index0{0};
-        unique_ptr<InterfaceDeclaration> factory0{ClassDeclaration::declaringInterfaceForMethod(initializer0, &index0)};
+        unique_ptr<const InterfaceDeclaration> factory0{ClassDeclaration::declaringInterfaceForMethod(initializer0, &index0)};
         Assert::IsTrue(initializer0.isInitializer());
         Assert::IsTrue(initializer0.numberOfParameters() == 0);
         Assert::IsTrue(factory0 == nullptr);
@@ -119,19 +137,19 @@ public:
         ++it;
         const MethodDeclaration& initializer1{*it};
         size_t index1{0};
-        unique_ptr<InterfaceDeclaration> factory1{ClassDeclaration::declaringInterfaceForMethod(initializer1, &index1)};
+        unique_ptr<const InterfaceDeclaration> factory1{ClassDeclaration::declaringInterfaceForMethod(initializer1, &index1)};
         Assert::IsTrue(initializer1.isInitializer());
         Assert::IsTrue(initializer1.numberOfParameters() == 1);
-        Assert::IsTrue(factory1->id() == IID{0XE1C8B4D2, 0XCA7C, 0X5558,{0X7B, 0X6C, 0XAB, 0XC7, 0X47, 0XB8, 0X71, 0X3B}});
+        Assert::IsTrue(factory1->id() == IID{0xE1C8B4D2, 0xCA7C, 0x5558,{0x7B, 0x6C, 0xAB, 0xC7, 0x47, 0xB8, 0x71, 0x3B}});
         Assert::IsTrue(index1 == 0);
 
         ++it;
         const MethodDeclaration& initializer2{*it};
         size_t index2{0};
-        unique_ptr<InterfaceDeclaration> factory2{ClassDeclaration::declaringInterfaceForMethod(initializer2, &index2)};
+        unique_ptr<const InterfaceDeclaration> factory2{ClassDeclaration::declaringInterfaceForMethod(initializer2, &index2)};
         Assert::IsTrue(initializer2.isInitializer());
         Assert::IsTrue(initializer2.numberOfParameters() == 2);
-        Assert::IsTrue(factory2->id() == IID{0XE1C8B4D2, 0XCA7C, 0X5558,{0X7B, 0X6C, 0XAB, 0XC7, 0X47, 0XB8, 0X71, 0X3B}});
+        Assert::IsTrue(factory2->id() == IID{0xE1C8B4D2, 0xCA7C, 0x5558,{0x7B, 0x6C, 0xAB, 0xC7, 0x47, 0xB8, 0x71, 0x3B}});
         Assert::IsTrue(index2 == 1);
 
         ++it;

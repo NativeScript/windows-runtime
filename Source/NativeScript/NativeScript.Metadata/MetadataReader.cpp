@@ -46,20 +46,11 @@ shared_ptr<Declaration> MetadataReader::findByName(const wchar_t* fullName) cons
 
     if (FAILED(getMetadataFileResult)) {
         if (getMetadataFileResult == RO_E_METADATA_NAME_IS_NAMESPACE) {
-            // TODO
-            // RoResolveNamespace gives incomplete results.
-            // The search for the "Windows" namespace on Windows Phone 8.1 fails both on a device and on an emulator with corrupted metadata error.
-
             return make_shared<NamespaceDeclaration>(fullName);
         }
 
-        if (equalToAny(getMetadataFileResult, E_INVALIDARG, RO_E_METADATA_INVALID_TYPE_FORMAT, RO_E_METADATA_NAME_NOT_FOUND, RO_E_INVALID_METADATA_FILE)) {
-            // TODO: Check generics by appending `1, `2 ...
-            return nullptr;
-        }
+        return nullptr;
     }
-
-    ASSERT_SUCCESS(getMetadataFileResult);
 
     DWORD flags{0};
     mdToken parentToken{mdTokenNil};
