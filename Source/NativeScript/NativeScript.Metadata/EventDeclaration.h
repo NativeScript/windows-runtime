@@ -27,7 +27,7 @@ public:
 
     bool isOverridable() const;
 
-    DelegateDeclaration type() const;
+    std::unique_ptr<DelegateDeclaration> type() const;
 
     MethodDeclaration addMethod() const;
 

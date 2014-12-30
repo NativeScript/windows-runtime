@@ -51,14 +51,14 @@ bool EventDeclaration::isOverridable() const {
     return addMethod().isOverridable();
 }
 
-DelegateDeclaration EventDeclaration::type() const {
+std::unique_ptr<DelegateDeclaration> EventDeclaration::type() const {
     mdToken delegateToken{mdTokenNil};
 
     ASSERT_SUCCESS(_metadata->GetEventProps(_token, nullptr, nullptr, 0, nullptr, nullptr, &delegateToken, nullptr, nullptr, nullptr, nullptr, 0, nullptr));
 
     switch (TypeFromToken(delegateToken)) {
         case mdtTypeDef: {
-            return DelegateDeclaration(_metadata.Get(), delegateToken);
+            return make_unique<DelegateDeclaration>(_metadata.Get(), delegateToken);
         }
 
         case mdtTypeRef: {
@@ -68,7 +68,7 @@ DelegateDeclaration EventDeclaration::type() const {
             bool isResolved{resolveTypeRef(_metadata.Get(), delegateToken, externalMetadata.GetAddressOf(), &externalDelegateToken)};
             ASSERT(isResolved);
 
-            return DelegateDeclaration(externalMetadata.Get(), externalDelegateToken);
+            return make_unique<DelegateDeclaration>(externalMetadata.Get(), externalDelegateToken);
         }
 
         case mdtTypeSpec: {
@@ -85,7 +85,7 @@ DelegateDeclaration EventDeclaration::type() const {
             mdToken openGenericDelegateToken{CorSigUncompressToken(signature)};
             switch (TypeFromToken(openGenericDelegateToken)) {
                 case mdtTypeDef: {
-                    return DelegateDeclaration(_metadata.Get(), openGenericDelegateToken);
+                    return make_unique<GenericDelegateInstanceDeclaration>(_metadata.Get(), openGenericDelegateToken, _metadata.Get(), delegateToken);
                 }
 
                 case mdtTypeRef: {
@@ -95,7 +95,7 @@ DelegateDeclaration EventDeclaration::type() const {
                     bool isResolved{resolveTypeRef(_metadata.Get(), openGenericDelegateToken, externalMetadata.GetAddressOf(), &externalDelegateToken)};
                     ASSERT(isResolved);
 
-                    return DelegateDeclaration(externalMetadata.Get(), externalDelegateToken);
+                    return make_unique<GenericDelegateInstanceDeclaration>(externalMetadata.Get(), externalDelegateToken, _metadata.Get(), delegateToken);
                 }
 
                 default:

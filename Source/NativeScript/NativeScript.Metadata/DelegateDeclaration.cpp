@@ -32,8 +32,26 @@ IteratorRange<DelegateDeclaration::ParameterIterator> DelegateDeclaration::param
     return _invokeMethod.parameters();
 }
 
-size_t DelegateDeclaration::numberOfParameters() const {
-    return _invokeMethod.numberOfParameters();
+GenericDelegateInstanceDeclaration::GenericDelegateInstanceDeclaration(IMetaDataImport2* openMetadata, mdTypeDef openToken, IMetaDataImport2* closedMetadata, mdTypeSpec closedToken)
+    : Base(openMetadata, openToken)
+    , _closedMetadata{closedMetadata}
+    , _closedToken{_closedToken} {
+
+    ASSERT(closedMetadata);
+    ASSERT(TypeFromToken(closedToken) == mdtTypeSpec);
+    ASSERT(closedToken != mdTypeSpecNil);
+}
+
+CLSID GenericDelegateInstanceDeclaration::id() const {
+    // TODO: RoGetParameterizedTypeInstanceIID
+
+    NOT_IMPLEMENTED();
+}
+
+IteratorRange<DelegateDeclaration::ParameterIterator> GenericDelegateInstanceDeclaration::parameters() const {
+    // TODO
+
+    return Base::parameters();
 }
 
 }

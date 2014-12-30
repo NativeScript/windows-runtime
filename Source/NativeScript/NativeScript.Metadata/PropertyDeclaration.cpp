@@ -57,7 +57,7 @@ bool PropertyDeclaration::isOverridable() const {
     if (unique_ptr<MethodDeclaration> method{getter()}) {
         return method->isOverridable();
     }
-    
+
     if (unique_ptr<MethodDeclaration> method{setter()}) {
         return method->isOverridable();
     }

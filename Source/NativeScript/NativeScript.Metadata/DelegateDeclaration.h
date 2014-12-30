@@ -8,7 +8,7 @@
 namespace NativeScript {
 namespace Metadata {
 
-class DelegateDeclaration final : public TypeDeclaration {
+class DelegateDeclaration : public TypeDeclaration {
 public:
     typedef TypeDeclaration Base;
 
@@ -16,14 +16,27 @@ public:
 
     explicit DelegateDeclaration(IMetaDataImport2*, mdTypeDef);
 
-    CLSID id() const;
+    virtual CLSID id() const;
 
-    IteratorRange<ParameterIterator> parameters() const;
-
-    size_t numberOfParameters() const;
+    virtual IteratorRange<ParameterIterator> parameters() const;
 
 private:
     MethodDeclaration _invokeMethod;
+};
+
+class GenericDelegateInstanceDeclaration final : public DelegateDeclaration {
+public:
+    typedef DelegateDeclaration Base;
+
+    explicit GenericDelegateInstanceDeclaration(IMetaDataImport2*, mdTypeDef, IMetaDataImport2*, mdTypeSpec);
+
+    virtual CLSID id() const override;
+
+    virtual IteratorRange<ParameterIterator> parameters() const override;
+
+private:
+    const Microsoft::WRL::ComPtr<IMetaDataImport2> _closedMetadata;
+    mdTypeSpec _closedToken;
 };
 
 }
