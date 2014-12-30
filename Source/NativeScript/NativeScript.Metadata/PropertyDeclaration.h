@@ -26,7 +26,7 @@ public:
 
     bool isOverridable() const;
 
-    std::unique_ptr<MethodDeclaration> getter() const;
+    MethodDeclaration getter() const;
 
     std::unique_ptr<MethodDeclaration> setter() const;
 

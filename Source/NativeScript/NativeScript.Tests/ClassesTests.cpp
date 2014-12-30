@@ -84,7 +84,7 @@ public:
         const PropertyDeclaration& staticReadonlyProperty{*it};
         Assert::IsTrue(staticReadonlyProperty.name() == L"StaticReadonlyProperty");
         Assert::IsTrue(staticReadonlyProperty.fullName() == L"StaticReadonlyProperty");
-        Assert::IsTrue(staticReadonlyProperty.getter()->name() == L"get_StaticReadonlyProperty");
+        Assert::IsTrue(staticReadonlyProperty.getter().name() == L"get_StaticReadonlyProperty");
         Assert::IsTrue(staticReadonlyProperty.setter() == nullptr);
         Assert::IsTrue(staticReadonlyProperty.isStatic() == true);
 
@@ -92,7 +92,7 @@ public:
         const PropertyDeclaration& instanceReadonlyProperty{*it};
         Assert::IsTrue(instanceReadonlyProperty.name() == L"InstanceReadonlyProperty");
         Assert::IsTrue(instanceReadonlyProperty.fullName() == L"InstanceReadonlyProperty");
-        Assert::IsTrue(instanceReadonlyProperty.getter()->name() == L"get_InstanceReadonlyProperty");
+        Assert::IsTrue(instanceReadonlyProperty.getter().name() == L"get_InstanceReadonlyProperty");
         Assert::IsTrue(instanceReadonlyProperty.setter() == nullptr);
         Assert::IsTrue(instanceReadonlyProperty.isStatic() == false);
 

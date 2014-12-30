@@ -54,27 +54,17 @@ bool PropertyDeclaration::isStatic() const {
 }
 
 bool PropertyDeclaration::isOverridable() const {
-    if (unique_ptr<MethodDeclaration> method{getter()}) {
-        return method->isOverridable();
-    }
-
-    if (unique_ptr<MethodDeclaration> method{setter()}) {
-        return method->isOverridable();
-    }
-
-    ASSERT_NOT_REACHED();
+    return getter().isOverridable();
 }
 
-unique_ptr<MethodDeclaration> PropertyDeclaration::getter() const {
+MethodDeclaration PropertyDeclaration::getter() const {
     mdMethodDef getterToken{mdTokenNil};
 
     ASSERT_SUCCESS(_metadata->GetPropertyProps(_token, nullptr, nullptr, 0, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, &getterToken, nullptr, 0, nullptr));
 
-    if (getterToken == mdMethodDefNil) {
-        return nullptr;
-    }
+    ASSERT(getterToken != mdMethodDefNil);
 
-    return make_unique<MethodDeclaration>(_metadata.Get(), getterToken);
+    return MethodDeclaration{_metadata.Get(), getterToken};
 }
 
 unique_ptr<MethodDeclaration> PropertyDeclaration::setter() const {
