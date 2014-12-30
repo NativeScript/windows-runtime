@@ -13,7 +13,7 @@ public:
 
     explicit StructFieldDeclaration(IMetaDataImport2*, mdFieldDef);
 
-    PCCOR_SIGNATURE signature() const;
+    CorElementType type() const;
 };
 
 }

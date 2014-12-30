@@ -38,6 +38,8 @@ public:
 
     explicit EnumDeclaration(IMetaDataImport2*, mdTypeDef);
 
+    CorElementType type() const;
+
     size_t size() const;
 
     MemberIterator begin() const;

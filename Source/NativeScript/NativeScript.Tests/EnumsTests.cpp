@@ -53,6 +53,8 @@ public:
         const wchar_t* name{L"NativeScript.Tests.Fixtures.Int32Enum"};
         shared_ptr<EnumDeclaration> declaration{dynamic_pointer_cast<EnumDeclaration>(metadataReader.findByName(name))};
 
+        Assert::IsTrue(declaration->type() == ELEMENT_TYPE_I4);
+
         EnumDeclaration::MemberIterator it{declaration->begin()};
         const EnumMemberDeclaration& member1{*it};
         Assert::IsTrue(member1.value() == INT32_MIN);
@@ -72,6 +74,8 @@ public:
 
         const wchar_t* name{L"NativeScript.Tests.Fixtures.UInt32Enum"};
         shared_ptr<EnumDeclaration> declaration{dynamic_pointer_cast<EnumDeclaration>(metadataReader.findByName(name))};
+
+        Assert::IsTrue(declaration->type() == ELEMENT_TYPE_U4);
 
         EnumDeclaration::MemberIterator it{declaration->begin()};
         const EnumMemberDeclaration& member1{*it};
