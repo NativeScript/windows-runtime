@@ -3,7 +3,7 @@
 #include <vector>
 
 #include "TypeDeclaration.h"
-#include "FieldDeclaration.h"
+#include "StructFieldDeclaration.h"
 #include "IteratorRange.h"
 
 namespace NativeScript {
@@ -13,7 +13,7 @@ class StructDeclaration final : public TypeDeclaration {
 public:
     typedef TypeDeclaration Base;
 
-    using FieldIterator = std::vector<const FieldDeclaration>::const_iterator;
+    using FieldIterator = std::vector<const StructFieldDeclaration>::const_iterator;
 
     explicit StructDeclaration(IMetaDataImport2*, mdTypeDef);
 
@@ -23,7 +23,7 @@ public:
     FieldIterator end() const;
 
 private:
-    std::vector<FieldDeclaration> _fields;
+    std::vector<StructFieldDeclaration> _fields;
 };
 
 }

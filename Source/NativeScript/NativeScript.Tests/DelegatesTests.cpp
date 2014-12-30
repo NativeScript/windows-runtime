@@ -27,12 +27,12 @@ public:
         IteratorRange<DelegateDeclaration::ParameterIterator> parameters{declaration->parameters()};
 
         DelegateDeclaration::ParameterIterator it{parameters.begin()};
-        ParameterDeclaration inParameter{*it};
+        const ParameterDeclaration& inParameter{*it};
         Assert::IsTrue(inParameter.name() == L"inParameter");
         Assert::IsTrue(inParameter.isOut() == false);
 
         ++it;
-        ParameterDeclaration outParameter{*it};
+        const ParameterDeclaration& outParameter{*it};
         Assert::IsTrue(outParameter.name() == L"outParameter");
         Assert::IsTrue(outParameter.isOut() == true);
 
@@ -52,11 +52,11 @@ public:
         IteratorRange<DelegateDeclaration::ParameterIterator> parameters{declaration->parameters()};
 
         DelegateDeclaration::ParameterIterator it{parameters.begin()};
-        ParameterDeclaration inParameter{*it};
+        const ParameterDeclaration& inParameter{*it};
         Assert::IsTrue(inParameter.name() == L"sender");
 
         ++it;
-        ParameterDeclaration outParameter{*it};
+        const ParameterDeclaration& outParameter{*it};
         Assert::IsTrue(outParameter.name() == L"args");
 
         ++it;

@@ -14,22 +14,22 @@ public:
         IteratorRange<ClassDeclaration::EventIterator> events{declaration->events()};
 
         ClassDeclaration::EventIterator it{events.begin()};
-        EventDeclaration staticEvent{*it};
+        const EventDeclaration& staticEvent{*it};
         Assert::IsTrue(staticEvent.name() == L"StaticEvent");
         Assert::IsTrue(staticEvent.isStatic() == true);
 
         ++it;
-        EventDeclaration emptyEvent{*it};
+        const EventDeclaration& emptyEvent{*it};
         Assert::IsTrue(emptyEvent.name() == L"EmptyEvent");
         Assert::IsTrue(emptyEvent.isStatic() == false);
 
         ++it;
-        EventDeclaration externalEvent{*it};
+        const EventDeclaration& externalEvent{*it};
         Assert::IsTrue(externalEvent.name() == L"ExternalEvent");
         Assert::IsTrue(externalEvent.isStatic() == false);
 
         ++it;
-        EventDeclaration typedEvent{*it};
+        const EventDeclaration& typedEvent{*it};
         Assert::IsTrue(typedEvent.name() == L"GenericEvent");
         Assert::IsTrue(typedEvent.isStatic() == false);
 

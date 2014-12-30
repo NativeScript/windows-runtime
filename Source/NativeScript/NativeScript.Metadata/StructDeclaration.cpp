@@ -10,7 +10,7 @@ using namespace Microsoft::WRL;
 // TODO
 namespace {
 
-vector<FieldDeclaration> makeFieldDeclarations(IMetaDataImport2* metadata, mdTypeDef token) {
+vector<StructFieldDeclaration> makeFieldDeclarations(IMetaDataImport2* metadata, mdTypeDef token) {
     HCORENUM enumerator{nullptr};
     ULONG count{0};
     array<mdFieldDef, 1024> tokens;
@@ -19,7 +19,7 @@ vector<FieldDeclaration> makeFieldDeclarations(IMetaDataImport2* metadata, mdTyp
     ASSERT(count < tokens.size() - 1);
     metadata->CloseEnum(enumerator);
 
-    vector<FieldDeclaration> result;
+    vector<StructFieldDeclaration> result;
     for (size_t i = 0; i < count; ++i) {
         result.emplace_back(metadata, tokens[i]);
     }

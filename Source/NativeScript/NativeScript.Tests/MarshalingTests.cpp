@@ -14,13 +14,13 @@ public:
         IteratorRange<MethodDeclaration::ParameterIterator> parameters{method.parameters()};
 
         MethodDeclaration::ParameterIterator it{parameters.begin()};
-        ParameterDeclaration inParameter{*it};
+        const ParameterDeclaration& inParameter{*it};
         Assert::IsTrue(inParameter.name() == L"inParameter");
         Assert::IsTrue(inParameter.fullName() == L"inParameter");
         Assert::IsTrue(inParameter.isOut() == false);
 
         ++it;
-        ParameterDeclaration outParameter{*it};
+        const ParameterDeclaration& outParameter{*it};
         Assert::IsTrue(outParameter.name() == L"outParameter");
         Assert::IsTrue(outParameter.fullName() == L"outParameter");
         Assert::IsTrue(outParameter.isOut() == true);

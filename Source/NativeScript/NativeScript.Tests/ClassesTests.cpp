@@ -45,14 +45,14 @@ public:
         IteratorRange<ClassDeclaration::MethodIterator> methods{declaration->methods()};
         ClassDeclaration::MethodIterator it{methods.begin()};
 
-        MethodDeclaration staticMethod{*it};
+        const MethodDeclaration& staticMethod{*it};
         Assert::IsTrue(staticMethod.name() == L"StaticMethod");
         Assert::IsTrue(staticMethod.fullName() == L"StaticMethod");
         Assert::IsTrue(staticMethod.isStatic() == true);
         Assert::IsTrue(staticMethod.isOverridable() == false);
 
         ++it;
-        MethodDeclaration instanceMethod{*it};
+        const MethodDeclaration& instanceMethod{*it};
         Assert::IsTrue(instanceMethod.name() == L"InstanceMethod");
         Assert::IsTrue(instanceMethod.fullName() == L"InstanceMethod");
         Assert::IsTrue(instanceMethod.isStatic() == false);
@@ -81,7 +81,7 @@ public:
         IteratorRange<ClassDeclaration::PropertyIterator> properties{declaration->properties()};
         ClassDeclaration::PropertyIterator it{properties.begin()};
 
-        PropertyDeclaration staticReadonlyProperty{*it};
+        const PropertyDeclaration& staticReadonlyProperty{*it};
         Assert::IsTrue(staticReadonlyProperty.name() == L"StaticReadonlyProperty");
         Assert::IsTrue(staticReadonlyProperty.fullName() == L"StaticReadonlyProperty");
         Assert::IsTrue(staticReadonlyProperty.getter()->name() == L"get_StaticReadonlyProperty");
@@ -89,7 +89,7 @@ public:
         Assert::IsTrue(staticReadonlyProperty.isStatic() == true);
 
         ++it;
-        PropertyDeclaration instanceReadonlyProperty{*it};
+        const PropertyDeclaration& instanceReadonlyProperty{*it};
         Assert::IsTrue(instanceReadonlyProperty.name() == L"InstanceReadonlyProperty");
         Assert::IsTrue(instanceReadonlyProperty.fullName() == L"InstanceReadonlyProperty");
         Assert::IsTrue(instanceReadonlyProperty.getter()->name() == L"get_InstanceReadonlyProperty");
@@ -108,7 +108,7 @@ public:
         IteratorRange<ClassDeclaration::MethodIterator> initializers{activatableClass->initializers()};
 
         ClassDeclaration::MethodIterator it{initializers.begin()};
-        MethodDeclaration initializer0{*it};
+        const MethodDeclaration& initializer0{*it};
         size_t index0{0};
         unique_ptr<InterfaceDeclaration> factory0{ClassDeclaration::declaringInterfaceForMethod(initializer0, &index0)};
         Assert::IsTrue(initializer0.isInitializer());
@@ -117,7 +117,7 @@ public:
         Assert::IsTrue(index0 == SIZE_T_MAX);
 
         ++it;
-        MethodDeclaration initializer1{*it};
+        const MethodDeclaration& initializer1{*it};
         size_t index1{0};
         unique_ptr<InterfaceDeclaration> factory1{ClassDeclaration::declaringInterfaceForMethod(initializer1, &index1)};
         Assert::IsTrue(initializer1.isInitializer());
@@ -126,7 +126,7 @@ public:
         Assert::IsTrue(index1 == 0);
 
         ++it;
-        MethodDeclaration initializer2{*it};
+        const MethodDeclaration& initializer2{*it};
         size_t index2{0};
         unique_ptr<InterfaceDeclaration> factory2{ClassDeclaration::declaringInterfaceForMethod(initializer2, &index2)};
         Assert::IsTrue(initializer2.isInitializer());

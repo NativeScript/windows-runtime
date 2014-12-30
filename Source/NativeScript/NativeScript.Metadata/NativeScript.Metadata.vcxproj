@@ -141,6 +141,7 @@
     <ClInclude Include="InterfaceDeclaration.h" />
     <ClInclude Include="IteratorRange.h" />
     <ClInclude Include="ParameterDeclaration.h" />
+    <ClInclude Include="StructFieldDeclaration.h" />
     <ClInclude Include="TypeDeclaration.h" />
     <ClInclude Include="MetadataReader.h" />
     <ClInclude Include="MethodDeclaration.h" />
@@ -161,6 +162,7 @@
     <ClCompile Include="FieldDeclaration.cpp" />
     <ClCompile Include="InterfaceDeclaration.cpp" />
     <ClCompile Include="ParameterDeclaration.cpp" />
+    <ClCompile Include="StructFieldDeclaration.cpp" />
     <ClCompile Include="TypeDeclaration.cpp" />
     <ClCompile Include="MetadataReader.cpp" />
     <ClCompile Include="MethodDeclaration.cpp" />
