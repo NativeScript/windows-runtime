@@ -34,6 +34,9 @@ public:
 
     bool isSealed() const;
 
+    // TODO: Split the signature and add it's elements to the ParameterDeclarations
+    PCCOR_SIGNATURE signature() const;
+
     IteratorRange<ParameterIterator> parameters() const;
 
     size_t numberOfParameters() const;

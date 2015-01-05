@@ -84,6 +84,15 @@ bool MethodDeclaration::isSealed() const {
     return IsMdStatic(methodFlags) || IsMdFinal(methodFlags);
 }
 
+PCCOR_SIGNATURE MethodDeclaration::signature() const {
+    PCCOR_SIGNATURE signature{nullptr};
+    ULONG signatureSize{0};
+
+    ASSERT_SUCCESS(_metadata->GetMethodProps(_token, nullptr, nullptr, 0, nullptr, nullptr, &signature, &signatureSize, nullptr, nullptr));
+
+    return signature;
+}
+
 wstring MethodDeclaration::name() const {
     return fullName();
 }
