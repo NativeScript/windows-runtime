@@ -86,9 +86,9 @@ namespace NativeScript.Tests.Fixtures
         }
     }
 
-    public sealed class StaticsClass
+    public sealed class StaticMethodsClass
     {
-        private StaticsClass()
+        private StaticMethodsClass()
         {
         }
 
@@ -119,6 +119,54 @@ namespace NativeScript.Tests.Fixtures
         public static void StaticMethod(object arg1, object arg2, object arg3)
         {
             throw new NotImplementedException();
+        }
+    }
+
+    public sealed class InstanceMethodsClass : Windows.ApplicationModel.Appointments.IAppointmentParticipant
+    {
+        private InstanceMethodsClass()
+        {
+        }
+
+        [Version(1)]
+        public void InstanceMethod()
+        {
+            throw new NotImplementedException();
+        }
+
+        [Version(1)]
+        public void InstanceMethod(object arg1)
+        {
+            throw new NotImplementedException();
+        }
+
+        [Version(2)]
+        public void InstanceMethod(object arg1, object arg2)
+        {
+            throw new NotImplementedException();
+        }
+
+        [Version(2)]
+        public void InstanceMethod(object arg1, object arg2, object arg3)
+        {
+            throw new NotImplementedException();
+        }
+
+        public override string ToString()
+        {
+            return base.ToString();
+        }
+
+        public string Address
+        {
+            get { throw new NotImplementedException(); }
+            set { throw new NotImplementedException(); }
+        }
+
+        public string DisplayName
+        {
+            get { throw new NotImplementedException(); }
+            set { throw new NotImplementedException(); }
         }
     }
 }

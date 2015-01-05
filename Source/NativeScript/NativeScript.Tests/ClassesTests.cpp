@@ -121,9 +121,9 @@ public:
     TEST_METHOD(Initializers) {
         MetadataReader metadataReader;
 
-        shared_ptr<ClassDeclaration> activatableClass{dynamic_pointer_cast<ClassDeclaration>(metadataReader.findByName(L"NativeScript.Tests.Fixtures.ActivatableClass"))};
+        shared_ptr<ClassDeclaration> declaration{dynamic_pointer_cast<ClassDeclaration>(metadataReader.findByName(L"NativeScript.Tests.Fixtures.ActivatableClass"))};
 
-        IteratorRange<ClassDeclaration::MethodIterator> initializers{activatableClass->initializers()};
+        IteratorRange<ClassDeclaration::MethodIterator> initializers{declaration->initializers()};
 
         ClassDeclaration::MethodIterator it{initializers.begin()};
         const MethodDeclaration& initializer0{*it};
@@ -180,23 +180,23 @@ public:
     TEST_METHOD(StaticMethods) {
         MetadataReader metadataReader;
 
-        shared_ptr<ClassDeclaration> staticsClass{dynamic_pointer_cast<ClassDeclaration>(metadataReader.findByName(L"NativeScript.Tests.Fixtures.StaticsClass"))};
+        shared_ptr<ClassDeclaration> declaration{dynamic_pointer_cast<ClassDeclaration>(metadataReader.findByName(L"NativeScript.Tests.Fixtures.StaticMethodsClass"))};
 
-        MethodDeclaration complexStaticMethod{staticsClass->findMethodsWithName(L"ComplexStaticMethod")[0]};
+        MethodDeclaration complexStaticMethod{declaration->findMethodsWithName(L"ComplexStaticMethod")[0]};
         Assert::IsTrue(complexStaticMethod.numberOfParameters() == 9);
         size_t complexStaticMethodIndex{0};
         unique_ptr<const InterfaceDeclaration> complexStaticMethodIndexInterface{findDeclaringInterfaceForMethod(complexStaticMethod, &complexStaticMethodIndex)};
-        Assert::IsTrue(complexStaticMethodIndexInterface->id() == IID{0xFDCF55FD, 0x290E, 0x5B51, {0x77, 0x15, 0xCC, 0xC0, 0xCD, 0x80, 0xF2, 0x82}});
+        Assert::IsTrue(complexStaticMethodIndexInterface->id() == IID{0x05209319, 0xECCD, 0x5E67,{0x4D, 0xF4, 0x75, 0xE5, 0x19, 0xEE, 0xE5, 0xC3}});
         Assert::IsTrue(complexStaticMethodIndex == 0);
 
-        vector<const MethodDeclaration> methods{staticsClass->findMethodsWithName(L"StaticMethod")};
+        vector<const MethodDeclaration> methods{declaration->findMethodsWithName(L"StaticMethod")};
 
         ClassDeclaration::MethodIterator it{methods.begin()};
         const MethodDeclaration& method0{*it};
         Assert::IsTrue(method0.numberOfParameters() == 0);
         size_t index0{0};
         unique_ptr<const InterfaceDeclaration> methodInterface0{findDeclaringInterfaceForMethod(method0, &index0)};
-        Assert::IsTrue(methodInterface0->id() == IID{0xD688AD90, 0xBE54, 0x511F,{0x49, 0xDA, 0x4C, 0xD6, 0x0E, 0xAA, 0xE0, 0xE6}});
+        Assert::IsTrue(methodInterface0->id() == IID{0xAF5D09E3, 0x5FD6, 0x5D13,{0x71, 0x49, 0xEA, 0x97, 0x11, 0x36, 0xE9, 0x12}});
         Assert::IsTrue(index0 == 0);
 
         ++it;
@@ -204,7 +204,7 @@ public:
         Assert::IsTrue(method1.numberOfParameters() == 1);
         size_t index1{0};
         unique_ptr<const InterfaceDeclaration> methodInterface1{findDeclaringInterfaceForMethod(method1, &index1)};
-        Assert::IsTrue(methodInterface1->id() == IID{0xD688AD90, 0xBE54, 0x511F,{0x49, 0xDA, 0x4C, 0xD6, 0x0E, 0xAA, 0xE0, 0xE6}});
+        Assert::IsTrue(methodInterface1->id() == IID{0xAF5D09E3, 0x5FD6, 0x5D13,{0x71, 0x49, 0xEA, 0x97, 0x11, 0x36, 0xE9, 0x12}});
         Assert::IsTrue(index1 == 1);
 
         ++it;
@@ -212,7 +212,7 @@ public:
         Assert::IsTrue(method2.numberOfParameters() == 2);
         size_t index2{0};
         unique_ptr<const InterfaceDeclaration> methodInterface2{findDeclaringInterfaceForMethod(method2, &index2)};
-        Assert::IsTrue(methodInterface2->id() == IID{0xD0DD03A8, 0x5BBF, 0x521B,{0x61, 0xEA, 0x98, 0xE9, 0x48, 0xD2, 0x29, 0x75}});
+        Assert::IsTrue(methodInterface2->id() == IID{0x1BEA6667, 0x4A41, 0x539C,{0x57, 0xE7, 0xB8, 0x59, 0xA3, 0x13, 0xD5, 0x84}});
         Assert::IsTrue(index2 == 0);
 
         ++it;
@@ -220,11 +220,115 @@ public:
         Assert::IsTrue(method3.numberOfParameters() == 3);
         size_t index3{0};
         unique_ptr<const InterfaceDeclaration> methodInterface3{findDeclaringInterfaceForMethod(method3, &index3)};
-        Assert::IsTrue(methodInterface3->id() == IID{0xD0DD03A8, 0x5BBF, 0x521B,{0x61, 0xEA, 0x98, 0xE9, 0x48, 0xD2, 0x29, 0x75}});
+        Assert::IsTrue(methodInterface3->id() == IID{0x1BEA6667, 0x4A41, 0x539C,{0x57, 0xE7, 0xB8, 0x59, 0xA3, 0x13, 0xD5, 0x84}});
         Assert::IsTrue(index3 == 1);
 
         ++it;
         Assert::IsTrue(it == methods.end());
+    }
+
+    TEST_METHOD(InstanceMethods) {
+        MetadataReader metadataReader;
+
+        shared_ptr<ClassDeclaration> declaration{dynamic_pointer_cast<ClassDeclaration>(metadataReader.findByName(L"NativeScript.Tests.Fixtures.InstanceMethodsClass"))};
+
+        PropertyDeclaration property{*dynamic_cast<const PropertyDeclaration*>(declaration->findMembersWithName(L"Address")[0].get())};
+        size_t setterIndex{0};
+        unique_ptr<const InterfaceDeclaration> toStringInterface{findDeclaringInterfaceForMethod(*property.setter(), &setterIndex)};
+        Assert::IsTrue(toStringInterface->fullName() == L"Windows.ApplicationModel.Appointments.IAppointmentParticipant");
+        Assert::IsTrue(setterIndex == 3);
+
+        vector<const MethodDeclaration> methods{declaration->findMethodsWithName(L"InstanceMethod")};
+
+        ClassDeclaration::MethodIterator it{methods.begin()};
+        const MethodDeclaration& method0{*it};
+        Assert::IsTrue(method0.numberOfParameters() == 0);
+        size_t index0{0};
+        unique_ptr<const InterfaceDeclaration> methodInterface0{findDeclaringInterfaceForMethod(method0, &index0)};
+        Assert::IsTrue(methodInterface0->id() == IID{0x63C1D01E, 0x7401, 0x5109,{0x75, 0x73, 0x9A, 0xB3, 0x57, 0x1F, 0x0E, 0x9A}});
+        Assert::IsTrue(index0 == 0);
+
+        ++it;
+        const MethodDeclaration& method1{*it};
+        Assert::IsTrue(method1.numberOfParameters() == 1);
+        size_t index1{0};
+        unique_ptr<const InterfaceDeclaration> methodInterface1{findDeclaringInterfaceForMethod(method1, &index1)};
+        Assert::IsTrue(methodInterface1->id() == IID{0x63C1D01E, 0x7401, 0x5109,{0x75, 0x73, 0x9A, 0xB3, 0x57, 0x1F, 0x0E, 0x9A}});
+        Assert::IsTrue(index1 == 1);
+
+        ++it;
+        const MethodDeclaration& method2{*it};
+        Assert::IsTrue(method2.numberOfParameters() == 2);
+        size_t index2{0};
+        unique_ptr<const InterfaceDeclaration> methodInterface2{findDeclaringInterfaceForMethod(method2, &index2)};
+        Assert::IsTrue(methodInterface2->id() == IID{0xA5E2A612, 0xEF81, 0x5DBE,{0x4D, 0x3E, 0xE7, 0xE3, 0x2D, 0x66, 0xB4, 0xA5}});
+        Assert::IsTrue(index2 == 0);
+
+        ++it;
+        const MethodDeclaration& method3{*it};
+        Assert::IsTrue(method3.numberOfParameters() == 3);
+        size_t index3{0};
+        unique_ptr<const InterfaceDeclaration> methodInterface3{findDeclaringInterfaceForMethod(method3, &index3)};
+        Assert::IsTrue(methodInterface3->id() == IID{0xA5E2A612, 0xEF81, 0x5DBE,{0x4D, 0x3E, 0xE7, 0xE3, 0x2D, 0x66, 0xB4, 0xA5}});
+        Assert::IsTrue(index3 == 1);
+
+        ++it;
+        Assert::IsTrue(it == methods.end());
+    }
+
+    TEST_METHOD(GenericMethodImplementation1) {
+        MetadataReader metadataReader;
+
+        shared_ptr<ClassDeclaration> declaration{dynamic_pointer_cast<ClassDeclaration>(metadataReader.findByName(L"NativeScript.Tests.Fixtures.DoubleGenericImplementationClass"))};
+
+        MethodDeclaration method1{declaration->findMethodsWithName(L"Windows.Foundation.Collections.IIterable`1<Int16>.First")[0]};
+        size_t index1{0};
+        unique_ptr<const InterfaceDeclaration> methodInterface1{findDeclaringInterfaceForMethod(method1, &index1)};
+        Assert::IsTrue(methodInterface1->fullName() == L"Windows.Foundation.Collections.IIterable`1");
+        Assert::IsTrue(index1 == 0);
+
+        MethodDeclaration method2{declaration->findMethodsWithName(L"Windows.Foundation.Collections.IIterable`1<Int32>.First")[0]};
+        size_t index2{0};
+        unique_ptr<const InterfaceDeclaration> methodInterface2{findDeclaringInterfaceForMethod(method2, &index2)};
+        Assert::IsTrue(methodInterface2->fullName() == L"Windows.Foundation.Collections.IIterable`1");
+        Assert::IsTrue(index2 == 0);
+    }
+
+    TEST_METHOD(GenericMethodImplementation2) {
+        MetadataReader metadataReader;
+
+        shared_ptr<ClassDeclaration> declaration{dynamic_pointer_cast<ClassDeclaration>(metadataReader.findByName(L"Windows.Data.Json.JsonArray"))};
+
+        MethodDeclaration method1{declaration->findMethodsWithName(L"First")[0]};
+        size_t index1{0};
+        unique_ptr<const InterfaceDeclaration> methodInterface1{findDeclaringInterfaceForMethod(method1, &index1)};
+        Assert::IsTrue(methodInterface1->fullName() == L"Windows.Foundation.Collections.IIterable`1");
+        Assert::IsTrue(index1 == 0);
+    }
+
+    TEST_METHOD(ExplicitInterfaceMethodImplementation) {
+        MetadataReader metadataReader;
+
+        shared_ptr<ClassDeclaration> declaration{dynamic_pointer_cast<ClassDeclaration>(metadataReader.findByName(L"NativeScript.Tests.Fixtures.ExplicitInterfaceMethodImplementationClass"))};
+
+        MethodDeclaration method0{declaration->findMethodsWithName(L"Method")[0]};
+        Assert::IsTrue(method0.fullName() == L"Method");
+        size_t index0{0};
+        unique_ptr<const InterfaceDeclaration> methodInterface0{findDeclaringInterfaceForMethod(method0, &index0)};
+        Assert::IsTrue(methodInterface0->id() == IID{0xBAD5EA8B, 0xE896, 0x5FC0,{0x5B, 0x00, 0xB7, 0x47, 0x9E, 0x68, 0x58, 0x34}});
+        Assert::IsTrue(index0 == 0);
+
+        MethodDeclaration method1{declaration->findMethodsWithName(L"NativeScript.Tests.Fixtures.IExplicitInterface1.Method")[0]};
+        size_t index1{0};
+        unique_ptr<const InterfaceDeclaration> methodInterface1{findDeclaringInterfaceForMethod(method1, &index1)};
+        Assert::IsTrue(methodInterface1->fullName() == L"NativeScript.Tests.Fixtures.IExplicitInterface1");
+        Assert::IsTrue(index1 == 0);
+
+        MethodDeclaration method2{declaration->findMethodsWithName(L"NativeScript.Tests.Fixtures.IExplicitInterface2.Method")[0]};
+        size_t index2{0};
+        unique_ptr<const InterfaceDeclaration> methodInterface2{findDeclaringInterfaceForMethod(method2, &index2)};
+        Assert::IsTrue(methodInterface2->fullName() == L"NativeScript.Tests.Fixtures.IExplicitInterface2");
+        Assert::IsTrue(index2 == 0);
     }
 
     TEST_METHOD(ClassType) {

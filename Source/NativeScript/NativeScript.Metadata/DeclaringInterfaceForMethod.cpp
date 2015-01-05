@@ -6,6 +6,8 @@ namespace NativeScript {
 namespace Metadata {
 
 using namespace std;
+using namespace Microsoft::WRL::Wrappers;
+using namespace Microsoft::WRL;
 
 namespace {
 
@@ -127,10 +129,10 @@ vector<mdMethodDef> getClassMethods(IMetaDataImport2* metadata, mdTypeDef token)
     vector<mdMethodDef> methods(1024);
 
     ULONG methodsCount{0};
-    HCORENUM factoryMethodsEnumerator{nullptr};
-    ASSERT_SUCCESS(metadata->EnumMethods(&factoryMethodsEnumerator, token, methods.data(), methods.size(), &methodsCount));
+    HCORENUM methodsEnumerator{nullptr};
+    ASSERT_SUCCESS(metadata->EnumMethods(&methodsEnumerator, token, methods.data(), methods.size(), &methodsCount));
     ASSERT(methodsCount < methods.size() - 1);
-    metadata->CloseEnum(factoryMethodsEnumerator);
+    metadata->CloseEnum(methodsEnumerator);
 
     methods.resize(methodsCount);
     return methods;
@@ -230,6 +232,131 @@ unique_ptr<InterfaceDeclaration> declaringInterfaceForStaticMethod(IMetaDataImpo
     ASSERT_NOT_REACHED();
 }
 
+size_t findMethodIndex(IMetaDataImport2* metadata, mdTypeDef classToken, mdMethodDef methodToken) {
+    mdMethodDef firstMethod;
+
+    HCORENUM methodsEnumerator{nullptr};
+    ASSERT_SUCCESS(metadata->EnumMethods(&methodsEnumerator, classToken, &firstMethod, 1, nullptr));
+    metadata->CloseEnum(methodsEnumerator);
+
+    size_t index{methodToken - firstMethod}; // This should be right
+    return index;
+}
+
+unique_ptr<InterfaceDeclaration> declaringInterfaceForInstanceMethod(IMetaDataImport2* metadata, mdMethodDef methodToken, size_t* outIndex) {
+    mdTypeDef classToken{getMethodContainingClassToken(metadata, methodToken)};
+    ASSERT(TypeFromToken(classToken) == mdtTypeDef);
+
+    array<mdToken, 1024> methodBodyTokens;
+    array<mdToken, 1024> methodDeclTokens;
+    ULONG methodImplsCount{0};
+    HCORENUM methodImplsEnumerator{nullptr};
+    ASSERT_SUCCESS(metadata->EnumMethodImpls(&methodImplsEnumerator, classToken, methodBodyTokens.data(), methodDeclTokens.data(), methodBodyTokens.size(), &methodImplsCount));
+    ASSERT(methodImplsCount < methodBodyTokens.size() - 1);
+    metadata->CloseEnum(methodImplsEnumerator);
+
+    for (size_t i = 0; i < methodImplsCount; ++i) {
+        ULONG methodBodyToken{methodBodyTokens[i]};
+        ASSERT(TypeFromToken(methodBodyToken) == mdtMethodDef);
+
+        if (methodToken != methodBodyToken) {
+            continue;
+        }
+
+        mdToken methodDeclToken{methodDeclTokens[i]};
+        switch (TypeFromToken(methodDeclToken)) {
+            case mdtMethodDef: {
+                mdTypeDef declaringInterfaceToken{mdTokenNil};
+                ASSERT_SUCCESS(metadata->GetMethodProps(methodDeclToken, &declaringInterfaceToken, nullptr, 0, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr));
+
+                *outIndex = findMethodIndex(metadata, declaringInterfaceToken, methodDeclToken);
+                return make_unique<InterfaceDeclaration>(metadata, declaringInterfaceToken);
+            }
+
+            case mdtMemberRef: {
+                mdToken parentToken;
+                ASSERT_SUCCESS(metadata->GetMemberRefProps(methodDeclToken, &parentToken, nullptr, 0, nullptr, nullptr, nullptr));
+
+                switch (TypeFromToken(parentToken)) {
+                    case mdtTypeRef: {
+                        ComPtr<IMetaDataImport2> externalMetadata;
+                        mdTypeDef declaringInterfaceToken;
+
+                        bool isResolved{resolveTypeRef(metadata, parentToken, externalMetadata.GetAddressOf(), &declaringInterfaceToken)};
+                        ASSERT(isResolved);
+
+                        identifier declaringMethodName;
+                        PCCOR_SIGNATURE signature{nullptr};
+                        ULONG signatureSize{0};
+                        ASSERT_SUCCESS(metadata->GetMemberRefProps(methodDeclToken, nullptr, declaringMethodName.data(), declaringMethodName.size(), nullptr, &signature, &signatureSize));
+
+                        mdMethodDef declaringMethod;
+                        ASSERT_SUCCESS(externalMetadata->FindMethod(declaringInterfaceToken, declaringMethodName.data(), signature, signatureSize, &declaringMethod));
+
+                        *outIndex = findMethodIndex(externalMetadata.Get(), declaringInterfaceToken, declaringMethod);
+                        return make_unique<InterfaceDeclaration>(externalMetadata.Get(), declaringInterfaceToken);
+                    }
+
+                    case mdtTypeSpec: {
+                        PCCOR_SIGNATURE typeSpecSignature{nullptr};
+                        ULONG typeSpecSignatureSize{0};
+                        ASSERT_SUCCESS(metadata->GetTypeSpecFromToken(parentToken, &typeSpecSignature, &typeSpecSignatureSize));
+
+                        identifier declaringMethodName;
+                        PCCOR_SIGNATURE signature{nullptr};
+                        ULONG signatureSize{0};
+                        ASSERT_SUCCESS(metadata->GetMemberRefProps(methodDeclToken, nullptr, declaringMethodName.data(), declaringMethodName.size(), nullptr, &signature, &signatureSize));
+
+                        CorElementType type1{CorSigUncompressElementType(typeSpecSignature)};
+                        ASSERT(type1 == ELEMENT_TYPE_GENERICINST);
+
+                        CorElementType type2{CorSigUncompressElementType(typeSpecSignature)};
+                        ASSERT(type2 == ELEMENT_TYPE_CLASS);
+
+                        // TODO: Use signature in matching
+                        mdToken openGenericClassToken{CorSigUncompressToken(typeSpecSignature)};
+                        switch (TypeFromToken(openGenericClassToken)) {
+                            case mdtTypeDef: {
+                                mdMethodDef declaringMethod;
+                                ASSERT_SUCCESS(metadata->FindMethod(openGenericClassToken, declaringMethodName.data(), nullptr, 0, &declaringMethod));
+
+                                *outIndex = findMethodIndex(metadata, openGenericClassToken, 0);
+                                return make_unique<GenericInterfaceInstanceDeclaration>(metadata, openGenericClassToken, metadata, parentToken);
+                            }
+
+                            case mdtTypeRef: {
+                                ComPtr<IMetaDataImport2> externalMetadata;
+                                mdTypeDef externalClassToken{mdTokenNil};
+
+                                bool isResolved{resolveTypeRef(metadata, openGenericClassToken, externalMetadata.GetAddressOf(), &externalClassToken)};
+                                ASSERT(isResolved);
+
+                                mdMethodDef declaringMethod;
+                                ASSERT_SUCCESS(externalMetadata->FindMethod(externalClassToken, declaringMethodName.data(), nullptr, 0, &declaringMethod));
+
+                                *outIndex = findMethodIndex(externalMetadata.Get(), externalClassToken, declaringMethod);
+                                return make_unique<GenericInterfaceInstanceDeclaration>(externalMetadata.Get(), externalClassToken, metadata, parentToken);
+                            }
+
+                            default:
+                                ASSERT_NOT_REACHED();
+                        }
+
+                        break;
+                    }
+                }
+
+                break;
+            }
+
+            default:
+                ASSERT_NOT_REACHED();
+        }
+    }
+
+    ASSERT_NOT_REACHED();
+}
+
 }
 
 unique_ptr<const InterfaceDeclaration> findDeclaringInterfaceForMethod(const MethodDeclaration& method, size_t* outIndex) {
@@ -244,7 +371,7 @@ unique_ptr<const InterfaceDeclaration> findDeclaringInterfaceForMethod(const Met
         if (method.isInitializer()) {
             return declaringInterfaceForInitializer(metadata, methodToken, outIndex);
         } else {
-            NOT_IMPLEMENTED();
+            return declaringInterfaceForInstanceMethod(metadata, methodToken, outIndex);
         }
     }
 }

@@ -50,10 +50,10 @@ shared_ptr<DelegateDeclaration> makeType(IMetaDataImport2* metadata, mdEvent tok
             ULONG signatureSize{0};
             ASSERT_SUCCESS(metadata->GetTypeSpecFromToken(delegateToken, &signature, &signatureSize));
 
-            ULONG type1{CorSigUncompressData(signature)};
+            CorElementType type1{CorSigUncompressElementType(signature)};
             ASSERT(type1 == ELEMENT_TYPE_GENERICINST);
 
-            ULONG type2{CorSigUncompressData(signature)};
+            CorElementType type2{CorSigUncompressElementType(signature)};
             ASSERT(type2 == ELEMENT_TYPE_CLASS);
 
             mdToken openGenericDelegateToken{CorSigUncompressToken(signature)};

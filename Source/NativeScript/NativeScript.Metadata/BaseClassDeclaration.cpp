@@ -47,10 +47,10 @@ vector<const unique_ptr<const InterfaceDeclaration>> makeImplementedInterfacesDe
                 ULONG signatureSize{0};
                 ASSERT_SUCCESS(metadata->GetTypeSpecFromToken(interfaceToken, &signature, &signatureSize));
 
-                ULONG type1{CorSigUncompressData(signature)};
+                CorElementType type1{CorSigUncompressElementType(signature)};
                 ASSERT(type1 == ELEMENT_TYPE_GENERICINST);
 
-                ULONG type2{CorSigUncompressData(signature)};
+                CorElementType type2{CorSigUncompressElementType(signature)};
                 ASSERT(type2 == ELEMENT_TYPE_CLASS);
 
                 mdToken openGenericDelegateToken{CorSigUncompressToken(signature)};
@@ -219,14 +219,7 @@ vector<const MethodDeclaration> BaseClassDeclaration::findMethodsWithName(const 
 
     for (size_t i = 0; i < methodsCount; ++i) {
         mdMethodDef methodToken{methodTokens[i]};
-
-        MethodDeclaration declaration{_metadata.Get(), methodToken};
-
-        if (!declaration.isExported()) {
-            continue;
-        }
-
-        result.push_back(move(declaration));
+        result.emplace_back(_metadata.Get(), methodToken);
     }
 
     return result;
