@@ -164,16 +164,34 @@ bool hasMethodFirstTypeArgument(IMetaDataImport2* metadata, mdToken token) {
     return true;
 }
 
-// TODO: Search Activatable
 unique_ptr<const InterfaceDeclaration> declaringInterfaceForInitializer(IMetaDataImport2* metadata, mdMethodDef methodToken, size_t* outIndex) {
     size_t methodArgumentCount{getMethodArgumentCount(metadata, methodToken)};
+
+    mdTypeDef classToken{getMethodContainingClassToken(metadata, methodToken)};
+    ASSERT(TypeFromToken(classToken) == mdtTypeDef);
+
+    vector<mdCustomAttribute> composableAttributes{getCustomAttributesWithName(metadata, classToken, COMPOSABLE_ATTRIBUTE_W)};
+    for (const mdCustomAttribute& attributeToken : composableAttributes) {
+        mdTypeDef factoryToken{getCustomAttributeTypeArgument(metadata, attributeToken)};
+
+        vector<mdMethodDef> factoryMethods{getClassMethods(metadata, factoryToken)};
+        for (size_t i = 0; i < factoryMethods.size(); ++i) {
+            mdMethodDef factoryMethod{factoryMethods[i]};
+
+            ULONG factoryMethodArgumentsCount{getMethodArgumentCount(metadata, factoryMethod)};
+            if (factoryMethodArgumentsCount - 2 != methodArgumentCount) {
+                continue;
+            }
+
+            *outIndex = i;
+            return make_unique<InterfaceDeclaration>(metadata, factoryToken);
+        }
+    }
+
     if (methodArgumentCount == 0) {
         *outIndex = SIZE_T_MAX;
         return nullptr;
     }
-
-    mdTypeDef classToken{getMethodContainingClassToken(metadata, methodToken)};
-    ASSERT(TypeFromToken(classToken) == mdtTypeDef);
 
     vector<mdCustomAttribute> activatableAttributes{getCustomAttributesWithName(metadata, classToken, ACTIVATABLE_ATTRIBUTE_W)};
     for (const mdCustomAttribute& attributeToken : activatableAttributes) {

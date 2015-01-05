@@ -118,7 +118,7 @@ public:
         Assert::IsTrue(it == properties.end());
     }
 
-    TEST_METHOD(Initializers) {
+    TEST_METHOD(ActivatableInitializers) {
         MetadataReader metadataReader;
 
         shared_ptr<ClassDeclaration> declaration{dynamic_pointer_cast<ClassDeclaration>(metadataReader.findByName(L"NativeScript.Tests.Fixtures.ActivatableClass"))};
@@ -172,6 +172,33 @@ public:
         unique_ptr<const InterfaceDeclaration> initializerFactory5{findDeclaringInterfaceForMethod(initializer5, &index5)};
         Assert::IsTrue(initializerFactory5->id() == IID{0xF0215C81, 0xD4DC, 0x53B3,{0x77, 0xFE, 0x59, 0xE4, 0x06, 0x6B, 0x4C, 0x00}});
         Assert::IsTrue(index5 == 0);
+
+        ++it;
+        Assert::IsTrue(it == initializers.end());
+    }
+
+    TEST_METHOD(ComposablebleInitializers) {
+        MetadataReader metadataReader;
+
+        shared_ptr<ClassDeclaration> declaration{dynamic_pointer_cast<ClassDeclaration>(metadataReader.findByName(L"Windows.UI.Xaml.Controls.Maps.LocalMapTileDataSource"))};
+
+        IteratorRange<ClassDeclaration::MethodIterator> initializers{declaration->initializers()};
+
+        ClassDeclaration::MethodIterator it{initializers.begin()};
+        const MethodDeclaration& initializer0{*it};
+        Assert::IsTrue(initializer0.numberOfParameters() == 0);
+        size_t index0{0};
+        unique_ptr<const InterfaceDeclaration> initializerFactory0{findDeclaringInterfaceForMethod(initializer0, &index0)};
+        Assert::IsTrue(initializerFactory0->fullName() == L"Windows.UI.Xaml.Controls.Maps.ILocalMapTileDataSourceFactory");
+        Assert::IsTrue(index0 == 0);
+
+        ++it;
+        const MethodDeclaration& initializer1{*it};
+        Assert::IsTrue(initializer1.numberOfParameters() == 1);
+        size_t index1{0};
+        unique_ptr<const InterfaceDeclaration> initializerFactory1{findDeclaringInterfaceForMethod(initializer1, &index1)};
+        Assert::IsTrue(initializerFactory1->fullName() == L"Windows.UI.Xaml.Controls.Maps.ILocalMapTileDataSourceFactory");
+        Assert::IsTrue(index1 == 1);
 
         ++it;
         Assert::IsTrue(it == initializers.end());
