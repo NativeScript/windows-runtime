@@ -85,5 +85,40 @@ namespace NativeScript.Tests.Fixtures
             throw new NotImplementedException();
         }
     }
+
+    public sealed class StaticsClass
+    {
+        private StaticsClass()
+        {
+        }
+
+        public static void ComplexStaticMethod(object @object, SimpleClass simpleClass, int @int, out int outInt, string @string, long? nullableLong, SimpleEnum? nullableEnum, SimpleStruct? nullableStruct, SimpleDelegate @delegate)
+        {
+            throw new NotImplementedException();
+        }
+
+        [Version(1)]
+        public static void StaticMethod()
+        {
+            throw new NotImplementedException();
+        }
+
+        [Version(1)]
+        public static void StaticMethod(object arg1)
+        {
+            throw new NotImplementedException();
+        }
+
+        [Version(2)]
+        public static void StaticMethod(object arg1, object arg2)
+        {
+            throw new NotImplementedException();
+        }
+
+        [Version(2)]
+        public static void StaticMethod(object arg1, object arg2, object arg3)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

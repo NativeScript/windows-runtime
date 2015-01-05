@@ -177,6 +177,56 @@ public:
         Assert::IsTrue(it == initializers.end());
     }
 
+    TEST_METHOD(StaticMethods) {
+        MetadataReader metadataReader;
+
+        shared_ptr<ClassDeclaration> staticsClass{dynamic_pointer_cast<ClassDeclaration>(metadataReader.findByName(L"NativeScript.Tests.Fixtures.StaticsClass"))};
+
+        MethodDeclaration complexStaticMethod{staticsClass->findMethodsWithName(L"ComplexStaticMethod")[0]};
+        Assert::IsTrue(complexStaticMethod.numberOfParameters() == 9);
+        size_t complexStaticMethodIndex{0};
+        unique_ptr<const InterfaceDeclaration> complexStaticMethodIndexInterface{findDeclaringInterfaceForMethod(complexStaticMethod, &complexStaticMethodIndex)};
+        Assert::IsTrue(complexStaticMethodIndexInterface->id() == IID{0xFDCF55FD, 0x290E, 0x5B51, {0x77, 0x15, 0xCC, 0xC0, 0xCD, 0x80, 0xF2, 0x82}});
+        Assert::IsTrue(complexStaticMethodIndex == 0);
+
+        vector<const MethodDeclaration> methods{staticsClass->findMethodsWithName(L"StaticMethod")};
+
+        ClassDeclaration::MethodIterator it{methods.begin()};
+        const MethodDeclaration& method0{*it};
+        Assert::IsTrue(method0.numberOfParameters() == 0);
+        size_t index0{0};
+        unique_ptr<const InterfaceDeclaration> methodInterface0{findDeclaringInterfaceForMethod(method0, &index0)};
+        Assert::IsTrue(methodInterface0->id() == IID{0xD688AD90, 0xBE54, 0x511F,{0x49, 0xDA, 0x4C, 0xD6, 0x0E, 0xAA, 0xE0, 0xE6}});
+        Assert::IsTrue(index0 == 0);
+
+        ++it;
+        const MethodDeclaration& method1{*it};
+        Assert::IsTrue(method1.numberOfParameters() == 1);
+        size_t index1{0};
+        unique_ptr<const InterfaceDeclaration> methodInterface1{findDeclaringInterfaceForMethod(method1, &index1)};
+        Assert::IsTrue(methodInterface1->id() == IID{0xD688AD90, 0xBE54, 0x511F,{0x49, 0xDA, 0x4C, 0xD6, 0x0E, 0xAA, 0xE0, 0xE6}});
+        Assert::IsTrue(index1 == 1);
+
+        ++it;
+        const MethodDeclaration& method2{*it};
+        Assert::IsTrue(method2.numberOfParameters() == 2);
+        size_t index2{0};
+        unique_ptr<const InterfaceDeclaration> methodInterface2{findDeclaringInterfaceForMethod(method2, &index2)};
+        Assert::IsTrue(methodInterface2->id() == IID{0xD0DD03A8, 0x5BBF, 0x521B,{0x61, 0xEA, 0x98, 0xE9, 0x48, 0xD2, 0x29, 0x75}});
+        Assert::IsTrue(index2 == 0);
+
+        ++it;
+        const MethodDeclaration& method3{*it};
+        Assert::IsTrue(method3.numberOfParameters() == 3);
+        size_t index3{0};
+        unique_ptr<const InterfaceDeclaration> methodInterface3{findDeclaringInterfaceForMethod(method3, &index3)};
+        Assert::IsTrue(methodInterface3->id() == IID{0xD0DD03A8, 0x5BBF, 0x521B,{0x61, 0xEA, 0x98, 0xE9, 0x48, 0xD2, 0x29, 0x75}});
+        Assert::IsTrue(index3 == 1);
+
+        ++it;
+        Assert::IsTrue(it == methods.end());
+    }
+
     TEST_METHOD(ClassType) {
         MetadataReader metadataReader;
 
@@ -196,17 +246,6 @@ public:
         Assert::IsTrue(abstractClass->isInstantiable() == false);
         Assert::IsTrue(abstractClass->isSealed() == false);
     }
-
-    // TEST_METHOD(StaticAttribute) {
-    //     MetadataReader metadataReader;
-    //
-    //     shared_ptr<ClassDeclaration> emptyClass{dynamic_pointer_cast<ClassDeclaration>(metadataReader.findByName(L"NativeScript.Tests.Fixtures.EmptyClass"))};
-    //     Assert::IsTrue(emptyClass->staticInterface() == nullptr);
-    //
-    //     shared_ptr<ClassDeclaration> simpleClass{dynamic_pointer_cast<ClassDeclaration>(metadataReader.findByName(L"NativeScript.Tests.Fixtures.SimpleClass"))};
-    //     Assert::IsTrue(simpleClass->staticInterface()->fullName() == L"NativeScript.Tests.Fixtures.ISimpleClassStatic");
-    //     Assert::IsTrue(simpleClass->staticInterface()->id() == IID{0xF07E1852, 0xC1F3, 0x5BE8,{0x5A, 0x6F, 0x6A, 0xC5, 0x36, 0xDE, 0x8E, 0xEB}});
-    // }
 };
 
 }

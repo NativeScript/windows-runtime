@@ -200,6 +200,36 @@ unique_ptr<const InterfaceDeclaration> declaringInterfaceForInitializer(IMetaDat
     ASSERT_NOT_REACHED();
 }
 
+unique_ptr<InterfaceDeclaration> declaringInterfaceForStaticMethod(IMetaDataImport2* metadata, mdMethodDef methodToken, size_t* outIndex) {
+    PCCOR_SIGNATURE methodSignature{getMethodSignature(metadata, methodToken)};
+
+    mdTypeDef classToken{getMethodContainingClassToken(metadata, methodToken)};
+    ASSERT(TypeFromToken(classToken) == mdtTypeDef);
+
+    vector<mdCustomAttribute> staticAttributes{getCustomAttributesWithName(metadata, classToken, STATIC_ATTRIBUTE_W)};
+    for (const mdCustomAttribute& attributeToken : staticAttributes) {
+        mdTypeDef staticsToken{getCustomAttributeTypeArgument(metadata, attributeToken)};
+
+        vector<mdMethodDef> staticMethods{getClassMethods(metadata, staticsToken)};
+        for (size_t i = 0; i < staticMethods.size(); ++i) {
+            mdMethodDef staticMethod{staticMethods[i]};
+            PCCOR_SIGNATURE staticSignature{nullptr};
+            ULONG staticSignatureSize{0};
+
+            ASSERT_SUCCESS(metadata->GetMethodProps(staticMethod, nullptr, nullptr, 0, nullptr, nullptr, &staticSignature, &staticSignatureSize, nullptr, nullptr));
+
+            if (memcmp(staticSignature + 1, methodSignature, staticSignatureSize - 1) != 0) {
+                continue;
+            }
+
+            *outIndex = i;
+            return make_unique<InterfaceDeclaration>(metadata, staticsToken);
+        }
+    }
+
+    ASSERT_NOT_REACHED();
+}
+
 }
 
 unique_ptr<const InterfaceDeclaration> findDeclaringInterfaceForMethod(const MethodDeclaration& method, size_t* outIndex) {
@@ -209,14 +239,14 @@ unique_ptr<const InterfaceDeclaration> findDeclaringInterfaceForMethod(const Met
     mdMethodDef methodToken{method._token};
 
     if (method.isStatic()) {
-        NOT_IMPLEMENTED();
+        return declaringInterfaceForStaticMethod(metadata, methodToken, outIndex);
+    } else {
+        if (method.isInitializer()) {
+            return declaringInterfaceForInitializer(metadata, methodToken, outIndex);
+        } else {
+            NOT_IMPLEMENTED();
+        }
     }
-
-    if (method.isInitializer()) {
-        return declaringInterfaceForInitializer(metadata, methodToken, outIndex);
-    }
-
-    NOT_IMPLEMENTED();
 }
 
 }
