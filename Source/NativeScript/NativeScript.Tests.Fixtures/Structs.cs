@@ -6,8 +6,6 @@ namespace NativeScript.Tests.Fixtures
 
     public struct SimpleStruct
     {
-        // Static fields are compiled, but can't be linked
-
         public Boolean BooleanField;
         public Byte ByteField;
         public Char CharField;
@@ -15,7 +13,6 @@ namespace NativeScript.Tests.Fixtures
         public Int16 Int16Field;
         public Int32 Int32Field;
         public Int64 Int64Field;
-        public SimpleEnum SimpleEnumField;
         public Single SingleField;
         public String StringField;
         public UInt16 UInt16Field;
@@ -23,7 +20,12 @@ namespace NativeScript.Tests.Fixtures
         public UInt64 UInt64Field;
     }
 
-    // TODO: Nested struct
-    // TODO: Nullable types and nullable structs
-    // TODO: Readonly struct fields
+    public struct ComplexStruct
+    {
+        public SimpleEnum? NullableEnumField;
+        public Int32? NullableInt32Field;
+        public SimpleStruct? NullableStructField;
+        public SimpleEnum EnumField;
+        public SimpleStruct StructField;
+    }
 }
