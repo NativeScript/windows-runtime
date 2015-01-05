@@ -6,3 +6,5 @@
 #include "StructDeclaration.h"
 #include "EnumDeclaration.h"
 #include "DelegateDeclaration.h"
+
+#include "DeclaringInterfaceForMethod.h"

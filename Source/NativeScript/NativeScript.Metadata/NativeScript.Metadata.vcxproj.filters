@@ -48,9 +48,6 @@
     <ClCompile Include="InterfaceDeclaration.cpp">
       <Filter>Ast</Filter>
     </ClCompile>
-    <ClCompile Include="ClassDeclaration.DeclaringInterfaceForMethod.cpp">
-      <Filter>Ast</Filter>
-    </ClCompile>
     <ClCompile Include="DelegateDeclaration.cpp">
       <Filter>Ast</Filter>
     </ClCompile>
@@ -61,6 +58,9 @@
       <Filter>Ast</Filter>
     </ClCompile>
     <ClCompile Include="StructFieldDeclaration.cpp">
+      <Filter>Ast</Filter>
+    </ClCompile>
+    <ClCompile Include="DeclaringInterfaceForMethod.cpp">
       <Filter>Ast</Filter>
     </ClCompile>
   </ItemGroup>
@@ -120,6 +120,9 @@
       <Filter>Ast</Filter>
     </ClInclude>
     <ClInclude Include="StructFieldDeclaration.h">
+      <Filter>Ast</Filter>
+    </ClInclude>
+    <ClInclude Include="DeclaringInterfaceForMethod.h">
       <Filter>Ast</Filter>
     </ClInclude>
   </ItemGroup>

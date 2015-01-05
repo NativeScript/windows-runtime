@@ -1,4 +1,5 @@
 ﻿using System;
+using Windows.Foundation.Metadata;
 
 namespace NativeScript.Tests.Fixtures
 {
@@ -55,14 +56,34 @@ namespace NativeScript.Tests.Fixtures
             throw new NotImplementedException();
         }
 
+        [Version(1)]
         public ActivatableClass(object arg1)
         {
             throw new NotImplementedException();
         }
 
+        [Version(1)]
         public ActivatableClass(object arg1, object arg2)
         {
             throw new NotImplementedException();
         }
+
+        [Version(2)]
+        public ActivatableClass(object arg1, object arg2, object arg3)
+        {
+            throw new NotImplementedException();
+        }
+
+        [Version(2)]
+        public ActivatableClass(object arg1, object arg2, object arg3, object arg4)
+        {
+            throw new NotImplementedException();
+        }
+
+        public ActivatableClass(object arg1, object arg2, object arg3, object arg4, object arg5)
+        {
+            throw new NotImplementedException();
+        }
+    }
     }
 }

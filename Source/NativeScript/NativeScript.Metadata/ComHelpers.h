@@ -56,6 +56,7 @@ void DEBUG_LOG(_Printf_format_string_ const wchar_t* format, ...);
 #define DEBUG_LOG(format, ...)
 #endif
 
+const wchar_t* const SYSTEM_TYPE_W{L"System.Type"};
 const wchar_t* const STATIC_ATTRIBUTE_W{L"Windows.Foundation.Metadata.StaticAttribute"};
 const wchar_t* const ACTIVATABLE_ATTRIBUTE_W{L"Windows.Foundation.Metadata.ActivatableAttribute"};
 const wchar_t* const COMPOSABLE_ATTRIBUTE_W{L"Windows.Foundation.Metadata.ComposableAttribute"};

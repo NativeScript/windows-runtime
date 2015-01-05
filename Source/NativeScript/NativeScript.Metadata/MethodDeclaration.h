@@ -12,6 +12,8 @@
 namespace NativeScript {
 namespace Metadata {
 
+class InterfaceDeclaration;
+
 class MethodDeclaration final : public Declaration {
 public:
     typedef Declaration Base;
@@ -41,7 +43,7 @@ public:
     bool isDefaultOverload() const;
 
 private:
-    friend class ClassDeclaration;
+    friend std::unique_ptr<const InterfaceDeclaration> findDeclaringInterfaceForMethod(const MethodDeclaration&, size_t* outIndex);
 
     const Microsoft::WRL::ComPtr<IMetaDataImport2> _metadata;
     const mdMethodDef _token;

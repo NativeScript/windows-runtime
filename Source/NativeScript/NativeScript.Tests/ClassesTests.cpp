@@ -127,30 +127,51 @@ public:
 
         ClassDeclaration::MethodIterator it{initializers.begin()};
         const MethodDeclaration& initializer0{*it};
-        size_t index0{0};
-        unique_ptr<const InterfaceDeclaration> factory0{ClassDeclaration::declaringInterfaceForMethod(initializer0, &index0)};
-        Assert::IsTrue(initializer0.isInitializer());
         Assert::IsTrue(initializer0.numberOfParameters() == 0);
-        Assert::IsTrue(factory0 == nullptr);
+        size_t index0{0};
+        unique_ptr<const InterfaceDeclaration> initializerFactory0{findDeclaringInterfaceForMethod(initializer0, &index0)};
+        Assert::IsTrue(initializerFactory0 == nullptr);
         Assert::IsTrue(index0 == SIZE_T_MAX);
 
         ++it;
         const MethodDeclaration& initializer1{*it};
-        size_t index1{0};
-        unique_ptr<const InterfaceDeclaration> factory1{ClassDeclaration::declaringInterfaceForMethod(initializer1, &index1)};
-        Assert::IsTrue(initializer1.isInitializer());
         Assert::IsTrue(initializer1.numberOfParameters() == 1);
-        Assert::IsTrue(factory1->id() == IID{0xE1C8B4D2, 0xCA7C, 0x5558,{0x7B, 0x6C, 0xAB, 0xC7, 0x47, 0xB8, 0x71, 0x3B}});
+        size_t index1{0};
+        unique_ptr<const InterfaceDeclaration> initializerFactory1{findDeclaringInterfaceForMethod(initializer1, &index1)};
+        Assert::IsTrue(initializerFactory1->id() == IID{0xE1C8B4D2, 0xCA7C, 0x5558,{0x7B, 0x6C, 0xAB, 0xC7, 0x47, 0xB8, 0x71, 0x3B}});
         Assert::IsTrue(index1 == 0);
 
         ++it;
         const MethodDeclaration& initializer2{*it};
-        size_t index2{0};
-        unique_ptr<const InterfaceDeclaration> factory2{ClassDeclaration::declaringInterfaceForMethod(initializer2, &index2)};
-        Assert::IsTrue(initializer2.isInitializer());
         Assert::IsTrue(initializer2.numberOfParameters() == 2);
-        Assert::IsTrue(factory2->id() == IID{0xE1C8B4D2, 0xCA7C, 0x5558,{0x7B, 0x6C, 0xAB, 0xC7, 0x47, 0xB8, 0x71, 0x3B}});
+        size_t index2{0};
+        unique_ptr<const InterfaceDeclaration> initializerFactory2{findDeclaringInterfaceForMethod(initializer2, &index2)};
+        Assert::IsTrue(initializerFactory2->id() == IID{0xE1C8B4D2, 0xCA7C, 0x5558,{0x7B, 0x6C, 0xAB, 0xC7, 0x47, 0xB8, 0x71, 0x3B}});
         Assert::IsTrue(index2 == 1);
+
+        ++it;
+        const MethodDeclaration& initializer3{*it};
+        Assert::IsTrue(initializer3.numberOfParameters() == 3);
+        size_t index3{0};
+        unique_ptr<const InterfaceDeclaration> initializerFactory3{findDeclaringInterfaceForMethod(initializer3, &index3)};
+        Assert::IsTrue(initializerFactory3->id() == IID{0x85A3BF7F, 0xBBAA, 0x5DD4,{0x78, 0x96, 0x3D, 0x18, 0x5B, 0xFA, 0xA6, 0x3C}});
+        Assert::IsTrue(index3 == 0);
+
+        ++it;
+        const MethodDeclaration& initializer4{*it};
+        Assert::IsTrue(initializer4.numberOfParameters() == 4);
+        size_t index4{0};
+        unique_ptr<const InterfaceDeclaration> initializerFactory4{findDeclaringInterfaceForMethod(initializer4, &index4)};
+        Assert::IsTrue(initializerFactory4->id() == IID{0x85A3BF7F, 0xBBAA, 0x5DD4,{0x78, 0x96, 0x3D, 0x18, 0x5B, 0xFA, 0xA6, 0x3C}});
+        Assert::IsTrue(index4 == 1);
+
+        ++it;
+        const MethodDeclaration& initializer5{*it};
+        Assert::IsTrue(initializer5.numberOfParameters() == 5);
+        size_t index5{0};
+        unique_ptr<const InterfaceDeclaration> initializerFactory5{findDeclaringInterfaceForMethod(initializer5, &index5)};
+        Assert::IsTrue(initializerFactory5->id() == IID{0xF0215C81, 0xD4DC, 0x53B3,{0x77, 0xFE, 0x59, 0xE4, 0x06, 0x6B, 0x4C, 0x00}});
+        Assert::IsTrue(index5 == 0);
 
         ++it;
         Assert::IsTrue(it == initializers.end());
