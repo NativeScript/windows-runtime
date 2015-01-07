@@ -86,7 +86,8 @@ shared_ptr<DelegateDeclaration> makeType(IMetaDataImport2* metadata, mdEvent tok
 
 
 EventDeclaration::EventDeclaration(IMetaDataImport2* metadata, mdEvent token)
-    : _metadata{metadata}
+    : Base(DeclarationKind::Event)
+    , _metadata{metadata}
     , _token{token}
     , _type{makeType(metadata, token)}
     , _addMethod{makeAddMethod(metadata, token)}

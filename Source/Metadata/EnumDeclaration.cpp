@@ -59,7 +59,7 @@ EnumDeclaration::MemberIterator& EnumDeclaration::MemberIterator::operator++() {
 }
 
 EnumDeclaration::EnumDeclaration(IMetaDataImport2* metadata, mdTypeDef token)
-    : Base(metadata, token) {
+    : Base(DeclarationKind::Enum, metadata, token) {
 }
 
 CorElementType EnumDeclaration::type() const {

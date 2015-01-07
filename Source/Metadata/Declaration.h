@@ -5,6 +5,23 @@
 namespace NativeScript {
 namespace Metadata {
 
+enum class DeclarationKind : uint8_t {
+    Namespace,
+    Class,
+    Interface,
+    GenericInterfaceInstance,
+    Enum,
+    EnumMember,
+    Struct,
+    StructField,
+    Delegate,
+    GenericDelegateInstance,
+    Event,
+    Property,
+    Method,
+    Parameter,
+};
+
 class Declaration {
 public:
     virtual ~Declaration() = default;
@@ -18,8 +35,13 @@ public:
     /// For generic types, this includes the spelling of generic parameter names.
     virtual std::wstring fullName() const = 0;
 
+    DeclarationKind kind() const;
+
 protected:
-    explicit Declaration() = default;
+    explicit Declaration(DeclarationKind);
+
+private:
+    DeclarationKind _kind;
 };
 
 }

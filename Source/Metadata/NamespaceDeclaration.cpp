@@ -7,7 +7,7 @@ namespace Metadata {
 using namespace std;
 
 NamespaceDeclaration::NamespaceDeclaration(const wchar_t* fullName)
-    : Base()
+    : Base(DeclarationKind::Namespace)
     , _fullName(fullName) {
 
     ASSERT(fullName);

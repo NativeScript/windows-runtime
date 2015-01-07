@@ -7,7 +7,7 @@ namespace Metadata {
 using namespace std;
 
 ParameterDeclaration::ParameterDeclaration(IMetaDataImport2* metadata, mdParamDef token)
-    : Base()
+    : Base(DeclarationKind::Parameter)
     , _metadata{metadata}
     , _token{token} {
 

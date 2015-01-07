@@ -9,7 +9,7 @@ using namespace Microsoft::WRL::Wrappers;
 using namespace Microsoft::WRL;
 
 StructFieldDeclaration::StructFieldDeclaration(IMetaDataImport2* metadata, mdFieldDef token)
-    : Base(metadata, token) {
+    : Base(DeclarationKind::StructField, metadata, token) {
 
 }
 

@@ -9,7 +9,7 @@ public:
         MetadataReader metadataReader;
 
         const wchar_t* name{L"NativeScript.TestFixtures.SimpleStruct"};
-        shared_ptr<StructDeclaration> declaration{dynamic_pointer_cast<StructDeclaration>(metadataReader.findByName(name))};
+        shared_ptr<StructDeclaration> declaration{static_pointer_cast<StructDeclaration>(metadataReader.findByName(name))};
 
         Assert::IsTrue(declaration->name() == L"SimpleStruct");
         Assert::IsTrue(declaration->fullName() == name);

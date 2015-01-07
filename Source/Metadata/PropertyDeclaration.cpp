@@ -33,7 +33,7 @@ unique_ptr<MethodDeclaration> makeSetter(IMetaDataImport2* metadata, mdProperty 
 }
 
 PropertyDeclaration::PropertyDeclaration(IMetaDataImport2* metadata, mdProperty token)
-    : Base()
+    : Base(DeclarationKind::Property)
     , _metadata{metadata}
     , _token{token}
     , _getter{makeGetter(metadata, token)}

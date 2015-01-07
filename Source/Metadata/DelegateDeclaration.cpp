@@ -19,7 +19,11 @@ mdMethodDef getInvokeMethodToken(IMetaDataImport2* metaData, mdTypeDef token) {
 }
 
 DelegateDeclaration::DelegateDeclaration(IMetaDataImport2* metadata, mdTypeDef token)
-    : Base(metadata, token)
+    : DelegateDeclaration(DeclarationKind::Delegate, metadata, token) {
+}
+
+DelegateDeclaration::DelegateDeclaration(DeclarationKind kind, IMetaDataImport2* metadata, mdTypeDef token)
+    : Base(kind, metadata, token)
     , _invokeMethod{metadata, getInvokeMethodToken(metadata, token)} {
 
 }
@@ -33,7 +37,7 @@ IteratorRange<DelegateDeclaration::ParameterIterator> DelegateDeclaration::param
 }
 
 GenericDelegateInstanceDeclaration::GenericDelegateInstanceDeclaration(IMetaDataImport2* openMetadata, mdTypeDef openToken, IMetaDataImport2* closedMetadata, mdTypeSpec closedToken)
-    : Base(openMetadata, openToken)
+    : Base(DeclarationKind::GenericDelegateInstance, openMetadata, openToken)
     , _closedMetadata{closedMetadata}
     , _closedToken{_closedToken} {
 

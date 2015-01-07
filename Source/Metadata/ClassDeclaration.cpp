@@ -40,7 +40,7 @@ vector<MethodDeclaration> makeInitializerDeclarations(IMetaDataImport2* metadata
 }
 
 ClassDeclaration::ClassDeclaration(IMetaDataImport2* metadata, mdTypeDef token)
-    : Base(metadata, token)
+    : Base(DeclarationKind::Class, metadata, token)
     , _initializers(makeInitializerDeclarations(metadata, token)) {
 
 }

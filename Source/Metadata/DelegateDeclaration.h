@@ -20,6 +20,9 @@ public:
 
     virtual IteratorRange<ParameterIterator> parameters() const;
 
+protected:
+    explicit DelegateDeclaration(DeclarationKind, IMetaDataImport2*, mdTypeDef);
+
 private:
     MethodDeclaration _invokeMethod;
 };

@@ -157,8 +157,8 @@ vector<EventDeclaration> makeEventDeclarations(IMetaDataImport2* metadata, mdTyp
 
 }
 
-BaseClassDeclaration::BaseClassDeclaration(IMetaDataImport2* metadata, mdTypeDef token)
-    : Base(metadata, token)
+BaseClassDeclaration::BaseClassDeclaration(DeclarationKind kind, IMetaDataImport2* metadata, mdTypeDef token)
+    : Base(kind, metadata, token)
     , _implementedInterfaces(makeImplementedInterfacesDeclarations(metadata, token))
     , _methods(makeMethodDeclarations(metadata, token))
     , _properties(makePropertyDeclarations(metadata, token))

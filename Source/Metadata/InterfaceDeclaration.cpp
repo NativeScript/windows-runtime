@@ -9,7 +9,12 @@ using namespace Microsoft::WRL;
 
 
 InterfaceDeclaration::InterfaceDeclaration(IMetaDataImport2* metadata, mdTypeDef token)
-    : Base(metadata, token) {
+    : Base(DeclarationKind::Interface, metadata, token) {
+
+}
+
+InterfaceDeclaration::InterfaceDeclaration(DeclarationKind kind, IMetaDataImport2* metadata, mdTypeDef token)
+    : Base(kind, metadata, token) {
 
 }
 
@@ -18,7 +23,7 @@ IID InterfaceDeclaration::id() const {
 }
 
 GenericInterfaceInstanceDeclaration::GenericInterfaceInstanceDeclaration(IMetaDataImport2* openMetadata, mdTypeDef openToken, IMetaDataImport2* closedMetadata, mdTypeSpec closedToken)
-    : Base(openMetadata, openToken)
+    : Base(DeclarationKind::GenericInterfaceInstance, openMetadata, openToken)
     , _closedMetadata{closedMetadata}
     , _closedToken{_closedToken} {
 

@@ -10,7 +10,7 @@ public:
         MetadataReader metadataReader;
 
         const wchar_t* name{L"NativeScript.TestFixtures.IEmptyInterface"};
-        shared_ptr<InterfaceDeclaration> declaration{dynamic_pointer_cast<InterfaceDeclaration>(metadataReader.findByName(name))};
+        shared_ptr<InterfaceDeclaration> declaration{static_pointer_cast<InterfaceDeclaration>(metadataReader.findByName(name))};
 
         Assert::IsTrue(declaration->name() == L"IEmptyInterface");
         Assert::IsTrue(declaration->fullName() == name);
@@ -21,7 +21,7 @@ public:
         MetadataReader metadataReader;
 
         const wchar_t* name{L"Windows.Foundation.Collections.IIterable`1"};
-        shared_ptr<InterfaceDeclaration> declaration{dynamic_pointer_cast<InterfaceDeclaration>(metadataReader.findByName(name))};
+        shared_ptr<InterfaceDeclaration> declaration{static_pointer_cast<InterfaceDeclaration>(metadataReader.findByName(name))};
 
         Assert::IsTrue(declaration->name() == L"IIterable");
         Assert::IsTrue(declaration->fullName() == name);
@@ -31,7 +31,7 @@ public:
         MetadataReader metadataReader;
 
         const wchar_t* name{L"NativeScript.TestFixtures.SingleGenericImplementationClass"};
-        shared_ptr<ClassDeclaration> declaration{dynamic_pointer_cast<ClassDeclaration>(metadataReader.findByName(name))};
+        shared_ptr<ClassDeclaration> declaration{static_pointer_cast<ClassDeclaration>(metadataReader.findByName(name))};
 
         IteratorRange<ClassDeclaration::InterfaceIterator> interfaces{declaration->implementedInterfaces()};
 

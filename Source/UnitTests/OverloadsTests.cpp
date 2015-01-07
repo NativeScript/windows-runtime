@@ -9,7 +9,7 @@ public:
         MetadataReader metadataReader;
 
         const wchar_t* name{L"NativeScript.TestFixtures.OverloadsClass"};
-        shared_ptr<ClassDeclaration> declaration{dynamic_pointer_cast<ClassDeclaration>(metadataReader.findByName(name))};
+        shared_ptr<ClassDeclaration> declaration{static_pointer_cast<ClassDeclaration>(metadataReader.findByName(name))};
         vector<const MethodDeclaration> methods{declaration->findMethodsWithName(L"InstanceMethod")};
 
         Assert::IsTrue(methods.size() == 2);

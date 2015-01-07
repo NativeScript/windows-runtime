@@ -14,6 +14,9 @@ public:
     explicit InterfaceDeclaration(IMetaDataImport2*, mdTypeDef);
 
     virtual IID id() const;
+
+protected:
+    explicit InterfaceDeclaration(DeclarationKind, IMetaDataImport2*, mdTypeDef);
 };
 
 class GenericInterfaceInstanceDeclaration final : public InterfaceDeclaration {

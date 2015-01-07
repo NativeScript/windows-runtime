@@ -9,7 +9,7 @@ public:
         MetadataReader metadataReader;
 
         const wchar_t* name{L"NativeScript.TestFixtures.MarshalingClass"};
-        shared_ptr<ClassDeclaration> declaration{dynamic_pointer_cast<ClassDeclaration>(metadataReader.findByName(name))};
+        shared_ptr<ClassDeclaration> declaration{static_pointer_cast<ClassDeclaration>(metadataReader.findByName(name))};
         MethodDeclaration method{declaration->findMethodsWithName(L"InOutParameterMethod")[0]};
         IteratorRange<MethodDeclaration::ParameterIterator> parameters{method.parameters()};
 

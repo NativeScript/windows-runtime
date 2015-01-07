@@ -45,7 +45,7 @@ vector<ParameterDeclaration> makeParameterDeclarations(IMetaDataImport2* metadat
 }
 
 MethodDeclaration::MethodDeclaration(IMetaDataImport2* metadata, mdMethodDef token)
-    : Base()
+    : Base(DeclarationKind::Method)
     , _metadata{metadata}
     , _token{token}
     , _parameters(makeParameterDeclarations(metadata, token)) {

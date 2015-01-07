@@ -10,7 +10,7 @@ public:
         MetadataReader metadataReader;
 
         const wchar_t* name{L"NativeScript.TestFixtures.EmptyDelegate"};
-        shared_ptr<DelegateDeclaration> declaration{dynamic_pointer_cast<DelegateDeclaration>(metadataReader.findByName(name))};
+        shared_ptr<DelegateDeclaration> declaration{static_pointer_cast<DelegateDeclaration>(metadataReader.findByName(name))};
 
         Assert::IsTrue(declaration->name() == L"EmptyDelegate");
         Assert::IsTrue(declaration->fullName() == name);
@@ -22,7 +22,7 @@ public:
         MetadataReader metadataReader;
 
         const wchar_t* name{L"NativeScript.TestFixtures.SimpleDelegate"};
-        shared_ptr<DelegateDeclaration> declaration{dynamic_pointer_cast<DelegateDeclaration>(metadataReader.findByName(name))};
+        shared_ptr<DelegateDeclaration> declaration{static_pointer_cast<DelegateDeclaration>(metadataReader.findByName(name))};
 
         IteratorRange<DelegateDeclaration::ParameterIterator> parameters{declaration->parameters()};
 
@@ -44,7 +44,7 @@ public:
         MetadataReader metadataReader;
 
         const wchar_t* name{L"Windows.Foundation.EventHandler`1"};
-        shared_ptr<DelegateDeclaration> declaration{dynamic_pointer_cast<DelegateDeclaration>(metadataReader.findByName(name))};
+        shared_ptr<DelegateDeclaration> declaration{static_pointer_cast<DelegateDeclaration>(metadataReader.findByName(name))};
 
         Assert::IsTrue(declaration->name() == L"EventHandler");
         Assert::IsTrue(declaration->fullName() == name);

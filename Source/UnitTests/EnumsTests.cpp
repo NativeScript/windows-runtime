@@ -10,7 +10,7 @@ public:
         MetadataReader metadataReader;
 
         const wchar_t* name{L"NativeScript.TestFixtures.EmptyEnum"};
-        shared_ptr<EnumDeclaration> declaration{dynamic_pointer_cast<EnumDeclaration>(metadataReader.findByName(name))};
+        shared_ptr<EnumDeclaration> declaration{static_pointer_cast<EnumDeclaration>(metadataReader.findByName(name))};
 
         Assert::IsTrue(declaration->name() == L"EmptyEnum");
         Assert::IsTrue(declaration->fullName() == name);
@@ -23,7 +23,7 @@ public:
         MetadataReader metadataReader;
 
         const wchar_t* name{L"NativeScript.TestFixtures.SimpleEnum"};
-        shared_ptr<EnumDeclaration> declaration{dynamic_pointer_cast<EnumDeclaration>(metadataReader.findByName(name))};
+        shared_ptr<EnumDeclaration> declaration{static_pointer_cast<EnumDeclaration>(metadataReader.findByName(name))};
 
         EnumDeclaration::MemberIterator it{declaration->begin()};
         const EnumMemberDeclaration& member1{*it};
@@ -51,7 +51,7 @@ public:
         MetadataReader metadataReader;
 
         const wchar_t* name{L"NativeScript.TestFixtures.Int32Enum"};
-        shared_ptr<EnumDeclaration> declaration{dynamic_pointer_cast<EnumDeclaration>(metadataReader.findByName(name))};
+        shared_ptr<EnumDeclaration> declaration{static_pointer_cast<EnumDeclaration>(metadataReader.findByName(name))};
 
         Assert::IsTrue(declaration->type() == ELEMENT_TYPE_I4);
 
@@ -73,7 +73,7 @@ public:
         MetadataReader metadataReader;
 
         const wchar_t* name{L"NativeScript.TestFixtures.UInt32Enum"};
-        shared_ptr<EnumDeclaration> declaration{dynamic_pointer_cast<EnumDeclaration>(metadataReader.findByName(name))};
+        shared_ptr<EnumDeclaration> declaration{static_pointer_cast<EnumDeclaration>(metadataReader.findByName(name))};
 
         Assert::IsTrue(declaration->type() == ELEMENT_TYPE_U4);
 
@@ -95,7 +95,7 @@ public:
         MetadataReader metadataReader;
 
         const wchar_t* name{L"NativeScript.TestFixtures.ManyMembersEnum"};
-        shared_ptr<EnumDeclaration> declaration{dynamic_pointer_cast<EnumDeclaration>(metadataReader.findByName(name))};
+        shared_ptr<EnumDeclaration> declaration{static_pointer_cast<EnumDeclaration>(metadataReader.findByName(name))};
 
         size_t size{declaration->size()};
         Assert::IsTrue(size == 512);

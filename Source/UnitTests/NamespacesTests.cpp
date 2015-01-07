@@ -17,7 +17,7 @@ public:
         };
 
         for (pair<const wchar_t*, const wchar_t*> pair : cases) {
-            shared_ptr<NamespaceDeclaration> declaration(dynamic_pointer_cast<NamespaceDeclaration>(metadataReader.findByName(pair.first)));
+            shared_ptr<NamespaceDeclaration> declaration(static_pointer_cast<NamespaceDeclaration>(metadataReader.findByName(pair.first)));
             Assert::IsTrue(declaration->name() == pair.second);
             Assert::IsTrue(declaration->fullName() == pair.first);
         }
@@ -33,7 +33,7 @@ public:
         };
 
         for (pair<const wchar_t*, const wchar_t*> pair : cases) {
-            shared_ptr<NamespaceDeclaration> declaration(dynamic_pointer_cast<NamespaceDeclaration>(metadataReader.findByName(pair.first)));
+            shared_ptr<NamespaceDeclaration> declaration(static_pointer_cast<NamespaceDeclaration>(metadataReader.findByName(pair.first)));
             Assert::IsTrue(declaration->name() == pair.second);
             Assert::IsTrue(declaration->fullName() == pair.first);
         }
