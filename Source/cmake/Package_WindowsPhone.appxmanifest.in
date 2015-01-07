@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Package xmlns="http://schemas.microsoft.com/appx/2010/manifest" xmlns:m2="http://schemas.microsoft.com/appx/2013/manifest" xmlns:m3="http://schemas.microsoft.com/appx/2014/manifest" xmlns:mp="http://schemas.microsoft.com/appx/2014/phone/manifest">
+  <Identity Name="@PACKAGE_GUID@" Publisher="CN=Telerik" Version="1.0.0.0" />
+  <mp:PhoneIdentity PhoneProductId="@PACKAGE_GUID@" PhonePublisherId="00000000-0000-0000-0000-000000000000" />
+
+  <Properties>
+    <DisplayName>@SHORT_NAME@</DisplayName>
+    <PublisherDisplayName>Telerik</PublisherDisplayName>
+    <Logo>StoreLogo.png</Logo>
+  </Properties>
+
+  <Prerequisites>
+    <OSMinVersion>6.3.1</OSMinVersion>
+    <OSMaxVersionTested>6.3.1</OSMaxVersionTested>
+  </Prerequisites>
+
+  <Resources>
+    <Resource Language="x-generate" />
+  </Resources>
+
+  <Applications>
+    <Application Id="App" Executable="$targetnametoken$.exe" EntryPoint="@SHORT_NAME@.App">
+      <m3:VisualElements
+        DisplayName="@SHORT_NAME@"
+        Square150x150Logo="Logo.png"
+        Square44x44Logo="SmallLogo.png"
+        Description="@SHORT_NAME@"
+        ForegroundText="light"
+        BackgroundColor="transparent">
+        <m3:DefaultTile Wide310x150Logo="WideLogo.png" Square71x71Logo="Square71x71Logo.png" />
+        <m3:SplashScreen Image="SplashScreen.png" />
+      </m3:VisualElements>
+    </Application>
+  </Applications>
+</Package>
