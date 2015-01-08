@@ -1,4 +1,4 @@
-#set(WEBKIT_SOURCE_DIR "/Users/yavorgeorgiev/Projects/webkit")
+set(WEBKIT_SOURCE_DIR "${PROJECT_SOURCE_DIR}/WebKit")
 set(WTF_SOURCE_DIR "${WEBKIT_SOURCE_DIR}/Source/WTF")
 set(JavaScriptCore_SOURCE_DIR "${WEBKIT_SOURCE_DIR}/Source/JavaScriptCore")
 set(JavaScriptCore_INCLUDE_DIRECTORIES

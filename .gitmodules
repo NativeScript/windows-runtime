@@ -1,0 +1,3 @@
+[submodule "WebKit"]
+	path = Source/WebKit
+	url = git@github.com:NativeScript/webkit.git
