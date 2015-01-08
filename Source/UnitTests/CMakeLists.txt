@@ -19,7 +19,7 @@ file(GLOB CONTENT_FILES ${PROJECT_SOURCE_DIR}/cmake/Assets/*)
 source_group("Assets" FILES ${CONTENT_FILES})
 
 list(APPEND CONTENT_FILES
-    Package.appxmanifest
+    Package_${CMAKE_SYSTEM_NAME}.appxmanifest
 )
 set_property(SOURCE ${CONTENT_FILES} PROPERTY VS_DEPLOYMENT_CONTENT 1)
 
@@ -34,7 +34,9 @@ include_directories(
     ${PROJECT_SOURCE_DIR}/Metadata
 )
 
-file(COPY ${CMAKE_CURRENT_SOURCE_DIR}/UnitTests.vcxproj.user DESTINATION ${CMAKE_CURRENT_BINARY_DIR})
+# TODO
+file(COPY ${CMAKE_CURRENT_SOURCE_DIR}/UnitTests_${CMAKE_SYSTEM_NAME}.vcxproj.user DESTINATION ${CMAKE_CURRENT_BINARY_DIR})
+file(RENAME ${CMAKE_CURRENT_BINARY_DIR}/UnitTests_${CMAKE_SYSTEM_NAME}.vcxproj.user ${CMAKE_CURRENT_BINARY_DIR}/UnitTests.vcxproj.user)
 
 add_library(UnitTests SHARED ${SOURCE_FILES} ${HEADER_FILES} ${RESOURCE_FILES})
 target_link_libraries(UnitTests Metadata)

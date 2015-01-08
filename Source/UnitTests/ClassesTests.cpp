@@ -180,7 +180,7 @@ public:
     TEST_METHOD(ComposablebleInitializers) {
         MetadataReader metadataReader;
 
-        shared_ptr<ClassDeclaration> declaration{static_pointer_cast<ClassDeclaration>(metadataReader.findByName(L"Windows.UI.Xaml.Controls.Maps.LocalMapTileDataSource"))};
+        shared_ptr<ClassDeclaration> declaration{static_pointer_cast<ClassDeclaration>(metadataReader.findByName(L"Windows.UI.Xaml.DataTemplateKey"))};
 
         IteratorRange<ClassDeclaration::MethodIterator> initializers{declaration->initializers()};
 
@@ -189,7 +189,7 @@ public:
         Assert::IsTrue(initializer0.numberOfParameters() == 0);
         size_t index0{0};
         unique_ptr<const InterfaceDeclaration> initializerFactory0{findDeclaringInterfaceForMethod(initializer0, &index0)};
-        Assert::IsTrue(initializerFactory0->fullName() == L"Windows.UI.Xaml.Controls.Maps.ILocalMapTileDataSourceFactory");
+        Assert::IsTrue(initializerFactory0->fullName() == L"Windows.UI.Xaml.IDataTemplateKeyFactory");
         Assert::IsTrue(index0 == 0);
 
         ++it;
@@ -197,7 +197,7 @@ public:
         Assert::IsTrue(initializer1.numberOfParameters() == 1);
         size_t index1{0};
         unique_ptr<const InterfaceDeclaration> initializerFactory1{findDeclaringInterfaceForMethod(initializer1, &index1)};
-        Assert::IsTrue(initializerFactory1->fullName() == L"Windows.UI.Xaml.Controls.Maps.ILocalMapTileDataSourceFactory");
+        Assert::IsTrue(initializerFactory1->fullName() == L"Windows.UI.Xaml.IDataTemplateKeyFactory");
         Assert::IsTrue(index1 == 1);
 
         ++it;

@@ -85,16 +85,16 @@ public:
     TEST_METHOD(GenericEvent) {
         MetadataReader metadataReader;
 
-        const wchar_t* name{L"Windows.Media.Playback.IMediaPlayer"};
+        const wchar_t* name{L"Windows.UI.Core.ICoreWindow"};
         shared_ptr<InterfaceDeclaration> declaration{static_pointer_cast<InterfaceDeclaration>(metadataReader.findByName(name))};
 
-        const wchar_t* eventName{L"MediaOpened"};
+        const wchar_t* eventName{L"KeyUp"};
         EventDeclaration typedEvent{*static_cast<const EventDeclaration*>(declaration->findMembersWithName(eventName)[0].get())};
         Assert::IsTrue(typedEvent.name() == eventName);
         Assert::IsTrue(typedEvent.fullName() == eventName);
         Assert::IsTrue(typedEvent.type()->fullName() == L"Windows.Foundation.TypedEventHandler`2");
-        Assert::IsTrue(typedEvent.addMethod().fullName() == L"add_MediaOpened");
-        Assert::IsTrue(typedEvent.removeMethod().fullName() == L"remove_MediaOpened");
+        Assert::IsTrue(typedEvent.addMethod().fullName() == L"add_KeyUp");
+        Assert::IsTrue(typedEvent.removeMethod().fullName() == L"remove_KeyUp");
     }
 };
 

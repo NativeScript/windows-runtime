@@ -1,0 +1,28 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Package xmlns="http://schemas.microsoft.com/appx/2010/manifest">
+    <Identity Name="e6b84f41-12a6-443f-ba67-67dfb830f519" Publisher="CN=Telerik" Version="1.0.0.0"/>
+    <Properties>
+        <DisplayName>UnitTests</DisplayName>
+        <PublisherDisplayName>Telerik</PublisherDisplayName>
+        <Logo>StoreLogo.png</Logo>
+    </Properties>
+    <Prerequisites>
+        <OSMinVersion>6.3.1</OSMinVersion>
+        <OSMaxVersionTested>6.3.1</OSMaxVersionTested>
+    </Prerequisites>
+    <Resources>
+        <Resource Language="x-generate"/>
+    </Resources>
+    <Applications>
+        <Application EntryPoint="vstest.executionengine.App" Executable="vstest.executionengine.appcontainer.exe" Id="vstest.executionengine.App">
+            <VisualElements BackgroundColor="#0084FF" Description="vstest.executionengine.App" DisplayName="NoUIEntryPoints" ForegroundText="light" Logo="Logo.png" SmallLogo="SmallLogo.png">
+                <SplashScreen Image="SplashScreen.png"/>
+            </VisualElements>
+        </Application>
+        <Application EntryPoint="vstest.executionengine.x86.App" Executable="vstest.executionengine.appcontainer.x86.exe" Id="vstest.executionengine.x86.App">
+            <VisualElements BackgroundColor="#0084FF" Description="vstest.executionengine.x86.App" DisplayName="NoUIEntryPoints" ForegroundText="light" Logo="Logo.png" SmallLogo="SmallLogo.png">
+                <SplashScreen Image="SplashScreen.png"/>
+            </VisualElements>
+        </Application>
+    </Applications>
+</Package>
