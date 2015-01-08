@@ -15,7 +15,7 @@ configure_file(
     ${CMAKE_CURRENT_BINARY_DIR}/Package.appxmanifest
     @ONLY)
 
-file(GLOB CONTENT_FILES ${PROJECT_SOURCE_DIR}/cmake/Assets/*)
+file(GLOB CONTENT_FILES ${PROJECT_SOURCE_DIR}/cmake/Assets_${CMAKE_SYSTEM_NAME}/*)
 
 source_group("" FILES ${SOURCE_FILES} ${HEADER_FILES})
 source_group("Assets" FILES ${CONTENT_FILES})

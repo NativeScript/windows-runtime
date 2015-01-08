@@ -15,7 +15,7 @@ set(SOURCE_FILES
     EnumsTests.cpp
 )
 
-file(GLOB CONTENT_FILES ${PROJECT_SOURCE_DIR}/cmake/Assets/*)
+file(GLOB CONTENT_FILES ${PROJECT_SOURCE_DIR}/cmake/Assets_${CMAKE_SYSTEM_NAME}/*)
 source_group("Assets" FILES ${CONTENT_FILES})
 
 list(APPEND CONTENT_FILES
