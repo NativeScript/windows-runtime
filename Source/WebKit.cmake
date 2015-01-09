@@ -54,7 +54,17 @@ set(WEBKIT_INCLUDE_DIRECTORIES
     "${WTF_SOURCE_DIR}"
     ${JavaScriptCore_INCLUDE_DIRECTORIES}
     "${BINARY_DIR}"
-    "${BINARY_DIR}/DerivedSources/ForwardingHeaders" "${BINARY_DIR}/DerivedSources/JavaScriptCore"
+    "${BINARY_DIR}/DerivedSources"
+    "${BINARY_DIR}/DerivedSources/ForwardingHeaders"
+    "${BINARY_DIR}/DerivedSources/JavaScriptCore"
 )
 
 set(WEBKIT_LINK_DIRECTORIES ${BINARY_DIR}/lib)
+
+set(WEBKIT_BINARIES
+    ${BINARY_DIR}/bin/$<CONFIG>/WTF.dll
+    ${BINARY_DIR}/bin/$<CONFIG>/JavaScriptCore.dll
+)
+
+add_definitions(-DBUILDING_WITH_CMAKE=1)
+add_definitions(-DHAVE_CONFIG_H=1)
