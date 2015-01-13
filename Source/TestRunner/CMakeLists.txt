@@ -38,7 +38,7 @@ set(RESOURCE_FILES
     ${CONTENT_FILES}
 )
 
-include_directories(${PROJECT_SOURCE_DIR}/Runtime)
+include_directories(${PROJECT_SOURCE_DIR}/Runtime ${PROJECT_BINARY_DIR}/Runtime)
 link_directories(${WEBKIT_LINK_DIRECTORIES})
 
 add_executable(TestRunner WIN32 ${SOURCE_FILES} ${HEADER_FILES} ${RESOURCE_FILES})

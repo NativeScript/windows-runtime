@@ -1,10 +1,11 @@
 set(HEADER_FILES
     RuntimeExportMacros.h
+    Runtime.h
     pch.h
 )
 
 set(SOURCE_FILES
-    main.cpp
+    Runtime.cpp
 )
 
 source_group("" FILES ${SOURCE_FILES} ${HEADER_FILES})
