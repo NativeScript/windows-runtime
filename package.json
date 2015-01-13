@@ -1,0 +1,22 @@
+{
+  "name": "tns-winrt",
+  "description": "Telerik NativeScript Runtime for WinRT",
+  "version": "0.1.0",
+  "keywords": [
+    "NativeScript",
+    "WinRT",
+    "runtime"
+  ],
+  "author": {
+    "name": "Telerik",
+    "email": "support@telerik.com"
+  },
+  "os": [
+    "win32"
+  ],
+  "directories": {},
+  "files": [
+    "**/*.*"
+  ],
+  "license": "Apache-2.0"
+}
