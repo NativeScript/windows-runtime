@@ -446,6 +446,9 @@ DEFAULT_MMAP_THRESHOLD       default: 256K
 #ifdef WIN32
 #define WIN32_LEAN_AND_MEAN
 #include <windows.h>
+WINBASEAPI _Ret_maybenull_ _Post_writable_byte_size_(dwSize) LPVOID WINAPI VirtualAlloc(_In_opt_ LPVOID lpAddress, _In_ SIZE_T dwSize, _In_ DWORD flAllocationType, _In_ DWORD flProtect);
+WINBASEAPI BOOL WINAPI VirtualFree(_In_ LPVOID lpAddress, _In_ SIZE_T dwSize, _In_ DWORD dwFreeType);
+WINBASEAPI VOID WINAPI GetSystemInfo(_Out_ LPSYSTEM_INFO lpSystemInfo);
 #define HAVE_MMAP 1
 #define HAVE_MORECORE 0
 #define LACKS_UNISTD_H
