@@ -32,6 +32,8 @@ set(WEBKIT_CMAKE_ARGS
     -DWTF_USE_NLS_UNICODE:BOOL=ON
     -DWTF_USE_CF:BOOL=OFF
     -DSHARED_CORE:BOOL=ON
+    -DSHOULD_INSTALL_JS_SHELL:BOOL=OFF
+    -DCMAKE_INSTALL_PREFIX:PATH=<INSTALL_DIR>
     -DCMAKE_SYSTEM_NAME:STRING=${CMAKE_SYSTEM_NAME}
     -DCMAKE_SYSTEM_VERSION:STRING=${CMAKE_SYSTEM_VERSION}
     -Wno-dev
@@ -43,27 +45,28 @@ ExternalProject_Add(
     SOURCE_DIR ${WEBKIT_SOURCE_DIR}
     CMAKE_GENERATOR ${CMAKE_GENERATOR}
     CMAKE_ARGS ${WEBKIT_CMAKE_ARGS}
-    BUILD_COMMAND ${CMAKE_COMMAND} --build . --target Source/JavaScriptCore/JavaScriptCore --config $<CONFIG>
-    INSTALL_COMMAND ""
+    BUILD_COMMAND ${CMAKE_COMMAND} --build . --config $<CONFIG>
 )
 
-ExternalProject_Get_Property(WebKit BINARY_DIR)
+get_property(WEBKIT_BINARY_DIR TARGET WebKit PROPERTY _EP_BINARY_DIR)
+get_property(WEBKIT_INSTALL_DIR TARGET WebKit PROPERTY _EP_INSTALL_DIR)
 
 set(WEBKIT_INCLUDE_DIRECTORIES
     "${WEBKIT_SOURCE_DIR}/Source"
     "${WTF_SOURCE_DIR}"
     ${JavaScriptCore_INCLUDE_DIRECTORIES}
-    "${BINARY_DIR}"
-    "${BINARY_DIR}/DerivedSources"
-    "${BINARY_DIR}/DerivedSources/ForwardingHeaders"
-    "${BINARY_DIR}/DerivedSources/JavaScriptCore"
+    "${WEBKIT_BINARY_DIR}"
+    "${WEBKIT_BINARY_DIR}/DerivedSources"
+    "${WEBKIT_BINARY_DIR}/DerivedSources/ForwardingHeaders"
+    "${WEBKIT_BINARY_DIR}/DerivedSources/JavaScriptCore"
 )
 
-set(WEBKIT_LINK_DIRECTORIES ${BINARY_DIR}/lib)
+set(WEBKIT_LINK_DIRECTORIES ${WEBKIT_INSTALL_DIR}/lib)
+set(WEBKIT_LIBRARIES WTF JavaScriptCore)
 
 set(WEBKIT_BINARIES
-    ${BINARY_DIR}/bin/$<CONFIG>/WTF.dll
-    ${BINARY_DIR}/bin/$<CONFIG>/JavaScriptCore.dll
+    ${WEBKIT_INSTALL_DIR}/lib/WTF.dll
+    ${WEBKIT_INSTALL_DIR}/lib/JavaScriptCore.dll
 )
 
 add_definitions(-DBUILDING_WITH_CMAKE=1)

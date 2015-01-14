@@ -16,7 +16,7 @@ link_directories(${WEBKIT_LINK_DIRECTORIES})
 add_library(Runtime SHARED ${SOURCE_FILES} ${HEADER_FILES})
 add_dependencies(Runtime WebKit libffi)
 
-target_link_libraries(Runtime JavaScriptCore Metadata)
+target_link_libraries(Runtime ${WEBKIT_LIBRARIES} Metadata)
 
 include(GenerateExportHeader)
 generate_export_header(Runtime
