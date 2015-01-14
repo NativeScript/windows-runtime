@@ -1,0 +1,73 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup Label="Globals">
+    <MSBuildAllProjects>$(MSBuildAllProjects);$(MSBuildThisFileFullPath)</MSBuildAllProjects>
+    <HasSharedItems>true</HasSharedItems>
+    <ItemsProjectGuid>{A9E64AEC-16CD-4B8C-9727-D864B4EB68AE}</ItemsProjectGuid>
+    <ItemsRootNamespace>libffi</ItemsRootNamespace>
+    <ItemsProjectName>libffi.Shared</ItemsProjectName>
+    <CodeSharingProject>248F659F-DAC5-46E8-AC09-60EC9FC95053</CodeSharingProject>
+  </PropertyGroup>
+  <ItemDefinitionGroup>
+    <ClCompile>
+      <AdditionalIncludeDirectories>%(AdditionalIncludeDirectories);$(MSBuildThisFileDirectory)</AdditionalIncludeDirectories>
+    </ClCompile>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <ClInclude Include="$(MSBuildThisFileDirectory)ARM\ffitarget.h">
+      <ExcludedFromBuild>true</ExcludedFromBuild>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)ARM\kxarm.h">
+      <ExcludedFromBuild>true</ExcludedFromBuild>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)ARM\kxarmunw.h">
+      <ExcludedFromBuild>true</ExcludedFromBuild>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)ffi.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)fficonfig.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)ffitarget.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)ffi_common.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)targetver.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)x86\ffitarget.h">
+      <ExcludedFromBuild>true</ExcludedFromBuild>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="$(MSBuildThisFileDirectory)ARM\ffi.c">
+      <ExcludedFromBuild>true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)closures.c" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)debug.c" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)dlmalloc.c">
+      <ExcludedFromBuild>true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)ffi.c" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)java_raw_api.c" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)prep_cif.c" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)raw_api.c" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)types.c" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)x86\ffi.c">
+      <ExcludedFromBuild>true</ExcludedFromBuild>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectCapability Include="SourceItemsFromImports" />
+  </ItemGroup>
+  <ItemGroup Condition="'$(Platform)'=='ARM'">
+    <CustomBuild Include="$(MSBuildThisFileDirectory)ARM\win32.asm">
+      <FileType>Document</FileType>
+      <Command>armasm -o $(IntDir)win32.obj $(MSBuildThisFileDirectory)ARM\win32.asm</Command>
+      <Outputs>$(IntDir)win32.obj</Outputs>
+    </CustomBuild>
+  </ItemGroup>
+  <ItemGroup Condition="'$(Platform)'=='Win32'">
+    <CustomBuild Include="$(MSBuildThisFileDirectory)x86\win32.asm">
+      <FileType>Document</FileType>
+      <Command>ml -nologo -safeseh -c -Fo$(IntDir)win32.obj $(MSBuildThisFileDirectory)x86\win32.asm</Command>
+      <Outputs>$(IntDir)win32.obj</Outputs>
+    </CustomBuild>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="$(MSBuildThisFileDirectory)ARM\win32.asm" />
+  </ItemGroup>
+</Project>

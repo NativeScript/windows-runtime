@@ -10,8 +10,9 @@ add_definitions(
     /wd4291 /wd4305 /wd4309 /wd4344 /wd4355 /wd4389 /wd4396 /wd4481 /wd4503 /wd4505 /wd4510 /wd4512 /wd4530 /wd4610 /wd4702
     /wd4706 /wd4800 /wd4819 /wd4951 /wd4952 /wd4996 /wd6011 /wd6031 /wd6211 /wd6246 /wd6255 /wd6387
 )
-
 include(WebKit.cmake)
+
+add_subdirectory(libffi)
 
 add_subdirectory(Metadata)
 add_subdirectory(Runtime)

@@ -1,0 +1,42 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="12.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <ClInclude Include="$(MSBuildThisFileDirectory)targetver.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)ffi.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)ffi_common.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)fficonfig.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)ffitarget.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)ARM\ffitarget.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)x86\ffitarget.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)ARM\kxarmunw.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)ARM\kxarm.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="$(MSBuildThisFileDirectory)closures.c" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)debug.c" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)java_raw_api.c" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)prep_cif.c" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)raw_api.c" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)types.c" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)ffi.c" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)ARM\ffi.c" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)x86\ffi.c" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)dlmalloc.c" />
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="ARM">
+      <UniqueIdentifier>{3dff199e-eafe-45e4-b4c8-8b72eaf32874}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="x86">
+      <UniqueIdentifier>{33f74342-1ae3-4d03-8778-515d33a49ffc}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <CustomBuild Include="$(MSBuildThisFileDirectory)x86\win32.asm">
+      <Filter>x86</Filter>
+    </CustomBuild>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="$(MSBuildThisFileDirectory)ARM\win32.asm" />
+  </ItemGroup>
+</Project>
