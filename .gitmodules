@@ -1,3 +1,9 @@
 [submodule "WebKit"]
 	path = Source/WebKit
 	url = git@github.com:NativeScript/webkit.git
+[submodule "shared-tests-app"]
+	path = Source/TestRunner/app/shared
+	url = git@github.com:telerik/tns-runtime-tests-app.git
+[submodule "shared-tests-modules"]
+	path = Source/TestRunner/tns_modules/shared
+	url = git@github.com:telerik/tns-runtime-tests-modules.git
