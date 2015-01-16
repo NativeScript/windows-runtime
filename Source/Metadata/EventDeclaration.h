@@ -27,7 +27,7 @@ public:
 
     bool isSealed() const;
 
-    const DelegateDeclaration* type() const;
+    const DelegateDeclaration& type() const;
 
     const MethodDeclaration& addMethod() const;
 

@@ -25,14 +25,14 @@ MethodDeclaration makeRemoveMethod(IMetaDataImport2* metadata, mdEvent token) {
     return MethodDeclaration{metadata, removeMethodToken};
 }
 
-shared_ptr<DelegateDeclaration> makeType(IMetaDataImport2* metadata, mdEvent token) {
+unique_ptr<DelegateDeclaration> makeType(IMetaDataImport2* metadata, mdEvent token) {
     mdToken delegateToken{mdTokenNil};
 
     ASSERT_SUCCESS(metadata->GetEventProps(token, nullptr, nullptr, 0, nullptr, nullptr, &delegateToken, nullptr, nullptr, nullptr, nullptr, 0, nullptr));
 
     switch (TypeFromToken(delegateToken)) {
         case mdtTypeDef: {
-            return make_shared<DelegateDeclaration>(metadata, delegateToken);
+            return make_unique<DelegateDeclaration>(metadata, delegateToken);
         }
 
         case mdtTypeRef: {
@@ -42,7 +42,7 @@ shared_ptr<DelegateDeclaration> makeType(IMetaDataImport2* metadata, mdEvent tok
             bool isResolved{resolveTypeRef(metadata, delegateToken, externalMetadata.GetAddressOf(), &externalDelegateToken)};
             ASSERT(isResolved);
 
-            return make_shared<DelegateDeclaration>(externalMetadata.Get(), externalDelegateToken);
+            return make_unique<DelegateDeclaration>(externalMetadata.Get(), externalDelegateToken);
         }
 
         case mdtTypeSpec: {
@@ -59,7 +59,7 @@ shared_ptr<DelegateDeclaration> makeType(IMetaDataImport2* metadata, mdEvent tok
             mdToken openGenericDelegateToken{CorSigUncompressToken(signature)};
             switch (TypeFromToken(openGenericDelegateToken)) {
                 case mdtTypeDef: {
-                    return make_shared<GenericDelegateInstanceDeclaration>(metadata, openGenericDelegateToken, metadata, delegateToken);
+                    return make_unique<GenericDelegateInstanceDeclaration>(metadata, openGenericDelegateToken, metadata, delegateToken);
                 }
 
                 case mdtTypeRef: {
@@ -69,7 +69,7 @@ shared_ptr<DelegateDeclaration> makeType(IMetaDataImport2* metadata, mdEvent tok
                     bool isResolved{resolveTypeRef(metadata, openGenericDelegateToken, externalMetadata.GetAddressOf(), &externalDelegateToken)};
                     ASSERT(isResolved);
 
-                    return make_shared<GenericDelegateInstanceDeclaration>(externalMetadata.Get(), externalDelegateToken, metadata, delegateToken);
+                    return make_unique<GenericDelegateInstanceDeclaration>(externalMetadata.Get(), externalDelegateToken, metadata, delegateToken);
                 }
 
                 default:
@@ -131,8 +131,8 @@ bool EventDeclaration::isSealed() const {
     return addMethod().isSealed();
 }
 
-const DelegateDeclaration* EventDeclaration::type() const {
-    return _type.get();
+const DelegateDeclaration& EventDeclaration::type() const {
+    return *_type.get();
 }
 
 const MethodDeclaration& EventDeclaration::addMethod() const {

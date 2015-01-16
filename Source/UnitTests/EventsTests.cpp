@@ -47,7 +47,7 @@ public:
         EventDeclaration emptyEvent{*static_cast<const EventDeclaration*>(declaration->findMembersWithName(eventName)[0].get())};
         Assert::IsTrue(emptyEvent.name() == eventName);
         Assert::IsTrue(emptyEvent.fullName() == eventName);
-        Assert::IsTrue(emptyEvent.type()->fullName() == L"NativeScript.TestFixtures.EmptyDelegate");
+        Assert::IsTrue(emptyEvent.type().fullName() == L"NativeScript.TestFixtures.EmptyDelegate");
         Assert::IsTrue(emptyEvent.addMethod().fullName() == L"add_EmptyEvent");
         Assert::IsTrue(emptyEvent.removeMethod().fullName() == L"remove_EmptyEvent");
     }
@@ -62,7 +62,7 @@ public:
         EventDeclaration externalEvent{*static_cast<const EventDeclaration*>(declaration->findMembersWithName(eventName)[0].get())};
         Assert::IsTrue(externalEvent.name() == eventName);
         Assert::IsTrue(externalEvent.fullName() == eventName);
-        Assert::IsTrue(externalEvent.type()->fullName() == L"Windows.UI.Xaml.RoutedEventHandler");
+        Assert::IsTrue(externalEvent.type().fullName() == L"Windows.UI.Xaml.RoutedEventHandler");
         Assert::IsTrue(externalEvent.addMethod().fullName() == L"add_ExternalEvent");
         Assert::IsTrue(externalEvent.removeMethod().fullName() == L"remove_ExternalEvent");
     }
@@ -77,7 +77,7 @@ public:
         EventDeclaration typedEvent{*static_cast<const EventDeclaration*>(declaration->findMembersWithName(eventName)[0].get())};
         Assert::IsTrue(typedEvent.name() == eventName);
         Assert::IsTrue(typedEvent.fullName() == eventName);
-        Assert::IsTrue(typedEvent.type()->fullName() == L"Windows.Foundation.TypedEventHandler`2");
+        Assert::IsTrue(typedEvent.type().fullName() == L"Windows.Foundation.TypedEventHandler`2");
         Assert::IsTrue(typedEvent.addMethod().fullName() == L"add_GenericEvent");
         Assert::IsTrue(typedEvent.removeMethod().fullName() == L"remove_GenericEvent");
     }
@@ -92,7 +92,7 @@ public:
         EventDeclaration typedEvent{*static_cast<const EventDeclaration*>(declaration->findMembersWithName(eventName)[0].get())};
         Assert::IsTrue(typedEvent.name() == eventName);
         Assert::IsTrue(typedEvent.fullName() == eventName);
-        Assert::IsTrue(typedEvent.type()->fullName() == L"Windows.Foundation.TypedEventHandler`2");
+        Assert::IsTrue(typedEvent.type().fullName() == L"Windows.Foundation.TypedEventHandler`2");
         Assert::IsTrue(typedEvent.addMethod().fullName() == L"add_KeyUp");
         Assert::IsTrue(typedEvent.removeMethod().fullName() == L"remove_KeyUp");
     }
