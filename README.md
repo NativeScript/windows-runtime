@@ -9,6 +9,7 @@ Prerequisites:
 * [CMake 3.1](http://www.cmake.org/download/) or newer
 * [Python 2.7](https://www.python.org/downloads/windows/)
 * [Ruby 2.0](http://rubyinstaller.org/downloads/) or newer
+* [Perl 5.10](http://www.activestate.com/activeperl/downloads) or newer
 * [Bison](http://gnuwin32.sourceforge.net/packages/bison.htm#download)
 * [Gperf](http://gnuwin32.sourceforge.net/packages/gperf.htm#download)
 
