@@ -7,7 +7,7 @@
 namespace NativeScript {
 
 Runtime::Runtime() {
-    std::thread([] {
+    {
         JSGlobalContextRef ctx = JSGlobalContextCreate(nullptr);
 
         auto str = JSStringCreateWithUTF8CString("(function f(a, b){ return a + b; })");
@@ -22,7 +22,7 @@ Runtime::Runtime() {
         double intResult{JSValueToNumber(ctx, result, nullptr)};
 
         JSGlobalContextRelease(ctx);
-    }).join();
+    }
 
     {
         ffi_cif cif;
