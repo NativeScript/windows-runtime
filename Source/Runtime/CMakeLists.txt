@@ -1,10 +1,12 @@
 set(HEADER_FILES
-    RuntimeExportMacros.h
-    Runtime.h
+    GlobalObject.h
     pch.h
+    Runtime.h
+    RuntimeExportMacros.h
 )
 
 set(SOURCE_FILES
+    GlobalObject.cpp
     Runtime.cpp
 )
 

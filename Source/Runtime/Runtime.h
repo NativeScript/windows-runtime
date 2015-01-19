@@ -19,7 +19,7 @@ public:
     const std::wstring applicationPath;
     const JSGlobalContextRef globalContext;
 
-    Runtime(std::wstring applicationPath);
+    explicit Runtime(std::wstring applicationPath);
     ~Runtime();
 
     // Always call this on the main thread,
