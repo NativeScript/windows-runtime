@@ -6,47 +6,72 @@
 #include <JavaScriptCore/StrongInlines.h>
 #include "GlobalObject.h"
 
+#include <MetadataReader.h>
+
 #include "Runtime.h"
 
-using namespace JSC;
-
 namespace NativeScript {
-    struct RuntimeImpl {
-        WTF::RefPtr<VM> vm;
-        Strong<GlobalObject> globalObject;
+using namespace std;
+using namespace JSC;
+using namespace Metadata;
 
-        RuntimeImpl() {
-            this->vm = VM::create(SmallHeap);
+namespace {
+MetadataReader metadataReader;
 
-            JSLockHolder lock(*this->vm);
-            this->globalObject = Strong<GlobalObject>(*this->vm, GlobalObject::create(*this->vm, GlobalObject::createStructure(*this->vm, jsNull())));
-        }
+EncodedJSValue JSC_HOST_CALL getMetadata(ExecState* execState) {
+    WTF::String typeName = execState->argument(0).toWTFString(execState);
+    shared_ptr<Declaration> declaration{metadataReader.findByName(typeName.createHString().Get())};
 
-        ~RuntimeImpl() {
-            JSLockHolder lock(*this->vm);
-            this->globalObject.clear();
-            this->vm.clear();
-        }
-    };
-
-    Runtime::Runtime(std::wstring applicationPath) : Runtime(new RuntimeImpl(), applicationPath) {
+    if (!declaration) {
+        return JSValue::encode(jsNull());
     }
 
-    Runtime::Runtime(RuntimeImplRef impl, std::wstring applicationPath)
-        : applicationPath(applicationPath)
-        , globalContext(toGlobalRef(impl->globalObject->globalExec()))
-        , _impl(impl) {
-        wtfThreadData().m_apiData = static_cast<void*>(this);
+    return JSValue::encode(jsString(execState, declaration->fullName().data()));
+}
+}
+
+struct RuntimeImpl {
+    WTF::RefPtr<VM> vm;
+    Strong<GlobalObject> globalObject;
+
+    RuntimeImpl() {
+        this->vm = VM::create(SmallHeap);
+
+        JSLockHolder lock(*this->vm);
+        this->globalObject = Strong<GlobalObject>(*this->vm, GlobalObject::create(*this->vm, GlobalObject::createStructure(*this->vm, jsNull())));
     }
 
-    Runtime::~Runtime() {
-        delete this->_impl;
+    ~RuntimeImpl() {
+        JSLockHolder lock(*this->vm);
+        this->globalObject.clear();
+        this->vm.clear();
     }
+};
 
-    void Runtime::initialize() {
-        initializeThreading();
-    }
+Runtime::Runtime(const wchar_t* applicationPath)
+    : Runtime(new RuntimeImpl(), applicationPath) {
+}
 
-    void Runtime::executeModule(const wchar_t* moduleIdentifier, JSValueRef** error) {
-    }
+Runtime::Runtime(RuntimeImplRef impl, const wchar_t* applicationPath)
+    : applicationPath(applicationPath)
+    , globalContext(toGlobalRef(impl->globalObject->globalExec()))
+    , _impl(impl) {
+    wtfThreadData().m_apiData = static_cast<void*>(this);
+
+    GlobalObject* globalObject = impl->globalObject.get();
+
+    globalObject->putDirectNativeFunction(*impl->vm, globalObject, Identifier(globalObject->globalExec(), WTF::ASCIILiteral("T")), 1, &getMetadata, NoIntrinsic, DontEnum | Attribute::Function);
+}
+
+Runtime::~Runtime() {
+    delete this->_impl;
+}
+
+void Runtime::initialize() {
+    initializeThreading();
+}
+
+void Runtime::executeModule(const wchar_t* moduleIdentifier, JSValueRef** error) {
+}
+
 }

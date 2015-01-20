@@ -19,7 +19,7 @@ public:
     const std::wstring applicationPath;
     const JSGlobalContextRef globalContext;
 
-    explicit Runtime(std::wstring applicationPath);
+    explicit Runtime(const wchar_t* applicationPath);
     ~Runtime();
 
     // Always call this on the main thread,
@@ -28,7 +28,7 @@ public:
 
     void executeModule(const wchar_t* moduleIdentifier, JSValueRef** error);
 private:
-    Runtime(RuntimeImplRef, std::wstring);
+    Runtime(RuntimeImplRef impl, const wchar_t* applicationPath);
 
     const RuntimeImplRef _impl;
 };

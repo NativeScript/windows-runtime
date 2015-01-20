@@ -34,19 +34,26 @@ using namespace Microsoft::WRL;
 shared_ptr<Declaration> MetadataReader::findByName(const wchar_t* fullName) const {
     ASSERT(fullName);
 
-    if (*fullName == L'\0') {
+    HStringReference fullNameRef{fullName};
+    return findByName(fullNameRef.Get());
+}
+
+std::shared_ptr<Declaration> MetadataReader::findByName(HSTRING fullName) const {
+    ASSERT(fullName);
+
+    if (WindowsGetStringLen(fullName) == 0)
+    {
         return make_shared<NamespaceDeclaration>(L"");
     }
 
     ComPtr<IMetaDataImport2> metadata;
     mdTypeDef token{mdTokenNil};
 
-    HStringReference fullNameRef{fullName};
-    HRESULT getMetadataFileResult{RoGetMetaDataFile(fullNameRef.Get(), nullptr, nullptr, metadata.GetAddressOf(), &token)};
+    HRESULT getMetadataFileResult{RoGetMetaDataFile(fullName, nullptr, nullptr, metadata.GetAddressOf(), &token)};
 
     if (FAILED(getMetadataFileResult)) {
         if (getMetadataFileResult == RO_E_METADATA_NAME_IS_NAMESPACE) {
-            return make_shared<NamespaceDeclaration>(fullName);
+            return make_shared<NamespaceDeclaration>(WindowsGetStringRawBuffer(fullName, nullptr));
         }
 
         return nullptr;
@@ -96,17 +103,5 @@ shared_ptr<Declaration> MetadataReader::findByName(const wchar_t* fullName) cons
     ASSERT_NOT_REACHED();
 }
 
-shared_ptr<Declaration> MetadataReader::findByNameInNamespace(const wchar_t* name, const wchar_t* namespaceName) const {
-    ASSERT(name);
-    ASSERT(namespaceName);
-
-    wstring fullyQualifiedName;
-    if (*namespaceName != L'\0') {
-        fullyQualifiedName.append(namespaceName).append(L".");
-    }
-    fullyQualifiedName.append(name);
-
-    return findByName(fullyQualifiedName.data());
-}
 }
 }

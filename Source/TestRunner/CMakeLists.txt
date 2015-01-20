@@ -17,6 +17,13 @@ configure_file(
 )
 list(APPEND RESOURCE_FILES ${CMAKE_CURRENT_BINARY_DIR}/Package.appxmanifest)
 
+set(TEST_JS app/Test.js)
+if (NOT EXISTS ${TEST_JS})
+    file(WRITE ${TEST_JS} "console.log('Hello, World!');")
+endif()
+
+list(APPEND RESOURCE_FILES app tns_modules)
+
 file(GLOB ASSETS_FILES ${PROJECT_SOURCE_DIR}/cmake/Assets_${CMAKE_SYSTEM_NAME}/*)
 source_group("Assets" FILES ${ASSETS_FILES})
 list(APPEND RESOURCE_FILES ${ASSETS_FILES})
