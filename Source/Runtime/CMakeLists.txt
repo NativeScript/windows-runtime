@@ -1,12 +1,13 @@
 set(HEADER_FILES
     GlobalObject.h
-    pch.h
+    Runtime-Prefix.h
     Runtime.h
     RuntimeExportMacros.h
 )
 
 set(SOURCE_FILES
     GlobalObject.cpp
+    Runtime-Prefix.cpp
     Runtime.cpp
 )
 
@@ -19,6 +20,9 @@ add_library(Runtime SHARED ${SOURCE_FILES} ${HEADER_FILES})
 add_dependencies(Runtime WebKit libffi)
 
 target_link_libraries(Runtime ${WEBKIT_LIBRARIES} Metadata)
+
+include(PrecompiledHeaders)
+SET_PRECOMPILED_HEADER(Runtime Runtime-Prefix.h Runtime-Prefix.cpp)
 
 include(GenerateExportHeader)
 generate_export_header(Runtime

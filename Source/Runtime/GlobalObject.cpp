@@ -1,3 +1,5 @@
+#include "Runtime-Prefix.h"
+
 #include "GlobalObject.h"
 #include <JavaScriptCore/JSGlobalObjectInspectorController.h>
 #include <JavaScriptCore/Microtask.h>

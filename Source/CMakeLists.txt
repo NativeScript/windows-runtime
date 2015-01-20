@@ -1,6 +1,8 @@
 cmake_minimum_required(VERSION 3.0.0)
 project(NativeScript)
 
+set(CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/cmake")
+
 add_definitions(
     # Windows 8.1
     /D_WIN32_WINNT=0x0603
