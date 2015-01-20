@@ -8,22 +8,21 @@
 namespace NativeScript {
 namespace Metadata {
 
-class StructDeclaration final : public TypeDeclaration {
-public:
-    typedef TypeDeclaration Base;
+    class StructDeclaration final : public TypeDeclaration {
+    public:
+        typedef TypeDeclaration Base;
 
-    using FieldIterator = std::vector<const StructFieldDeclaration>::const_iterator;
+        using FieldIterator = std::vector<const StructFieldDeclaration>::const_iterator;
 
-    explicit StructDeclaration(IMetaDataImport2*, mdTypeDef);
+        explicit StructDeclaration(IMetaDataImport2*, mdTypeDef);
 
-    size_t size() const;
+        size_t size() const;
 
-    FieldIterator begin() const;
-    FieldIterator end() const;
+        FieldIterator begin() const;
+        FieldIterator end() const;
 
-private:
-    std::vector<StructFieldDeclaration> _fields;
-};
-
+    private:
+        std::vector<StructFieldDeclaration> _fields;
+    };
 }
 }

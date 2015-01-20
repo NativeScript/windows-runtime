@@ -14,15 +14,16 @@ using namespace Platform;
 using namespace Windows::Foundation;
 using namespace Windows::Storage;
 using namespace Windows::UI::Popups;
+using namespace Windows::ApplicationModel;
 using namespace Windows::ApplicationModel::Activation;
 using namespace TestFixtures;
 
 void App::OnLaunched(LaunchActivatedEventArgs^ e) {
     Uri^ uri = ref new Uri("ms-appx:///app/Test.js");
 
-    create_task(StorageFile::GetFileFromApplicationUriAsync(uri)).then([](task<StorageFile ^> fileTask) {
+    create_task(StorageFile::GetFileFromApplicationUriAsync(uri)).then([](task<StorageFile^> fileTask) {
         create_task(FileIO::ReadTextAsync(fileTask.get())).then([](task<String^> stringTask) {
-            Runtime runtime(Windows::ApplicationModel::Package::Current->InstalledLocation->Path->Data());
+            Runtime runtime(Package::Current->InstalledLocation->Path->Data());
 
             String^ fileContents = stringTask.get();
             JSStringRef scriptSource = JSStringCreateWithCharacters(fileContents->Data(), fileContents->Length());

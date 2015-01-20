@@ -6,9 +6,9 @@
 namespace NativeScript {
 using namespace JSC;
 
-const ClassInfo GlobalObject::s_info = {"NativeScriptGlobal", &Base::s_info, nullptr, CREATE_METHOD_TABLE(GlobalObject)};
+const ClassInfo GlobalObject::s_info = { "NativeScriptGlobal", &Base::s_info, nullptr, CREATE_METHOD_TABLE(GlobalObject) };
 
-const GlobalObjectMethodTable GlobalObject::globalObjectMethodTable = {&allowsAccessFrom, &supportsProfiling, &supportsRichSourceInfo, &shouldInterruptScript, &javaScriptExperimentsEnabled, &queueTaskToEventLoop, &shouldInterruptScriptBeforeTimeout};
+const GlobalObjectMethodTable GlobalObject::globalObjectMethodTable = { &allowsAccessFrom, &supportsProfiling, &supportsRichSourceInfo, &shouldInterruptScript, &javaScriptExperimentsEnabled, &queueTaskToEventLoop, &shouldInterruptScriptBeforeTimeout };
 
 GlobalObject::~GlobalObject() {
     this->_inspectorController->globalObjectDestroyed();
@@ -41,5 +41,4 @@ void GlobalObject::queueTaskToEventLoop(const JSGlobalObject* globalObject, WTF:
         task->run(const_cast<JSGlobalObject*>(globalObject)->globalExec());
     });
 }
-
 }

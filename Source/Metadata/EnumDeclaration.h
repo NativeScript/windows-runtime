@@ -6,45 +6,44 @@
 namespace NativeScript {
 namespace Metadata {
 
-class EnumDeclaration final : public TypeDeclaration {
-public:
-    typedef TypeDeclaration Base;
-
-    class MemberIterator final : public std::iterator<std::input_iterator_tag, EnumMemberDeclaration> {
+    class EnumDeclaration final : public TypeDeclaration {
     public:
-        explicit MemberIterator(IMetaDataImport2*, mdTypeDef, ULONG index);
+        typedef TypeDeclaration Base;
 
-        ~MemberIterator();
+        class MemberIterator final : public std::iterator<std::input_iterator_tag, EnumMemberDeclaration> {
+        public:
+            explicit MemberIterator(IMetaDataImport2*, mdTypeDef, ULONG index);
 
-        MemberIterator(const MemberIterator&) = delete;
-        MemberIterator(MemberIterator&&);
+            ~MemberIterator();
 
-        MemberIterator& operator=(const MemberIterator&) = delete;
-        MemberIterator& operator=(MemberIterator&&);
+            MemberIterator(const MemberIterator&) = delete;
+            MemberIterator(MemberIterator&&);
 
-        EnumMemberDeclaration operator*();
-        MemberIterator& operator++();
+            MemberIterator& operator=(const MemberIterator&) = delete;
+            MemberIterator& operator=(MemberIterator&&);
 
-        friend bool operator==(const MemberIterator&, const MemberIterator&);
-        friend bool operator!=(const MemberIterator&, const MemberIterator&);
+            EnumMemberDeclaration operator*();
+            MemberIterator& operator++();
 
-    private:
-        Microsoft::WRL::ComPtr<IMetaDataImport2> _metadata;
-        mdTypeDef _token;
+            friend bool operator==(const MemberIterator&, const MemberIterator&);
+            friend bool operator!=(const MemberIterator&, const MemberIterator&);
 
-        ULONG _currentIndex;
-        HCORENUM _enumerator;
+        private:
+            Microsoft::WRL::ComPtr<IMetaDataImport2> _metadata;
+            mdTypeDef _token;
+
+            ULONG _currentIndex;
+            HCORENUM _enumerator;
+        };
+
+        explicit EnumDeclaration(IMetaDataImport2*, mdTypeDef);
+
+        CorElementType type() const;
+
+        size_t size() const;
+
+        MemberIterator begin() const;
+        MemberIterator end() const;
     };
-
-    explicit EnumDeclaration(IMetaDataImport2*, mdTypeDef);
-
-    CorElementType type() const;
-
-    size_t size() const;
-
-    MemberIterator begin() const;
-    MemberIterator end() const;
-};
-
 }
 }

@@ -10,33 +10,32 @@
 namespace NativeScript {
 namespace Metadata {
 
-class PropertyDeclaration final : public Declaration {
-public:
-    typedef Declaration Base;
+    class PropertyDeclaration final : public Declaration {
+    public:
+        typedef Declaration Base;
 
-    explicit PropertyDeclaration(IMetaDataImport2*, mdProperty);
+        explicit PropertyDeclaration(IMetaDataImport2*, mdProperty);
 
-    virtual bool isExported() const override;
+        virtual bool isExported() const override;
 
-    virtual std::wstring name() const override;
+        virtual std::wstring name() const override;
 
-    virtual std::wstring fullName() const override;
+        virtual std::wstring fullName() const override;
 
-    bool isStatic() const;
+        bool isStatic() const;
 
-    bool isSealed() const;
+        bool isSealed() const;
 
-    const MethodDeclaration& getter() const;
+        const MethodDeclaration& getter() const;
 
-    const MethodDeclaration* setter() const;
+        const MethodDeclaration* setter() const;
 
-private:
-    const Microsoft::WRL::ComPtr<IMetaDataImport2> _metadata;
-    const mdProperty _token;
+    private:
+        const Microsoft::WRL::ComPtr<IMetaDataImport2> _metadata;
+        const mdProperty _token;
 
-    MethodDeclaration _getter;
-    std::shared_ptr<MethodDeclaration> _setter;
-};
-
+        MethodDeclaration _getter;
+        std::shared_ptr<MethodDeclaration> _setter;
+    };
 }
 }

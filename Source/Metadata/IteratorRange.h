@@ -22,5 +22,4 @@ private:
     T _beginIterator;
     T _endIterator;
 };
-
 }

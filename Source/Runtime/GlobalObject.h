@@ -45,5 +45,4 @@ private:
 
     std::unique_ptr<Inspector::JSGlobalObjectInspectorController> _inspectorController;
 };
-
 }

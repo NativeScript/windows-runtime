@@ -4,106 +4,105 @@
 namespace NativeScript {
 namespace Metadata {
 
-using namespace std;
-using namespace Microsoft::WRL;
+    using namespace std;
+    using namespace Microsoft::WRL;
 
-EnumDeclaration::MemberIterator::MemberIterator(IMetaDataImport2* metadata, mdTypeDef token, ULONG index)
-    : _metadata{metadata}
-    , _token{token}
-    , _currentIndex{index}
-    , _enumerator{nullptr} {
+    EnumDeclaration::MemberIterator::MemberIterator(IMetaDataImport2* metadata, mdTypeDef token, ULONG index)
+        : _metadata{ metadata }
+        , _token{ token }
+        , _currentIndex{ index }
+        , _enumerator{ nullptr } {
 
-    ASSERT_SUCCESS(_metadata->EnumFields(&_enumerator, _token, nullptr, 0, nullptr));
-    ASSERT_SUCCESS(_metadata->ResetEnum(_enumerator, _currentIndex));
-}
-
-EnumDeclaration::MemberIterator::~MemberIterator() {
-    if (_enumerator) {
-        _metadata->CloseEnum(_enumerator);
-        _enumerator = nullptr;
+        ASSERT_SUCCESS(_metadata->EnumFields(&_enumerator, _token, nullptr, 0, nullptr));
+        ASSERT_SUCCESS(_metadata->ResetEnum(_enumerator, _currentIndex));
     }
-}
 
-EnumDeclaration::MemberIterator::MemberIterator(MemberIterator&& other)
-    : _metadata{move(other._metadata)}
-    , _token{move(other._token)}
-    , _currentIndex{move(other._currentIndex)}
-    , _enumerator{move(other._enumerator)} {
+    EnumDeclaration::MemberIterator::~MemberIterator() {
+        if (_enumerator) {
+            _metadata->CloseEnum(_enumerator);
+            _enumerator = nullptr;
+        }
+    }
 
-    other._enumerator = nullptr;
-}
+    EnumDeclaration::MemberIterator::MemberIterator(MemberIterator&& other)
+        : _metadata{ move(other._metadata) }
+        , _token{ move(other._token) }
+        , _currentIndex{ move(other._currentIndex) }
+        , _enumerator{ move(other._enumerator) } {
 
-EnumDeclaration::MemberIterator& EnumDeclaration::MemberIterator::operator=(MemberIterator&& other) {
-    _metadata = move(other._metadata);
-    _token = move(other._token);
-    _currentIndex = move(other._currentIndex);
-    _enumerator = move(other._enumerator);
+        other._enumerator = nullptr;
+    }
 
-    other._enumerator = nullptr;
+    EnumDeclaration::MemberIterator& EnumDeclaration::MemberIterator::operator=(MemberIterator&& other) {
+        _metadata = move(other._metadata);
+        _token = move(other._token);
+        _currentIndex = move(other._currentIndex);
+        _enumerator = move(other._enumerator);
 
-    return *this;
-}
+        other._enumerator = nullptr;
 
-EnumMemberDeclaration EnumDeclaration::MemberIterator::operator*() {
-    mdFieldDef field{0};
+        return *this;
+    }
 
-    ASSERT_SUCCESS(_metadata->EnumFields(&_enumerator, _token, &field, 1, nullptr));
-    ++_currentIndex;
+    EnumMemberDeclaration EnumDeclaration::MemberIterator::operator*() {
+        mdFieldDef field{ 0 };
 
-    return EnumMemberDeclaration(_metadata.Get(), field);
-}
+        ASSERT_SUCCESS(_metadata->EnumFields(&_enumerator, _token, &field, 1, nullptr));
+        ++_currentIndex;
 
-EnumDeclaration::MemberIterator& EnumDeclaration::MemberIterator::operator++() {
-    // Pretend to move
-    return *this;
-}
+        return EnumMemberDeclaration(_metadata.Get(), field);
+    }
 
-EnumDeclaration::EnumDeclaration(IMetaDataImport2* metadata, mdTypeDef token)
-    : Base(DeclarationKind::Enum, metadata, token) {
-}
+    EnumDeclaration::MemberIterator& EnumDeclaration::MemberIterator::operator++() {
+        // Pretend to move
+        return *this;
+    }
 
-CorElementType EnumDeclaration::type() const {
-    mdFieldDef typeField{mdTokenNil};
-    ASSERT_SUCCESS(_metadata->FindField(_token, COR_ENUM_FIELD_NAME_W, nullptr, 0, &typeField));
+    EnumDeclaration::EnumDeclaration(IMetaDataImport2* metadata, mdTypeDef token)
+        : Base(DeclarationKind::Enum, metadata, token) {
+    }
 
-    PCCOR_SIGNATURE signature{nullptr};
-    ULONG signatureSize{0};
-    ASSERT_SUCCESS(_metadata->GetFieldProps(typeField, nullptr, nullptr, 0, nullptr, nullptr, &signature, &signatureSize, nullptr, nullptr, nullptr));
+    CorElementType EnumDeclaration::type() const {
+        mdFieldDef typeField{ mdTokenNil };
+        ASSERT_SUCCESS(_metadata->FindField(_token, COR_ENUM_FIELD_NAME_W, nullptr, 0, &typeField));
 
-    ULONG header{CorSigUncompressData(signature)};
-    ASSERT(header == IMAGE_CEE_CS_CALLCONV_FIELD);
+        PCCOR_SIGNATURE signature{ nullptr };
+        ULONG signatureSize{ 0 };
+        ASSERT_SUCCESS(_metadata->GetFieldProps(typeField, nullptr, nullptr, 0, nullptr, nullptr, &signature, &signatureSize, nullptr, nullptr, nullptr));
 
-    ULONG elementType{CorSigUncompressData(signature)};
-    return static_cast<CorElementType>(elementType);
-}
+        ULONG header{ CorSigUncompressData(signature) };
+        ASSERT(header == IMAGE_CEE_CS_CALLCONV_FIELD);
 
-// Skips COR_ENUM_FIELD field
-size_t EnumDeclaration::size() const {
-    ULONG size{0};
+        ULONG elementType{ CorSigUncompressData(signature) };
+        return static_cast<CorElementType>(elementType);
+    }
 
-    HCORENUM enumerator{nullptr};
-    ASSERT_SUCCESS(_metadata->EnumFields(&enumerator, _token, nullptr, 0, nullptr));
-    ASSERT_SUCCESS(_metadata->CountEnum(enumerator, &size));
-    _metadata->CloseEnum(enumerator);
+    // Skips COR_ENUM_FIELD field
+    size_t EnumDeclaration::size() const {
+        ULONG size{ 0 };
 
-    return size - 1;
-}
+        HCORENUM enumerator{ nullptr };
+        ASSERT_SUCCESS(_metadata->EnumFields(&enumerator, _token, nullptr, 0, nullptr));
+        ASSERT_SUCCESS(_metadata->CountEnum(enumerator, &size));
+        _metadata->CloseEnum(enumerator);
 
-EnumDeclaration::MemberIterator EnumDeclaration::begin() const {
-    return MemberIterator(_metadata.Get(), _token, 1);
-}
+        return size - 1;
+    }
 
-EnumDeclaration::MemberIterator EnumDeclaration::end() const {
-    return MemberIterator(_metadata.Get(), _token, size() + 1);
-}
+    EnumDeclaration::MemberIterator EnumDeclaration::begin() const {
+        return MemberIterator(_metadata.Get(), _token, 1);
+    }
 
-bool operator==(const EnumDeclaration::MemberIterator& left, const EnumDeclaration::MemberIterator& right) {
-    return left._currentIndex == right._currentIndex;
-}
+    EnumDeclaration::MemberIterator EnumDeclaration::end() const {
+        return MemberIterator(_metadata.Get(), _token, size() + 1);
+    }
 
-bool operator!=(const EnumDeclaration::MemberIterator& left, const EnumDeclaration::MemberIterator& right) {
-    return left._currentIndex != right._currentIndex;
-}
+    bool operator==(const EnumDeclaration::MemberIterator& left, const EnumDeclaration::MemberIterator& right) {
+        return left._currentIndex == right._currentIndex;
+    }
 
+    bool operator!=(const EnumDeclaration::MemberIterator& left, const EnumDeclaration::MemberIterator& right) {
+        return left._currentIndex != right._currentIndex;
+    }
 }
 }

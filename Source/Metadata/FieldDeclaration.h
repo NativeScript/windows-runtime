@@ -8,20 +8,19 @@
 namespace NativeScript {
 namespace Metadata {
 
-class FieldDeclaration : public Declaration {
-public:
-    typedef Declaration Base;
+    class FieldDeclaration : public Declaration {
+    public:
+        typedef Declaration Base;
 
-    virtual std::wstring name() const override;
+        virtual std::wstring name() const override;
 
-    virtual std::wstring fullName() const override;
+        virtual std::wstring fullName() const override;
 
-protected:
-    explicit FieldDeclaration(DeclarationKind, IMetaDataImport2*, mdFieldDef);
+    protected:
+        explicit FieldDeclaration(DeclarationKind, IMetaDataImport2*, mdFieldDef);
 
-    const Microsoft::WRL::ComPtr<IMetaDataImport2> _metadata;
-    const mdFieldDef _token;
-};
-
+        const Microsoft::WRL::ComPtr<IMetaDataImport2> _metadata;
+        const mdFieldDef _token;
+    };
 }
 }

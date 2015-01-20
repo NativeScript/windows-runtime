@@ -8,41 +8,40 @@
 namespace NativeScript {
 namespace Metadata {
 
-class DelegateDeclaration : public TypeDeclaration {
-public:
-    typedef TypeDeclaration Base;
+    class DelegateDeclaration : public TypeDeclaration {
+    public:
+        typedef TypeDeclaration Base;
 
-    using ParameterIterator = MethodDeclaration::ParameterIterator;
+        using ParameterIterator = MethodDeclaration::ParameterIterator;
 
-    explicit DelegateDeclaration(IMetaDataImport2*, mdTypeDef);
+        explicit DelegateDeclaration(IMetaDataImport2*, mdTypeDef);
 
-    virtual CLSID id() const;
+        virtual CLSID id() const;
 
-    virtual IteratorRange<ParameterIterator> parameters() const;
+        virtual IteratorRange<ParameterIterator> parameters() const;
 
-protected:
-    explicit DelegateDeclaration(DeclarationKind, IMetaDataImport2*, mdTypeDef);
+    protected:
+        explicit DelegateDeclaration(DeclarationKind, IMetaDataImport2*, mdTypeDef);
 
-private:
-    MethodDeclaration _invokeMethod;
-};
+    private:
+        MethodDeclaration _invokeMethod;
+    };
 
-class GenericDelegateInstanceDeclaration final : public DelegateDeclaration {
-public:
-    typedef DelegateDeclaration Base;
+    class GenericDelegateInstanceDeclaration final : public DelegateDeclaration {
+    public:
+        typedef DelegateDeclaration Base;
 
-    explicit GenericDelegateInstanceDeclaration(IMetaDataImport2*, mdTypeDef, IMetaDataImport2*, mdTypeSpec);
+        explicit GenericDelegateInstanceDeclaration(IMetaDataImport2*, mdTypeDef, IMetaDataImport2*, mdTypeSpec);
 
-    virtual std::wstring fullName() const override;
+        virtual std::wstring fullName() const override;
 
-    virtual CLSID id() const override;
+        virtual CLSID id() const override;
 
-    virtual IteratorRange<ParameterIterator> parameters() const override;
+        virtual IteratorRange<ParameterIterator> parameters() const override;
 
-private:
-    const Microsoft::WRL::ComPtr<IMetaDataImport2> _closedMetadata;
-    mdTypeSpec _closedToken;
-};
-
+    private:
+        const Microsoft::WRL::ComPtr<IMetaDataImport2> _closedMetadata;
+        mdTypeSpec _closedToken;
+    };
 }
 }

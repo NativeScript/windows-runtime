@@ -16,18 +16,18 @@ using namespace JSC;
 using namespace Metadata;
 
 namespace {
-MetadataReader metadataReader;
+    MetadataReader metadataReader;
 
-EncodedJSValue JSC_HOST_CALL getMetadata(ExecState* execState) {
-    WTF::String typeName = execState->argument(0).toWTFString(execState);
-    shared_ptr<Declaration> declaration{metadataReader.findByName(typeName.createHString().Get())};
+    EncodedJSValue JSC_HOST_CALL getMetadata(ExecState* execState) {
+        WTF::String typeName = execState->argument(0).toWTFString(execState);
+        shared_ptr<Declaration> declaration{ metadataReader.findByName(typeName.createHString().Get()) };
 
-    if (!declaration) {
-        return JSValue::encode(jsNull());
+        if (!declaration) {
+            return JSValue::encode(jsNull());
+        }
+
+        return JSValue::encode(jsString(execState, declaration->fullName().data()));
     }
-
-    return JSValue::encode(jsString(execState, declaration->fullName().data()));
-}
 }
 
 struct RuntimeImpl {
@@ -73,5 +73,4 @@ void Runtime::initialize() {
 
 void Runtime::executeModule(const wchar_t* moduleIdentifier, JSValueRef** error) {
 }
-
 }

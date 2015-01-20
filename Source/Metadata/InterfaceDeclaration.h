@@ -7,32 +7,31 @@
 namespace NativeScript {
 namespace Metadata {
 
-class InterfaceDeclaration : public BaseClassDeclaration {
-public:
-    typedef BaseClassDeclaration Base;
+    class InterfaceDeclaration : public BaseClassDeclaration {
+    public:
+        typedef BaseClassDeclaration Base;
 
-    explicit InterfaceDeclaration(IMetaDataImport2*, mdTypeDef);
+        explicit InterfaceDeclaration(IMetaDataImport2*, mdTypeDef);
 
-    virtual IID id() const;
+        virtual IID id() const;
 
-protected:
-    explicit InterfaceDeclaration(DeclarationKind, IMetaDataImport2*, mdTypeDef);
-};
+    protected:
+        explicit InterfaceDeclaration(DeclarationKind, IMetaDataImport2*, mdTypeDef);
+    };
 
-class GenericInterfaceInstanceDeclaration final : public InterfaceDeclaration {
-public:
-    typedef InterfaceDeclaration Base;
+    class GenericInterfaceInstanceDeclaration final : public InterfaceDeclaration {
+    public:
+        typedef InterfaceDeclaration Base;
 
-    explicit GenericInterfaceInstanceDeclaration(IMetaDataImport2*, mdTypeDef, IMetaDataImport2*, mdTypeSpec);
+        explicit GenericInterfaceInstanceDeclaration(IMetaDataImport2*, mdTypeDef, IMetaDataImport2*, mdTypeSpec);
 
-    virtual std::wstring fullName() const override;
+        virtual std::wstring fullName() const override;
 
-    virtual IID id() const override;
+        virtual IID id() const override;
 
-private:
-    const Microsoft::WRL::ComPtr<IMetaDataImport2> _closedMetadata;
-    mdTypeSpec _closedToken;
-};
-
+    private:
+        const Microsoft::WRL::ComPtr<IMetaDataImport2> _closedMetadata;
+        mdTypeSpec _closedToken;
+    };
 }
 }

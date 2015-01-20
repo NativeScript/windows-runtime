@@ -27,10 +27,10 @@ public:
     static void initialize();
 
     void executeModule(const wchar_t* moduleIdentifier, JSValueRef** error);
+
 private:
     Runtime(RuntimeImplRef impl, const wchar_t* applicationPath);
 
     const RuntimeImplRef _impl;
 };
-
 }

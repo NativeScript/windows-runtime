@@ -10,23 +10,22 @@
 namespace NativeScript {
 namespace Metadata {
 
-class ClassDeclaration final : public BaseClassDeclaration {
-public:
-    typedef BaseClassDeclaration Base;
+    class ClassDeclaration final : public BaseClassDeclaration {
+    public:
+        typedef BaseClassDeclaration Base;
 
-    explicit ClassDeclaration(IMetaDataImport2*, mdTypeDef);
+        explicit ClassDeclaration(IMetaDataImport2*, mdTypeDef);
 
-    std::wstring baseFullName() const;
+        std::wstring baseFullName() const;
 
-    bool isInstantiable() const;
+        bool isInstantiable() const;
 
-    bool isSealed() const;
+        bool isSealed() const;
 
-    IteratorRange<MethodIterator> initializers() const;
+        IteratorRange<MethodIterator> initializers() const;
 
-private:
-    std::vector<MethodDeclaration> _initializers;
-};
-
+    private:
+        std::vector<MethodDeclaration> _initializers;
+    };
 }
 }

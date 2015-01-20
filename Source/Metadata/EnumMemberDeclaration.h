@@ -7,14 +7,13 @@
 namespace NativeScript {
 namespace Metadata {
 
-class EnumMemberDeclaration final : public FieldDeclaration {
-public:
-    typedef FieldDeclaration Base;
+    class EnumMemberDeclaration final : public FieldDeclaration {
+    public:
+        typedef FieldDeclaration Base;
 
-    explicit EnumMemberDeclaration(IMetaDataImport2*, mdFieldDef);
+        explicit EnumMemberDeclaration(IMetaDataImport2*, mdFieldDef);
 
-    int64_t value() const;
-};
-
+        int64_t value() const;
+    };
 }
 }

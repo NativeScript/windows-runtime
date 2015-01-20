@@ -4,20 +4,19 @@
 namespace NativeScript {
 namespace Metadata {
 
-using namespace std;
+    using namespace std;
 
-Declaration::Declaration(DeclarationKind kind)
-    : _kind{kind} {
-}
+    Declaration::Declaration(DeclarationKind kind)
+        : _kind{ kind } {
+    }
 
-// TODO: Check deprecated?, obsolete
-bool Declaration::isExported() const {
-    return true;
-}
+    // TODO: Check deprecated?, obsolete
+    bool Declaration::isExported() const {
+        return true;
+    }
 
-DeclarationKind Declaration::kind() const {
-    return _kind;
-}
-
+    DeclarationKind Declaration::kind() const {
+        return _kind;
+    }
 }
 }
