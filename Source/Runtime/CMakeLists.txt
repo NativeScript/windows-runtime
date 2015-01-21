@@ -4,6 +4,9 @@ set(HEADER_FILES
     RuntimeExportMacros.h
     GlobalObject.h
     
+    FFI/FFIType.h
+    FFI/FFISimpleType.h
+    
     COM/COMObjectWrapper.h
     COM/COMObjectMap.h
     COM/COMInterop.h
