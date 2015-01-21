@@ -2,7 +2,6 @@
 #include <JavaScriptCore/InitializeThreading.h>
 #include <JavaScriptCore/APICast.h>
 #include <JavaScriptCore/FunctionConstructor.h>
-#include <JavaScriptCore/JSGlobalObjectInspectorController.h>
 #include <JavaScriptCore/StrongInlines.h>
 #include "GlobalObject.h"
 

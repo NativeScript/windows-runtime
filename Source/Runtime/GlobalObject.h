@@ -1,13 +1,11 @@
 #pragma once
 
-#include "Runtime-Prefix.h"
 #include <JavaScriptCore/JSGlobalObject.h>
-
-namespace Inspector {
-class JSGlobalObjectInspectorController;
-}
+#include <JavaScriptCore/JSGlobalObjectInspectorController.h>
 
 namespace NativeScript {
+
+typedef class COMInterop Interop;
 
 class GlobalObject : public JSC::JSGlobalObject {
 public:
@@ -30,6 +28,12 @@ public:
         return JSC::Structure::create(vm, nullptr, prototype, JSC::TypeInfo(JSC::GlobalObjectType, StructureFlags), info());
     }
 
+    static void visitChildren(JSC::JSCell* cell, JSC::SlotVisitor& visitor);
+
+    Interop* interop() const {
+        return _interopInstance.get();
+    }
+
 private:
     GlobalObject(JSC::VM& vm, JSC::Structure* structure)
         : Base(vm, structure, &GlobalObject::globalObjectMethodTable) {
@@ -44,5 +48,7 @@ private:
     static void queueTaskToEventLoop(const JSC::JSGlobalObject* globalObject, WTF::PassRefPtr<JSC::Microtask> task);
 
     std::unique_ptr<Inspector::JSGlobalObjectInspectorController> _inspectorController;
+
+    JSC::WriteBarrier<Interop> _interopInstance;
 };
 }

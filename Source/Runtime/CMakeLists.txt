@@ -1,14 +1,21 @@
 set(HEADER_FILES
-    GlobalObject.h
     Runtime-Prefix.h
     Runtime.h
     RuntimeExportMacros.h
+    GlobalObject.h
+    
+    COM/COMObjectWrapper.h
+    COM/COMObjectMap.h
+    COM/COMInterop.h
 )
 
 set(SOURCE_FILES
-    GlobalObject.cpp
     Runtime-Prefix.cpp
     Runtime.cpp
+    GlobalObject.cpp
+    
+    COM/COMObjectWrapper.cpp
+    COM/COMInterop.cpp
 )
 
 source_group("" FILES ${SOURCE_FILES} ${HEADER_FILES})

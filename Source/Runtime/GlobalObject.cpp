@@ -5,6 +5,8 @@
 #include <JavaScriptCore/Microtask.h>
 #include <WTF/RunLoop.h>
 
+#include "COM/COMInterop.h"
+
 namespace NativeScript {
 using namespace JSC;
 
@@ -32,6 +34,15 @@ void GlobalObject::finishCreation(VM& vm) {
     this->putDirect(vm, vm.propertyNames->global, this, DontEnum | ReadOnly | DontDelete);
 
     this->putDirectNativeFunction(vm, this, Identifier(globalExec, WTF::ASCIILiteral("__collect")), 0, &collectGarbage, NoIntrinsic, DontEnum | Attribute::Function);
+
+    _interopInstance.set(vm, this, COMInterop::create(vm, COMInterop::createStructure(vm, this, jsNull())));
+}
+
+void GlobalObject::visitChildren(JSCell* cell, SlotVisitor& visitor) {
+    GlobalObject* globalObject = jsCast<GlobalObject*>(cell);
+    Base::visitChildren(globalObject, visitor);
+
+    visitor.append(&globalObject->_interopInstance);
 }
 
 void GlobalObject::destroy(JSCell* cell) {
