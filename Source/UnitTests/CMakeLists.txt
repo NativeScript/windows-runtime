@@ -1,21 +1,31 @@
 set(HEADER_FILES
-    pch.h
+    UnitTests-Prefix.h
 )
 
-set(SOURCE_FILES
+set(TEST_CASES_FILES
+    ClassesTests.cpp
+    CMakeLists.txt
+    DelegatesTests.cpp
+    EnumsTests.cpp
     EventsTests.cpp
     InterfacesTests.cpp
     MarshalingTests.cpp
     NamespacesTests.cpp
     OverloadsTests.cpp
     StructsTests.cpp
-    ClassesTests.cpp
-    CMakeLists.txt
-    DelegatesTests.cpp
-    EnumsTests.cpp
+)
+set(SOURCE_FILES
+    ${TEST_CASES_FILES}
+    UnitTests-Prefix.cpp
 )
 
-file(GLOB CONTENT_FILES ${PROJECT_SOURCE_DIR}/cmake/Assets_${CMAKE_SYSTEM_NAME})
+source_group("" FILES ${HEADER_FILES})
+source_group("TestCases" FILES ${TEST_CASES_FILES})
+source_group("" FILES ${SOURCE_FILES})
+
+list(APPEND ${SOURCE_FILES} UnitTests-Prefix.cpp)
+
+file(GLOB CONTENT_FILES ${PROJECT_SOURCE_DIR}/cmake/Assets_${CMAKE_SYSTEM_NAME}/*)
 source_group("Assets" FILES ${CONTENT_FILES})
 
 list(APPEND CONTENT_FILES
@@ -26,9 +36,6 @@ set_property(SOURCE ${CONTENT_FILES} PROPERTY VS_DEPLOYMENT_CONTENT 1)
 set(RESOURCE_FILES
     ${CONTENT_FILES}
 )
-
-source_group("" FILES ${HEADER_FILES})
-source_group("TestCases" FILES ${SOURCE_FILES})
 
 include_directories(
     ${PROJECT_SOURCE_DIR}/Metadata
@@ -42,8 +49,11 @@ add_library(UnitTests SHARED ${SOURCE_FILES} ${HEADER_FILES} ${RESOURCE_FILES})
 target_link_libraries(UnitTests Metadata)
 add_dependencies(UnitTests TestFixtures)
 
-set_target_properties(UnitTests PROPERTIES LINK_FLAGS "/LIBPATH:$(VCInstallDir)UnitTest\\lib")
-set_target_properties(UnitTests PROPERTIES COMPILE_FLAGS "/I$(VCInstallDir)UnitTest\\include")
+include(PrecompiledHeaders)
+SET_PRECOMPILED_HEADER(UnitTests UnitTests-Prefix.h UnitTests-Prefix.cpp)
+
+set_target_properties(UnitTests PROPERTIES LINK_FLAGS "/LIBPATH:$(VCInstallDir)UnitTest/lib")
+set_target_properties(UnitTests PROPERTIES COMPILE_FLAGS "/I$(VCInstallDir)UnitTest/include")
 
 set_target_properties(UnitTests PROPERTIES
     VS_WINRT_COMPONENT TRUE

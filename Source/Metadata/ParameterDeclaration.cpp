@@ -1,4 +1,4 @@
-#include "pch.h"
+#include "Metadata-Prefix.h"
 #include "ParameterDeclaration.h"
 
 namespace NativeScript {

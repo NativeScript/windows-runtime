@@ -1,4 +1,4 @@
-#include "pch.h"
+#include "TestRunner-Prefix.h"
 #include "App.h"
 #include <JavaScriptCore/JavaScript.h>
 #include <Runtime.h>

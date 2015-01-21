@@ -12,11 +12,11 @@ set(HEADER_FILES
     FieldDeclaration.h
     InterfaceDeclaration.h
     IteratorRange.h
+    Metadata-Prefix.h
     MetadataReader.h
     MethodDeclaration.h
     NamespaceDeclaration.h
     ParameterDeclaration.h
-    pch.h
     PropertyDeclaration.h
     StructDeclaration.h
     StructFieldDeclaration.h
@@ -35,6 +35,7 @@ set(SOURCE_FILES
     EventDeclaration.cpp
     FieldDeclaration.cpp
     InterfaceDeclaration.cpp
+    Metadata-Prefix.cpp
     MetadataReader.cpp
     MethodDeclaration.cpp
     NamespaceDeclaration.cpp
@@ -45,9 +46,11 @@ set(SOURCE_FILES
     TypeDeclaration.cpp
 )
 
-# TODO: PCH
 # TODO: Warnings as error
 
 source_group("" FILES ${SOURCE_FILES} ${HEADER_FILES})
 
 add_library(Metadata STATIC ${SOURCE_FILES} ${HEADER_FILES})
+
+include(PrecompiledHeaders)
+SET_PRECOMPILED_HEADER(Metadata Metadata-Prefix.h Metadata-Prefix.cpp)

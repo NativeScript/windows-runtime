@@ -1,4 +1,4 @@
-#include "pch.h"
+#include "UnitTests-Prefix.h"
 #include <algorithm>
 
 namespace NativeScript {

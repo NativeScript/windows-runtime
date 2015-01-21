@@ -1,6 +1,6 @@
 #pragma once
 
-#include "pch.h"
+#include "Runtime-Prefix.h"
 #include <JavaScriptCore/JSGlobalObject.h>
 
 namespace Inspector {

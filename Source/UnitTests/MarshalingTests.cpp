@@ -1,4 +1,4 @@
-#include "pch.h"
+#include "UnitTests-Prefix.h"
 
 namespace NativeScript {
 namespace UnitTests {

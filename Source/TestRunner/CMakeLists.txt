@@ -1,11 +1,13 @@
 set(HEADER_FILES
-    pch.h
     App.h
+    TestRunner-Prefix.h
 )
 set(SOURCE_FILES
     App.cpp
     Main.cpp
+    TestRunner-Prefix.cpp
 )
+
 source_group("" FILES ${SOURCE_FILES} ${HEADER_FILES})
 
 set(SHORT_NAME TestRunner)
@@ -41,6 +43,9 @@ link_directories(${WEBKIT_LINK_DIRECTORIES})
 add_executable(TestRunner WIN32 ${SOURCE_FILES} ${HEADER_FILES} ${RESOURCE_FILES})
 target_link_libraries(TestRunner Runtime)
 add_dependencies(TestRunner TestFixtures)
+
+include(PrecompiledHeaders)
+SET_PRECOMPILED_HEADER(TestRunner TestRunner-Prefix.h TestRunner-Prefix.cpp)
 
 set_target_properties(TestRunner PROPERTIES
     VS_WINRT_COMPONENT TRUE
