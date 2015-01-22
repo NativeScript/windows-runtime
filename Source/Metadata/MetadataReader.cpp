@@ -32,15 +32,11 @@ namespace Metadata {
     // TODO: Use decl_iterator, specific_decl_iterator, filtered_decl_iterator
 
     shared_ptr<Declaration> MetadataReader::findByName(const wchar_t* fullName) const {
-        ASSERT(fullName);
-
         HStringReference fullNameRef{ fullName };
         return findByName(fullNameRef.Get());
     }
 
-    std::shared_ptr<Declaration> MetadataReader::findByName(HSTRING fullName) const {
-        ASSERT(fullName);
-
+    shared_ptr<Declaration> MetadataReader::findByName(HSTRING fullName) const {
         if (WindowsGetStringLen(fullName) == 0) {
             return make_shared<NamespaceDeclaration>(L"");
         }
