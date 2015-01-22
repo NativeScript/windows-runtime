@@ -35,6 +35,7 @@ JSValue COMInterop::wrap(IUnknown* unknown) {
     return wrapper;
 }
 
-COMInterop::~COMInterop() {
+void COMInterop::destroy(JSCell* cell) {
+    static_cast<COMInterop*>(cell)->~COMInterop();
 }
 }

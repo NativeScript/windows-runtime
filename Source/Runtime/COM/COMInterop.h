@@ -1,13 +1,15 @@
 #pragma once
 
 #include "COMObjectMap.h"
-#include <JavaScriptCore/JSObject.h>
+#include "../FFI/FFIInterop.h"
 
 namespace NativeScript {
-class COMInterop : public JSC::JSNonFinalObject {
-public:
-    typedef JSC::JSNonFinalObject Base;
+class COMInterop : public FFIInterop {
+    typedef FFIInterop Base;
 
+    DECLARE_INFO;
+
+public:
     static COMInterop* create(JSC::VM& vm, JSC::Structure* structure) {
         COMInterop* object = new (NotNull, JSC::allocateCell<COMInterop>(vm.heap)) COMInterop(vm, structure);
         object->finishCreation(vm);
@@ -16,8 +18,6 @@ public:
     }
 
     static const bool needsDestruction = false;
-
-    DECLARE_INFO;
 
     static JSC::Structure* createStructure(JSC::VM& vm, JSC::JSGlobalObject* globalObject, JSC::JSValue prototype) {
         return JSC::Structure::create(vm, globalObject, prototype, JSC::TypeInfo(JSC::ObjectType, StructureFlags), info());
@@ -29,16 +29,14 @@ public:
         return _objectMap;
     }
 
-    ~COMInterop();
+    ~COMInterop() = default;
 
 private:
     COMInterop(JSC::VM& vm, JSC::Structure* structure)
         : Base(vm, structure) {
     }
 
-    static void destroy(JSC::JSCell* cell) {
-        static_cast<COMInterop*>(cell)->~COMInterop();
-    }
+    static void destroy(JSC::JSCell*);
 
     COMObjectMap _objectMap;
 };

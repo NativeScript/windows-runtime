@@ -5,7 +5,10 @@ set(HEADER_FILES
     GlobalObject.h
 
     FFI/FFIType.h
-    FFI/FFISimpleType.h
+    FFI/FFIVoidType.h
+    FFI/FFINumberType.h
+    FFI/FFIBooleanType.h
+    FFI/FFIInterop.h
 
     COM/COMObjectWrapper.h
     COM/COMObjectMap.h
@@ -16,6 +19,9 @@ set(SOURCE_FILES
     Runtime-Prefix.cpp
     Runtime.cpp
     GlobalObject.cpp
+    
+    FFI/FFIVoidType.cpp
+    FFI/FFIInterop.cpp
 
     COM/COMObjectWrapper.cpp
     COM/COMInterop.cpp
