@@ -3,10 +3,10 @@ set(HEADER_FILES
     Runtime.h
     RuntimeExportMacros.h
     GlobalObject.h
-    
+
     FFI/FFIType.h
     FFI/FFISimpleType.h
-    
+
     COM/COMObjectWrapper.h
     COM/COMObjectMap.h
     COM/COMInterop.h
@@ -16,12 +16,13 @@ set(SOURCE_FILES
     Runtime-Prefix.cpp
     Runtime.cpp
     GlobalObject.cpp
-    
+
     COM/COMObjectWrapper.cpp
     COM/COMInterop.cpp
 )
 
-source_group("" FILES ${SOURCE_FILES} ${HEADER_FILES})
+include(GroupSources)
+GroupSources(.)
 
 include_directories(${WEBKIT_INCLUDE_DIRECTORIES} ${PROJECT_SOURCE_DIR}/Metadata ${PROJECT_SOURCE_DIR}/libffi/libffi.Shared)
 link_directories(${WEBKIT_LINK_DIRECTORIES})
