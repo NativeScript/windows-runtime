@@ -10,7 +10,7 @@ namespace NativeScript.TestFixtures
         {
         }
 
-        public void InOutParameterMethod(int inParameter, out int outParameter)
+        public void InOutParameterMethod(int inParameter, out long outParameter)
         {
             throw new NotImplementedException();
         }
@@ -116,6 +116,11 @@ namespace NativeScript.TestFixtures
         }
 
         public String[] MethodWithWriteOnlyArray([WriteOnlyArray] String[] x)
+        {
+            return x;
+        }
+
+        public SimpleClass[] MethodWithClassArray([ReadOnlyArray] SimpleClass[] x)
         {
             return x;
         }

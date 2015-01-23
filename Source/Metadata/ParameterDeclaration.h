@@ -12,7 +12,7 @@ namespace Metadata {
     public:
         typedef Declaration Base;
 
-        explicit ParameterDeclaration(IMetaDataImport2*, mdParamDef);
+        explicit ParameterDeclaration(IMetaDataImport2*, mdParamDef, PCCOR_SIGNATURE);
 
         virtual std::wstring name() const override;
 
@@ -20,9 +20,12 @@ namespace Metadata {
 
         bool isOut() const;
 
+        PCCOR_SIGNATURE type() const;
+
     private:
         const Microsoft::WRL::ComPtr<IMetaDataImport2> _metadata;
         const mdParamDef _token;
+        const PCCOR_SIGNATURE _type;
     };
 }
 }

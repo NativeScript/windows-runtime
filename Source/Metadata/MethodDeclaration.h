@@ -35,8 +35,7 @@ namespace Metadata {
 
         bool isSealed() const;
 
-        // TODO: Split the signature and add it's elements to the ParameterDeclarations
-        PCCOR_SIGNATURE signature() const;
+        PCCOR_SIGNATURE returnType() const;
 
         IteratorRange<ParameterIterator> parameters() const;
 
@@ -52,6 +51,7 @@ namespace Metadata {
         const Microsoft::WRL::ComPtr<IMetaDataImport2> _metadata;
         const mdMethodDef _token;
 
+        PCCOR_SIGNATURE _returnType;
         std::vector<ParameterDeclaration> _parameters;
     };
 }

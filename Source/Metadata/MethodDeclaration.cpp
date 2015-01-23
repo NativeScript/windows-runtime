@@ -10,36 +10,88 @@ namespace Metadata {
     const wchar_t* const OVERLOAD_ATTRIBUTE_W{ L"Windows.Foundation.Metadata.OverloadAttribute" };
     const wchar_t* const DEFAULT_OVERLOAD_ATTRIBUTE_W{ L"Windows.Foundation.Metadata.DefaultOverloadAttribute" };
 
-    // TODO
     namespace {
+        PCCOR_SIGNATURE extractType(PCCOR_SIGNATURE& signature) {
+            PCCOR_SIGNATURE start = signature;
 
-        vector<ParameterDeclaration> makeParameterDeclarations(IMetaDataImport2* metadata, mdMethodDef token) {
-            HCORENUM enumerator{ nullptr };
-            ULONG count{ 0 };
-            array<mdParamDef, 1024> tokens;
+            CorElementType elementType{ CorSigUncompressElementType(signature) };
+            switch (elementType) {
+            case ELEMENT_TYPE_END:
+                ASSERT_NOT_REACHED();
 
-            ASSERT_SUCCESS(metadata->EnumParams(&enumerator, token, tokens.data(), tokens.size(), &count));
-            ASSERT(count < tokens.size() - 1);
-            metadata->CloseEnum(enumerator);
+            case ELEMENT_TYPE_VOID:
+            case ELEMENT_TYPE_BOOLEAN:
+            case ELEMENT_TYPE_CHAR:
+            case ELEMENT_TYPE_I1:
+            case ELEMENT_TYPE_U1:
+            case ELEMENT_TYPE_I2:
+            case ELEMENT_TYPE_U2:
+            case ELEMENT_TYPE_I4:
+            case ELEMENT_TYPE_U4:
+            case ELEMENT_TYPE_I8:
+            case ELEMENT_TYPE_U8:
+            case ELEMENT_TYPE_R4:
+            case ELEMENT_TYPE_R8:
+            case ELEMENT_TYPE_STRING:
+                return start;
 
-            size_t parameterStartIndex{ 0 };
+            case ELEMENT_TYPE_VALUETYPE:
+                CorSigUncompressToken(signature);
+                return start;
 
-            // Skip return parameter
-            if (count > 0) {
-                ULONG firstParameterIndex{ 0 };
-                ASSERT_SUCCESS(metadata->GetParamProps(tokens[0], nullptr, &firstParameterIndex, nullptr, 0, nullptr, nullptr, nullptr, nullptr, nullptr));
+            case ELEMENT_TYPE_CLASS:
+                CorSigUncompressToken(signature);
+                return start;
 
-                if (firstParameterIndex == 0) {
-                    parameterStartIndex = 1;
+            case ELEMENT_TYPE_OBJECT:
+                return start;
+
+            case ELEMENT_TYPE_SZARRAY:
+                // TODO: CustomMod
+                extractType(signature);
+                return start;
+
+            case ELEMENT_TYPE_VAR:
+                CorSigUncompressData(signature);
+                return start;
+
+            case ELEMENT_TYPE_GENERICINST: {
+                CorSigUncompressElementType(signature);
+                CorSigUncompressToken(signature);
+
+                ULONG genericArgumentsCount{ CorSigUncompressData(signature) };
+                for (size_t i = 0; i < genericArgumentsCount; ++i) {
+                    extractType(signature);
                 }
+
+                return start;
             }
 
-            vector<ParameterDeclaration> result;
-            for (size_t i = parameterStartIndex; i < count; ++i) {
-                result.emplace_back(metadata, tokens[i]);
-            }
+            case ELEMENT_TYPE_BYREF:
+                extractType(signature);
+                return start;
 
-            return result;
+            case ELEMENT_TYPE_PTR:
+            case ELEMENT_TYPE_ARRAY:
+            case ELEMENT_TYPE_TYPEDBYREF:
+            case ELEMENT_TYPE_I:
+            case ELEMENT_TYPE_U:
+            case ELEMENT_TYPE_FNPTR:
+            case ELEMENT_TYPE_MVAR:
+            case ELEMENT_TYPE_CMOD_REQD:
+            case ELEMENT_TYPE_CMOD_OPT:
+            case ELEMENT_TYPE_INTERNAL:
+            case ELEMENT_TYPE_MAX:
+            case ELEMENT_TYPE_MODIFIER:
+            case ELEMENT_TYPE_SENTINEL:
+            case ELEMENT_TYPE_PINNED:
+            case ELEMENT_TYPE_R4_HFA:
+            case ELEMENT_TYPE_R8_HFA:
+                ASSERT_NOT_REACHED();
+
+            default:
+                ASSERT_NOT_REACHED();
+            }
         }
     }
 
@@ -47,11 +99,48 @@ namespace Metadata {
         : Base(DeclarationKind::Method)
         , _metadata{ metadata }
         , _token{ token }
-        , _parameters(makeParameterDeclarations(metadata, token)) {
+        , _parameters() {
 
         ASSERT(metadata);
         ASSERT(TypeFromToken(token) == mdtMethodDef);
         ASSERT(token != mdMethodDefNil);
+
+        PCCOR_SIGNATURE signature{ nullptr };
+        ULONG signatureSize{ 0 };
+
+        ASSERT_SUCCESS(_metadata->GetMethodProps(_token, nullptr, nullptr, 0, nullptr, nullptr, &signature, &signatureSize, nullptr, nullptr));
+
+#if _DEBUG
+        PCCOR_SIGNATURE startSignature{ signature };
+#endif
+
+        if (CorSigUncompressCallingConv(signature) == IMAGE_CEE_CS_CALLCONV_GENERIC) {
+            NOT_IMPLEMENTED();
+        }
+
+        ULONG argumentsCount{ CorSigUncompressData(signature) };
+
+        _returnType = extractType(signature);
+
+        HCORENUM parameterEnumerator{ nullptr };
+        ULONG parametersCount{ 0 };
+        array<mdParamDef, 1024> parameterTokens;
+
+        ASSERT_SUCCESS(_metadata->EnumParams(&parameterEnumerator, _token, parameterTokens.data(), parameterTokens.size(), &parametersCount));
+        ASSERT(parametersCount < parameterTokens.size() - 1);
+        _metadata->CloseEnum(parameterEnumerator);
+
+        size_t startIndex = 0;
+        if (argumentsCount + 1 == parametersCount) {
+            ++startIndex;
+        }
+
+        for (size_t i = startIndex; i < parametersCount; ++i) {
+            PCCOR_SIGNATURE type = extractType(signature);
+            _parameters.emplace_back(_metadata.Get(), parameterTokens[i], type);
+        }
+
+        ASSERT(startSignature + signatureSize == signature);
     }
 
     bool MethodDeclaration::isExported() const {
@@ -83,13 +172,8 @@ namespace Metadata {
         return IsMdStatic(methodFlags) || IsMdFinal(methodFlags);
     }
 
-    PCCOR_SIGNATURE MethodDeclaration::signature() const {
-        PCCOR_SIGNATURE signature{ nullptr };
-        ULONG signatureSize{ 0 };
-
-        ASSERT_SUCCESS(_metadata->GetMethodProps(_token, nullptr, nullptr, 0, nullptr, nullptr, &signature, &signatureSize, nullptr, nullptr));
-
-        return signature;
+    PCCOR_SIGNATURE MethodDeclaration::returnType() const {
+        return _returnType;
     }
 
     wstring MethodDeclaration::name() const {
@@ -119,19 +203,7 @@ namespace Metadata {
     }
 
     size_t MethodDeclaration::numberOfParameters() const {
-        PCCOR_SIGNATURE signature{ nullptr };
-        ULONG signatureSize{ 0 };
-        ASSERT_SUCCESS(_metadata->GetMethodProps(_token, nullptr, nullptr, 0, nullptr, nullptr, &signature, &signatureSize, nullptr, nullptr));
-
-        CorSigUncompressData(signature);
-        ULONG numberOfArguments{ CorSigUncompressData(signature) };
-
-#if _DEBUG
-        ptrdiff_t numberOfParameters{ distance(parameters().begin(), parameters().end()) };
-        ASSERT(numberOfArguments == numberOfParameters);
-#endif
-
-        return numberOfArguments;
+        return distance(parameters().begin(), parameters().end());
     }
 
     wstring MethodDeclaration::overloadName() const {

@@ -6,10 +6,11 @@ namespace Metadata {
 
     using namespace std;
 
-    ParameterDeclaration::ParameterDeclaration(IMetaDataImport2* metadata, mdParamDef token)
+    ParameterDeclaration::ParameterDeclaration(IMetaDataImport2* metadata, mdParamDef token, PCCOR_SIGNATURE type)
         : Base(DeclarationKind::Parameter)
         , _metadata{ metadata }
-        , _token{ token } {
+        , _token{ token }
+        , _type{ type } {
 
         ASSERT(metadata);
         ASSERT(TypeFromToken(token) == mdtParamDef);
@@ -31,10 +32,12 @@ namespace Metadata {
     }
 
     bool ParameterDeclaration::isOut() const {
-        DWORD flags{ 0 };
-        ASSERT_SUCCESS(_metadata->GetParamProps(_token, nullptr, nullptr, nullptr, 0, nullptr, &flags, nullptr, nullptr, nullptr));
+        PCCOR_SIGNATURE type = _type;
+        return CorSigUncompressData(type) == ELEMENT_TYPE_BYREF;
+    }
 
-        return IsPdOut(flags) != 0;
+    PCCOR_SIGNATURE ParameterDeclaration::type() const {
+        return _type;
     }
 }
 }
