@@ -71,24 +71,6 @@ namespace Metadata {
                 extractType(signature);
                 return start;
 
-            case ELEMENT_TYPE_PTR:
-            case ELEMENT_TYPE_ARRAY:
-            case ELEMENT_TYPE_TYPEDBYREF:
-            case ELEMENT_TYPE_I:
-            case ELEMENT_TYPE_U:
-            case ELEMENT_TYPE_FNPTR:
-            case ELEMENT_TYPE_MVAR:
-            case ELEMENT_TYPE_CMOD_REQD:
-            case ELEMENT_TYPE_CMOD_OPT:
-            case ELEMENT_TYPE_INTERNAL:
-            case ELEMENT_TYPE_MAX:
-            case ELEMENT_TYPE_MODIFIER:
-            case ELEMENT_TYPE_SENTINEL:
-            case ELEMENT_TYPE_PINNED:
-            case ELEMENT_TYPE_R4_HFA:
-            case ELEMENT_TYPE_R8_HFA:
-                ASSERT_NOT_REACHED();
-
             default:
                 ASSERT_NOT_REACHED();
             }
