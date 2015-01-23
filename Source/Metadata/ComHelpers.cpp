@@ -2,17 +2,7 @@
 #include "ComHelpers.h"
 #include <codecvt>
 
-NO_RETURN void CRASH() {
-    CRASH(E_FAIL);
-}
-
-NO_RETURN void CRASH(HRESULT hresult) {
-#if _DEBUG
-    if (IsDebuggerPresent()) {
-        __debugbreak();
-    }
-#endif
-
+NO_RETURN void CRASH_IMPL() {
     reinterpret_cast<void (*)()>(0xDEADDEAD)();
 }
 
