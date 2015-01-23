@@ -30,6 +30,10 @@ namespace Metadata {
         return getGuidAttributeValue(_metadata.Get(), _token);
     }
 
+    PCCOR_SIGNATURE DelegateDeclaration::returnType() const {
+        return _invokeMethod.returnType();
+    }
+
     IteratorRange<DelegateDeclaration::ParameterIterator> DelegateDeclaration::parameters() const {
         return _invokeMethod.parameters();
     }
@@ -53,6 +57,12 @@ namespace Metadata {
         // TODO: RoGetParameterizedTypeInstanceIID
 
         NOT_IMPLEMENTED();
+    }
+
+    PCCOR_SIGNATURE GenericDelegateInstanceDeclaration::returnType() const {
+        // TODO
+
+        return Base::returnType();
     }
 
     IteratorRange<DelegateDeclaration::ParameterIterator> GenericDelegateInstanceDeclaration::parameters() const {

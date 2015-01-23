@@ -18,6 +18,8 @@ namespace Metadata {
 
         virtual CLSID id() const;
 
+        virtual PCCOR_SIGNATURE returnType() const;
+
         virtual IteratorRange<ParameterIterator> parameters() const;
 
     protected:
@@ -36,6 +38,8 @@ namespace Metadata {
         virtual std::wstring fullName() const override;
 
         virtual CLSID id() const override;
+
+        virtual PCCOR_SIGNATURE returnType() const override;
 
         virtual IteratorRange<ParameterIterator> parameters() const override;
 
