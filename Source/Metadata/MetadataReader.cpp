@@ -1,8 +1,6 @@
 #include "Metadata-Prefix.h"
 #include "MetadataReader.h"
 
-#include "Ast.h"
-
 const wchar_t* const WINDOWS_W{ L"Windows" };
 const wchar_t* const SYSTEM_ENUM_W{ L"System.Enum" };
 const wchar_t* const SYSTEM_VALUETYPE_W{ L"System.ValueType" };

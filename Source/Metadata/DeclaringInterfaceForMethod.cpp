@@ -1,6 +1,7 @@
 #include "Metadata-Prefix.h"
 
-#include "ClassDeclaration.h"
+#include "DeclaringInterfaceForMethod.h"
+#include "Declarations/ClassDeclaration.h"
 
 namespace NativeScript {
 namespace Metadata {

@@ -3,7 +3,7 @@
 #include <memory>
 
 #include <hstring.h>
-#include "ast.h"
+#include "Declarations/Declarations.h"
 
 namespace NativeScript {
 namespace Metadata {

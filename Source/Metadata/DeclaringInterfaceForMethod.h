@@ -2,8 +2,8 @@
 
 #include <memory>
 
-#include "InterfaceDeclaration.h"
-#include "MethodDeclaration.h"
+#include "Declarations/MethodDeclaration.h"
+#include "Declarations/InterfaceDeclaration.h"
 
 namespace NativeScript {
 namespace Metadata {

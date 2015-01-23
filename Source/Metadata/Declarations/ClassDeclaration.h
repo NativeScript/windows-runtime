@@ -4,8 +4,6 @@
 #include <memory>
 
 #include "BaseClassDeclaration.h"
-#include "InterfaceDeclaration.h"
-#include "IteratorRange.h"
 
 namespace NativeScript {
 namespace Metadata {

@@ -8,7 +8,7 @@
 
 #include "Declaration.h"
 #include "ParameterDeclaration.h"
-#include "IteratorRange.h"
+#include "Wrappers/IteratorRange.h"
 
 namespace NativeScript {
 namespace Metadata {

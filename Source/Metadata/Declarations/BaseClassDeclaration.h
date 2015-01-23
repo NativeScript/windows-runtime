@@ -6,6 +6,7 @@
 #include "MethodDeclaration.h"
 #include "PropertyDeclaration.h"
 #include "EventDeclaration.h"
+#include "Wrappers/IteratorRange.h"
 
 namespace NativeScript {
 namespace Metadata {
