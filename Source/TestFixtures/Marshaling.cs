@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Runtime.InteropServices.WindowsRuntime;
+using Windows.Foundation;
 
 namespace NativeScript.TestFixtures
 {
@@ -141,6 +142,16 @@ namespace NativeScript.TestFixtures
         }
 
         public SimpleClass MethodWithClass(SimpleClass x)
+        {
+            return x;
+        }
+
+        public SimpleDelegate MethodWithSimpleDelegate(SimpleDelegate x)
+        {
+            return x;
+        }
+
+        public TypedEventHandler<object, int> MethodWithGenericDelegate(TypedEventHandler<object, int> x)
         {
             return x;
         }
