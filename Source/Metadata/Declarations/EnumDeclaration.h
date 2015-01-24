@@ -38,7 +38,7 @@ namespace Metadata {
 
         explicit EnumDeclaration(IMetaDataImport2*, mdTypeDef);
 
-        CorElementType type() const;
+        PCCOR_SIGNATURE type() const;
 
         size_t size() const;
 

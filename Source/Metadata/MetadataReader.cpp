@@ -83,14 +83,22 @@ namespace Metadata {
             }
 
             if (wcscmp(parentName.data(), SYSTEM_MULTICASTDELEGATE_W) == 0) {
-                return make_shared<DelegateDeclaration>(metadata.Get(), token);
+                if (wcsstr(WindowsGetStringRawBuffer(fullName, nullptr), L"`")) {
+                    return make_shared<GenericDelegateDeclaration>(metadata.Get(), token);
+                } else {
+                    return make_shared<DelegateDeclaration>(metadata.Get(), token);
+                }
             }
 
             return make_shared<ClassDeclaration>(metadata.Get(), token);
         }
 
         if (IsTdInterface(flags)) {
-            return make_shared<InterfaceDeclaration>(metadata.Get(), token);
+            if (wcsstr(WindowsGetStringRawBuffer(fullName, nullptr), L"`")) {
+                return make_shared<GenericInterfaceDeclaration>(metadata.Get(), token);
+            } else {
+                return make_shared<InterfaceDeclaration>(metadata.Get(), token);
+            }
         }
 
         ASSERT_NOT_REACHED();

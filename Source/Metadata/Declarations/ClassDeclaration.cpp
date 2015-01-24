@@ -2,6 +2,7 @@
 
 #include "ClassDeclaration.h"
 #include "InterfaceDeclaration.h"
+#include "DeclarationFactory.h"
 
 namespace NativeScript {
 namespace Metadata {
@@ -11,6 +12,8 @@ namespace Metadata {
 
     // TODO
     namespace {
+
+        const wchar_t* const DEFAULT_ATTRIBUTE{ L"Windows.Foundation.Metadata.DefaultAttribute" };
 
         vector<MethodDeclaration> makeInitializerDeclarations(IMetaDataImport2* metadata, mdTypeDef token) {
             HCORENUM enumerator{ nullptr };
@@ -38,11 +41,35 @@ namespace Metadata {
 
             return result;
         }
+
+        unique_ptr<InterfaceDeclaration> makeDefaultInterface(IMetaDataImport2* metadata, mdTypeDef token) {
+            array<mdInterfaceImpl, 1024> interfaceImplTokens;
+            ULONG interfaceImplCount{ 0 };
+            HCORENUM interfaceEnumerator{ nullptr };
+            ASSERT_SUCCESS(metadata->EnumInterfaceImpls(&interfaceEnumerator, token, interfaceImplTokens.data(), interfaceImplTokens.size(), &interfaceImplCount));
+            ASSERT(interfaceImplCount < interfaceImplTokens.size());
+            metadata->CloseEnum(interfaceEnumerator);
+
+            for (size_t i = 0; i < interfaceImplCount; ++i) {
+                mdInterfaceImpl interfaceImplToken{ interfaceImplTokens[i] };
+                HRESULT getCustomAttributeResult{ metadata->GetCustomAttributeByName(interfaceImplToken, DEFAULT_ATTRIBUTE, nullptr, nullptr) };
+                ASSERT_SUCCESS(getCustomAttributeResult);
+
+                if (getCustomAttributeResult == S_OK) {
+                    mdToken interfaceToken{ mdTokenNil };
+                    ASSERT_SUCCESS(metadata->GetInterfaceImplProps(interfaceImplToken, nullptr, &interfaceToken));
+                    return DeclarationFactory::makeInterfaceDeclaration(metadata, interfaceToken);
+                }
+            }
+
+            ASSERT_NOT_REACHED();
+        }
     }
 
     ClassDeclaration::ClassDeclaration(IMetaDataImport2* metadata, mdTypeDef token)
         : Base(DeclarationKind::Class, metadata, token)
-        , _initializers(makeInitializerDeclarations(metadata, token)) {
+        , _initializers(makeInitializerDeclarations(metadata, token))
+        , _defaultInterface(makeDefaultInterface(metadata, token)) {
     }
 
     wstring ClassDeclaration::baseFullName() const {
@@ -69,6 +96,10 @@ namespace Metadata {
 
         wstring result{ parentName.data(), parentNameLength - 1 };
         return result;
+    }
+
+    const InterfaceDeclaration& ClassDeclaration::defaultInterface() const {
+        return *_defaultInterface.get();
     }
 
     bool ClassDeclaration::isInstantiable() const {

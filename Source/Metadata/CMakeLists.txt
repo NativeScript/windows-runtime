@@ -20,9 +20,12 @@ set(HEADER_FILES
     Wrappers/IteratorRange.h
 
     ComHelpers.h
+    DeclarationFactory.h
     DeclaringInterfaceForMethod.h
+    GenericInstanceIdBuilder.h
     Metadata-Prefix.h
     MetadataReader.h
+    Signature.h
 )
 
 set(SOURCE_FILES
@@ -44,9 +47,12 @@ set(SOURCE_FILES
     Declarations/TypeDeclaration.cpp
 
     ComHelpers.cpp
+    DeclarationFactory.cpp
     DeclaringInterfaceForMethod.cpp
+    GenericInstanceIdBuilder.cpp
     Metadata-Prefix.cpp
     MetadataReader.cpp
+    Signature.cpp
 )
 
 # TODO: Warnings as error

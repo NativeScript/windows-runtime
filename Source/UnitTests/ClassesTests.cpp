@@ -14,6 +14,7 @@ namespace UnitTests {
     Assert::IsTrue(declaration->name() == L"EmptyClass");
     Assert::IsTrue(declaration->fullName() == name);
     Assert::IsTrue(declaration->baseFullName() == L"System.Object");
+    Assert::IsTrue(declaration->defaultInterface().fullName() == L"NativeScript.TestFixtures.IEmptyClassClass");
 }
 
 TEST_METHOD(ImplementedInterfaces) {
@@ -306,18 +307,19 @@ TEST_METHOD(InstanceMethods) {
 TEST_METHOD(GenericMethodImplementation1) {
     MetadataReader metadataReader;
 
-    shared_ptr<ClassDeclaration> declaration{ static_pointer_cast<ClassDeclaration>(metadataReader.findByName(L"NativeScript.TestFixtures.DoubleGenericImplementationClass")) };
+    shared_ptr<ClassDeclaration> declaration{ static_pointer_cast<ClassDeclaration>(metadataReader.findByName(L"NativeScript.TestFixtures.MultiGenericImplementationClass")) };
 
     MethodDeclaration method1{ declaration->findMethodsWithName(L"Windows.Foundation.Collections.IIterable`1<Int16>.First")[0] };
     size_t index1{ 0 };
     unique_ptr<const InterfaceDeclaration> methodInterface1{ findDeclaringInterfaceForMethod(method1, &index1) };
-    Assert::IsTrue(methodInterface1->fullName() == L"Windows.Foundation.Collections.IIterable`1");
+    Assert::IsTrue(methodInterface1->fullName() == L"Windows.Foundation.Collections.IIterable`1<Int16>");
+    Assert::IsTrue(methodInterface1->id() == IID{ 0x72FF2923, 0x4B4E, 0x53BB, { 0x8F, 0xEB, 0x41, 0xEC, 0x5F, 0x2B, 0xB7, 0x34 } });
     Assert::IsTrue(index1 == 0);
 
     MethodDeclaration method2{ declaration->findMethodsWithName(L"Windows.Foundation.Collections.IIterable`1<Int32>.First")[0] };
     size_t index2{ 0 };
     unique_ptr<const InterfaceDeclaration> methodInterface2{ findDeclaringInterfaceForMethod(method2, &index2) };
-    Assert::IsTrue(methodInterface2->fullName() == L"Windows.Foundation.Collections.IIterable`1");
+    Assert::IsTrue(methodInterface2->id() == IID{ 0x81a643fb, 0xf51c, 0x5565, { 0x83, 0xc4, 0xf9, 0x64, 0x25, 0x77, 0x7b, 0x66 } });
     Assert::IsTrue(index2 == 0);
 }
 
@@ -329,7 +331,8 @@ TEST_METHOD(GenericMethodImplementation2) {
     MethodDeclaration method1{ declaration->findMethodsWithName(L"First")[0] };
     size_t index1{ 0 };
     unique_ptr<const InterfaceDeclaration> methodInterface1{ findDeclaringInterfaceForMethod(method1, &index1) };
-    Assert::IsTrue(methodInterface1->fullName() == L"Windows.Foundation.Collections.IIterable`1");
+    Assert::IsTrue(methodInterface1->fullName() == L"Windows.Foundation.Collections.IIterable`1<Windows.Data.Json.IJsonValue>");
+    Assert::IsTrue(methodInterface1->id() == IID{ 0xCB0492B6, 0x4113, 0x55CF, { 0xB2, 0xC5, 0x99, 0xEB, 0x42, 0x8B, 0xA4, 0x93 } });
     Assert::IsTrue(index1 == 0);
 }
 

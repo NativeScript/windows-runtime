@@ -17,6 +17,8 @@ namespace Metadata {
         virtual std::wstring fullName() const override;
 
     protected:
+        friend class GenericInstanceIdBuilder;
+
         explicit FieldDeclaration(DeclarationKind, IMetaDataImport2*, mdFieldDef);
 
         const Microsoft::WRL::ComPtr<IMetaDataImport2> _metadata;

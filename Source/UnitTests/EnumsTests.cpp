@@ -53,7 +53,8 @@ TEST_METHOD(Int32Enum) {
     const wchar_t* name{ L"NativeScript.TestFixtures.Int32Enum" };
     shared_ptr<EnumDeclaration> declaration{ static_pointer_cast<EnumDeclaration>(metadataReader.findByName(name)) };
 
-    Assert::IsTrue(declaration->type() == ELEMENT_TYPE_I4);
+    PCCOR_SIGNATURE type{ declaration->type() };
+    Assert::IsTrue(CorSigUncompressElementType(type) == ELEMENT_TYPE_I4);
 
     EnumDeclaration::MemberIterator it{ declaration->begin() };
     const EnumMemberDeclaration& member1{ *it };
@@ -75,7 +76,8 @@ TEST_METHOD(UInt32Enum) {
     const wchar_t* name{ L"NativeScript.TestFixtures.UInt32Enum" };
     shared_ptr<EnumDeclaration> declaration{ static_pointer_cast<EnumDeclaration>(metadataReader.findByName(name)) };
 
-    Assert::IsTrue(declaration->type() == ELEMENT_TYPE_U4);
+    PCCOR_SIGNATURE type{ declaration->type() };
+    Assert::IsTrue(CorSigUncompressElementType(type) == ELEMENT_TYPE_U4);
 
     EnumDeclaration::MemberIterator it{ declaration->begin() };
     const EnumMemberDeclaration& member1{ *it };

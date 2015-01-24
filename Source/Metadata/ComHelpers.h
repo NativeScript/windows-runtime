@@ -77,5 +77,7 @@ namespace Metadata {
     GUID getGuidAttributeValue(IMetaDataImport2*, mdToken);
 
     bool resolveTypeRef(IMetaDataImport2*, mdTypeRef, IMetaDataImport2**, mdTypeDef*);
+
+    identifier getClassName(IMetaDataImport2*, mdToken);
 }
 }

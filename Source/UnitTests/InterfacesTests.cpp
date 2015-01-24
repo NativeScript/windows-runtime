@@ -21,10 +21,28 @@ TEST_METHOD(OpenGenericInterface) {
     MetadataReader metadataReader;
 
     const wchar_t* name{ L"Windows.Foundation.Collections.IIterable`1" };
-    shared_ptr<InterfaceDeclaration> declaration{ static_pointer_cast<InterfaceDeclaration>(metadataReader.findByName(name)) };
+    shared_ptr<GenericInterfaceDeclaration> declaration{ static_pointer_cast<GenericInterfaceDeclaration>(metadataReader.findByName(name)) };
 
     Assert::IsTrue(declaration->name() == L"IIterable");
     Assert::IsTrue(declaration->fullName() == name);
+    Assert::IsTrue(declaration->numberOfGenericParameters() == 1);
+}
+
+TEST_METHOD(ClosedGenericInterface) {
+    MetadataReader metadataReader;
+
+    shared_ptr<ClassDeclaration> declaration{ static_pointer_cast<ClassDeclaration>(metadataReader.findByName(L"NativeScript.TestFixtures.MultiGenericImplementationClass")) };
+
+    // TODO
+    MultiGenericImplementationClass ^ instance(ref new MultiGenericImplementationClass());
+    for (const unique_ptr<const InterfaceDeclaration>& implementedInterface : declaration->implementedInterfaces()) {
+        wstring name{ implementedInterface->fullName() };
+        Assert::IsTrue(name.data());
+
+        IID id = implementedInterface->id();
+        Microsoft::WRL::ComPtr<IUnknown> instanceUnknown;
+        Assert::IsTrue(reinterpret_cast<IInspectable*>(instance)->QueryInterface(id, &instanceUnknown) == S_OK);
+    }
 }
 
 TEST_METHOD(ClosedGenericInterfaceImplementation) {
@@ -36,9 +54,8 @@ TEST_METHOD(ClosedGenericInterfaceImplementation) {
     IteratorRange<ClassDeclaration::InterfaceIterator> interfaces{ declaration->implementedInterfaces() };
 
     ClassDeclaration::InterfaceIterator it{ find_if(interfaces.begin(), interfaces.end(), [](const unique_ptr<const InterfaceDeclaration>& i) {
-            return i->fullName() == L"Windows.Foundation.Collections.IIterable`1";
+            return i->fullName() == L"Windows.Foundation.Collections.IIterable`1<Int32>";
     }) };
-
     Assert::IsTrue(it != interfaces.end());
 }
 };

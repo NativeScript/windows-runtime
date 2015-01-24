@@ -1,5 +1,6 @@
 #include "Metadata-Prefix.h"
 #include "MethodDeclaration.h"
+#include "Signature.h"
 
 namespace NativeScript {
 namespace Metadata {
@@ -9,73 +10,6 @@ namespace Metadata {
 
     const wchar_t* const OVERLOAD_ATTRIBUTE_W{ L"Windows.Foundation.Metadata.OverloadAttribute" };
     const wchar_t* const DEFAULT_OVERLOAD_ATTRIBUTE_W{ L"Windows.Foundation.Metadata.DefaultOverloadAttribute" };
-
-    namespace {
-        PCCOR_SIGNATURE extractType(PCCOR_SIGNATURE& signature) {
-            PCCOR_SIGNATURE start = signature;
-
-            CorElementType elementType{ CorSigUncompressElementType(signature) };
-            switch (elementType) {
-            case ELEMENT_TYPE_END:
-                ASSERT_NOT_REACHED();
-
-            case ELEMENT_TYPE_VOID:
-            case ELEMENT_TYPE_BOOLEAN:
-            case ELEMENT_TYPE_CHAR:
-            case ELEMENT_TYPE_I1:
-            case ELEMENT_TYPE_U1:
-            case ELEMENT_TYPE_I2:
-            case ELEMENT_TYPE_U2:
-            case ELEMENT_TYPE_I4:
-            case ELEMENT_TYPE_U4:
-            case ELEMENT_TYPE_I8:
-            case ELEMENT_TYPE_U8:
-            case ELEMENT_TYPE_R4:
-            case ELEMENT_TYPE_R8:
-            case ELEMENT_TYPE_STRING:
-                return start;
-
-            case ELEMENT_TYPE_VALUETYPE:
-                CorSigUncompressToken(signature);
-                return start;
-
-            case ELEMENT_TYPE_CLASS:
-                CorSigUncompressToken(signature);
-                return start;
-
-            case ELEMENT_TYPE_OBJECT:
-                return start;
-
-            case ELEMENT_TYPE_SZARRAY:
-                // TODO: CustomMod
-                extractType(signature);
-                return start;
-
-            case ELEMENT_TYPE_VAR:
-                CorSigUncompressData(signature);
-                return start;
-
-            case ELEMENT_TYPE_GENERICINST: {
-                CorSigUncompressElementType(signature);
-                CorSigUncompressToken(signature);
-
-                ULONG genericArgumentsCount{ CorSigUncompressData(signature) };
-                for (size_t i = 0; i < genericArgumentsCount; ++i) {
-                    extractType(signature);
-                }
-
-                return start;
-            }
-
-            case ELEMENT_TYPE_BYREF:
-                extractType(signature);
-                return start;
-
-            default:
-                ASSERT_NOT_REACHED();
-            }
-        }
-    }
 
     MethodDeclaration::MethodDeclaration(IMetaDataImport2* metadata, mdMethodDef token)
         : Base(DeclarationKind::Method)
@@ -102,7 +36,7 @@ namespace Metadata {
 
         ULONG argumentsCount{ CorSigUncompressData(signature) };
 
-        _returnType = extractType(signature);
+        _returnType = Signature::consumeType(signature);
 
         HCORENUM parameterEnumerator{ nullptr };
         ULONG parametersCount{ 0 };
@@ -118,7 +52,7 @@ namespace Metadata {
         }
 
         for (size_t i = startIndex; i < parametersCount; ++i) {
-            PCCOR_SIGNATURE type = extractType(signature);
+            PCCOR_SIGNATURE type = Signature::consumeType(signature);
             _parameters.emplace_back(_metadata.Get(), parameterTokens[i], type);
         }
 

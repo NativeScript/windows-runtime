@@ -11,7 +11,7 @@ namespace Metadata {
 
         explicit StructFieldDeclaration(IMetaDataImport2*, mdFieldDef);
 
-        PCCOR_SIGNATURE signature() const;
+        PCCOR_SIGNATURE type() const;
     };
 }
 }

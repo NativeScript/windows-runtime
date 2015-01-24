@@ -62,7 +62,7 @@ namespace Metadata {
         : Base(DeclarationKind::Enum, metadata, token) {
     }
 
-    CorElementType EnumDeclaration::type() const {
+    PCCOR_SIGNATURE EnumDeclaration::type() const {
         mdFieldDef typeField{ mdTokenNil };
         ASSERT_SUCCESS(_metadata->FindField(_token, COR_ENUM_FIELD_NAME_W, nullptr, 0, &typeField));
 
@@ -73,8 +73,7 @@ namespace Metadata {
         ULONG header{ CorSigUncompressData(signature) };
         ASSERT(header == IMAGE_CEE_CS_CALLCONV_FIELD);
 
-        ULONG elementType{ CorSigUncompressData(signature) };
-        return static_cast<CorElementType>(elementType);
+        return signature;
     }
 
     // Skips COR_ENUM_FIELD field

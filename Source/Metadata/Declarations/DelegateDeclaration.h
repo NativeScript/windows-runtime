@@ -29,6 +29,15 @@ namespace Metadata {
         MethodDeclaration _invokeMethod;
     };
 
+    class GenericDelegateDeclaration final : public DelegateDeclaration {
+    public:
+        typedef DelegateDeclaration Base;
+
+        explicit GenericDelegateDeclaration(IMetaDataImport2*, mdTypeDef);
+
+        size_t numberOfGenericParameters() const;
+    };
+
     class GenericDelegateInstanceDeclaration final : public DelegateDeclaration {
     public:
         typedef DelegateDeclaration Base;

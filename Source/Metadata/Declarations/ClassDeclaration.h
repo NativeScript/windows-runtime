@@ -16,6 +16,8 @@ namespace Metadata {
 
         std::wstring baseFullName() const;
 
+        const InterfaceDeclaration& defaultInterface() const;
+
         bool isInstantiable() const;
 
         bool isSealed() const;
@@ -24,6 +26,7 @@ namespace Metadata {
 
     private:
         std::vector<MethodDeclaration> _initializers;
+        std::shared_ptr<InterfaceDeclaration> _defaultInterface;
     };
 }
 }

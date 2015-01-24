@@ -7,7 +7,6 @@ namespace Metadata {
     using namespace std;
     using namespace Microsoft::WRL;
 
-    // TODO
     namespace {
 
         vector<StructFieldDeclaration> makeFieldDeclarations(IMetaDataImport2* metadata, mdTypeDef token) {

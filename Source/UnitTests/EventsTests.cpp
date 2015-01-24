@@ -77,7 +77,7 @@ TEST_METHOD(ExternalGenericEvent) {
     EventDeclaration typedEvent{ *static_cast<const EventDeclaration*>(declaration->findMembersWithName(eventName)[0].get()) };
     Assert::IsTrue(typedEvent.name() == eventName);
     Assert::IsTrue(typedEvent.fullName() == eventName);
-    Assert::IsTrue(typedEvent.type().fullName() == L"Windows.Foundation.TypedEventHandler`2");
+    Assert::IsTrue(typedEvent.type().fullName() == L"Windows.Foundation.TypedEventHandler`2<Object, Int32>");
     Assert::IsTrue(typedEvent.addMethod().fullName() == L"add_GenericEvent");
     Assert::IsTrue(typedEvent.removeMethod().fullName() == L"remove_GenericEvent");
 }
@@ -92,7 +92,7 @@ TEST_METHOD(GenericEvent) {
     EventDeclaration typedEvent{ *static_cast<const EventDeclaration*>(declaration->findMembersWithName(eventName)[0].get()) };
     Assert::IsTrue(typedEvent.name() == eventName);
     Assert::IsTrue(typedEvent.fullName() == eventName);
-    Assert::IsTrue(typedEvent.type().fullName() == L"Windows.Foundation.TypedEventHandler`2");
+    Assert::IsTrue(typedEvent.type().fullName() == L"Windows.Foundation.TypedEventHandler`2<Windows.UI.Core.CoreWindow, Windows.UI.Core.KeyEventArgs>");
     Assert::IsTrue(typedEvent.addMethod().fullName() == L"add_KeyUp");
     Assert::IsTrue(typedEvent.removeMethod().fullName() == L"remove_KeyUp");
 }

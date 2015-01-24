@@ -1,5 +1,7 @@
 #include "Metadata-Prefix.h"
 #include "DelegateDeclaration.h"
+#include "Signature.h"
+#include "GenericInstanceIdBuilder.h"
 
 namespace NativeScript {
 namespace Metadata {
@@ -38,10 +40,25 @@ namespace Metadata {
         return _invokeMethod.parameters();
     }
 
+    GenericDelegateDeclaration::GenericDelegateDeclaration(IMetaDataImport2* metadata, mdTypeDef token)
+        : Base(DeclarationKind::GenericDelegate, metadata, token) {
+    }
+
+    size_t GenericDelegateDeclaration::numberOfGenericParameters() const {
+        ULONG count{ 0 };
+
+        HCORENUM enumerator{ nullptr };
+        ASSERT_SUCCESS(_metadata->EnumGenericParams(&enumerator, _token, nullptr, 0, nullptr));
+        ASSERT_SUCCESS(_metadata->CountEnum(enumerator, &count));
+        _metadata->CloseEnum(enumerator);
+
+        return count;
+    }
+
     GenericDelegateInstanceDeclaration::GenericDelegateInstanceDeclaration(IMetaDataImport2* openMetadata, mdTypeDef openToken, IMetaDataImport2* closedMetadata, mdTypeSpec closedToken)
         : Base(DeclarationKind::GenericDelegateInstance, openMetadata, openToken)
         , _closedMetadata{ closedMetadata }
-        , _closedToken{ _closedToken } {
+        , _closedToken{ closedToken } {
 
         ASSERT(closedMetadata);
         ASSERT(TypeFromToken(closedToken) == mdtTypeSpec);
@@ -49,14 +66,15 @@ namespace Metadata {
     }
 
     wstring GenericDelegateInstanceDeclaration::fullName() const {
-        // TODO
-        return Base::fullName();
+        PCCOR_SIGNATURE signature{ nullptr };
+        ULONG signatureSize{ 0 };
+        ASSERT_SUCCESS(_closedMetadata->GetTypeSpecFromToken(_closedToken, &signature, &signatureSize));
+        return Signature::toString(_closedMetadata.Get(), signature);
     }
 
     CLSID GenericDelegateInstanceDeclaration::id() const {
-        // TODO: RoGetParameterizedTypeInstanceIID
-
-        NOT_IMPLEMENTED();
+        CLSID guid = GenericInstanceIdBuilder::generateId(*this);
+        return guid;
     }
 
     PCCOR_SIGNATURE GenericDelegateInstanceDeclaration::returnType() const {

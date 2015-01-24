@@ -1,5 +1,6 @@
 #include "Metadata-Prefix.h"
 #include "EventDeclaration.h"
+#include "DeclarationFactory.h"
 
 namespace NativeScript {
 namespace Metadata {
@@ -27,59 +28,9 @@ namespace Metadata {
 
         unique_ptr<DelegateDeclaration> makeType(IMetaDataImport2* metadata, mdEvent token) {
             mdToken delegateToken{ mdTokenNil };
-
             ASSERT_SUCCESS(metadata->GetEventProps(token, nullptr, nullptr, 0, nullptr, nullptr, &delegateToken, nullptr, nullptr, nullptr, nullptr, 0, nullptr));
 
-            switch (TypeFromToken(delegateToken)) {
-            case mdtTypeDef: {
-                return make_unique<DelegateDeclaration>(metadata, delegateToken);
-            }
-
-            case mdtTypeRef: {
-                ComPtr<IMetaDataImport2> externalMetadata;
-                mdTypeDef externalDelegateToken{ mdTokenNil };
-
-                bool isResolved{ resolveTypeRef(metadata, delegateToken, externalMetadata.GetAddressOf(), &externalDelegateToken) };
-                ASSERT(isResolved);
-
-                return make_unique<DelegateDeclaration>(externalMetadata.Get(), externalDelegateToken);
-            }
-
-            case mdtTypeSpec: {
-                PCCOR_SIGNATURE signature{ nullptr };
-                ULONG signatureSize{ 0 };
-                ASSERT_SUCCESS(metadata->GetTypeSpecFromToken(delegateToken, &signature, &signatureSize));
-
-                CorElementType type1{ CorSigUncompressElementType(signature) };
-                ASSERT(type1 == ELEMENT_TYPE_GENERICINST);
-
-                CorElementType type2{ CorSigUncompressElementType(signature) };
-                ASSERT(type2 == ELEMENT_TYPE_CLASS);
-
-                mdToken openGenericDelegateToken{ CorSigUncompressToken(signature) };
-                switch (TypeFromToken(openGenericDelegateToken)) {
-                case mdtTypeDef: {
-                    return make_unique<GenericDelegateInstanceDeclaration>(metadata, openGenericDelegateToken, metadata, delegateToken);
-                }
-
-                case mdtTypeRef: {
-                    ComPtr<IMetaDataImport2> externalMetadata;
-                    mdTypeDef externalDelegateToken{ mdTokenNil };
-
-                    bool isResolved{ resolveTypeRef(metadata, openGenericDelegateToken, externalMetadata.GetAddressOf(), &externalDelegateToken) };
-                    ASSERT(isResolved);
-
-                    return make_unique<GenericDelegateInstanceDeclaration>(externalMetadata.Get(), externalDelegateToken, metadata, delegateToken);
-                }
-
-                default:
-                    ASSERT_NOT_REACHED();
-                }
-            }
-
-            default:
-                ASSERT_NOT_REACHED();
-            }
+            return DeclarationFactory::makeDelegateDeclaration(metadata, delegateToken);
         }
     }
 

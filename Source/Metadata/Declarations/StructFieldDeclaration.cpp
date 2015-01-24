@@ -12,7 +12,7 @@ namespace Metadata {
         : Base(DeclarationKind::StructField, metadata, token) {
     }
 
-    PCCOR_SIGNATURE StructFieldDeclaration::signature() const {
+    PCCOR_SIGNATURE StructFieldDeclaration::type() const {
         PCCOR_SIGNATURE signature{ nullptr };
         ULONG signatureSize{ 0 };
 

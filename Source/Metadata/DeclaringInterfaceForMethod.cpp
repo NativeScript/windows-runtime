@@ -41,25 +41,6 @@ namespace Metadata {
             return getMethodContainingClassToken(metadata, getCustomAttributeConstructorToken(metadata, customAttribute));
         }
 
-        identifier getClassName(IMetaDataImport2* metadata, const mdToken token) {
-            identifier attributeClassName;
-
-            switch (TypeFromToken(token)) {
-            case mdtTypeDef:
-                ASSERT_SUCCESS(metadata->GetTypeDefProps(token, attributeClassName.data(), attributeClassName.size(), nullptr, nullptr, nullptr));
-                break;
-
-            case mdtTypeRef:
-                ASSERT_SUCCESS(metadata->GetTypeRefProps(token, nullptr, attributeClassName.data(), attributeClassName.size(), nullptr));
-                break;
-
-            default:
-                ASSERT_NOT_REACHED();
-            }
-
-            return attributeClassName;
-        }
-
         PCCOR_SIGNATURE getMethodSignature(IMetaDataImport2* metadata, mdMethodDef token) {
             PCCOR_SIGNATURE signature{ nullptr };
 

@@ -6,7 +6,6 @@
 
 namespace NativeScript {
 namespace Metadata {
-
     class InterfaceDeclaration : public BaseClassDeclaration {
     public:
         typedef BaseClassDeclaration Base;
@@ -17,6 +16,15 @@ namespace Metadata {
 
     protected:
         explicit InterfaceDeclaration(DeclarationKind, IMetaDataImport2*, mdTypeDef);
+    };
+
+    class GenericInterfaceDeclaration final : public InterfaceDeclaration {
+    public:
+        typedef InterfaceDeclaration Base;
+
+        explicit GenericInterfaceDeclaration(IMetaDataImport2*, mdTypeDef);
+
+        size_t numberOfGenericParameters() const;
     };
 
     class GenericInterfaceInstanceDeclaration final : public InterfaceDeclaration {

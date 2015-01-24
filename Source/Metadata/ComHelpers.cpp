@@ -90,5 +90,24 @@ namespace Metadata {
 
         return getMetadataFileResult == S_OK;
     }
+
+    identifier getClassName(IMetaDataImport2* metadata, mdToken token) {
+        identifier className;
+
+        switch (TypeFromToken(token)) {
+        case mdtTypeDef:
+            ASSERT_SUCCESS(metadata->GetTypeDefProps(token, className.data(), className.size(), nullptr, nullptr, nullptr));
+            break;
+
+        case mdtTypeRef:
+            ASSERT_SUCCESS(metadata->GetTypeRefProps(token, nullptr, className.data(), className.size(), nullptr));
+            break;
+
+        default:
+            ASSERT_NOT_REACHED();
+        }
+
+        return className;
+    }
 }
 }
