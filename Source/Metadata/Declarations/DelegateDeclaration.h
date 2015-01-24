@@ -18,9 +18,7 @@ namespace Metadata {
 
         virtual CLSID id() const;
 
-        virtual PCCOR_SIGNATURE returnType() const;
-
-        virtual IteratorRange<ParameterIterator> parameters() const;
+        const MethodDeclaration& invokeMethod() const;
 
     protected:
         explicit DelegateDeclaration(DeclarationKind, IMetaDataImport2*, mdTypeDef);
@@ -47,10 +45,6 @@ namespace Metadata {
         virtual std::wstring fullName() const override;
 
         virtual CLSID id() const override;
-
-        virtual PCCOR_SIGNATURE returnType() const override;
-
-        virtual IteratorRange<ParameterIterator> parameters() const override;
 
     private:
         const Microsoft::WRL::ComPtr<IMetaDataImport2> _closedMetadata;

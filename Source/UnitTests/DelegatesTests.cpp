@@ -15,7 +15,7 @@ namespace UnitTests {
     Assert::IsTrue(declaration->name() == L"EmptyDelegate");
     Assert::IsTrue(declaration->fullName() == name);
     Assert::IsTrue(declaration->id() == CLSID{ 0x69F5CF98, 0x0489, 0x5DAF, { 0x63, 0x79, 0xE5, 0xFB, 0x42, 0x66, 0x7C, 0x5B } });
-    Assert::IsTrue(declaration->parameters().begin() == declaration->parameters().end());
+    Assert::IsTrue(declaration->invokeMethod().parameters().begin() == declaration->invokeMethod().parameters().end());
 }
 
 TEST_METHOD(SimpleDelegate) {
@@ -24,7 +24,7 @@ TEST_METHOD(SimpleDelegate) {
     const wchar_t* name{ L"NativeScript.TestFixtures.SimpleDelegate" };
     shared_ptr<DelegateDeclaration> declaration{ static_pointer_cast<DelegateDeclaration>(metadataReader.findByName(name)) };
 
-    IteratorRange<DelegateDeclaration::ParameterIterator> parameters{ declaration->parameters() };
+    IteratorRange<DelegateDeclaration::ParameterIterator> parameters{ declaration->invokeMethod().parameters() };
 
     DelegateDeclaration::ParameterIterator it{ parameters.begin() };
     const ParameterDeclaration& inParameter{ *it };
@@ -50,7 +50,7 @@ TEST_METHOD(GenericDelegate) {
     Assert::IsTrue(declaration->fullName() == name);
     Assert::IsTrue(declaration->numberOfGenericParameters() == 1);
 
-    IteratorRange<DelegateDeclaration::ParameterIterator> parameters{ declaration->parameters() };
+    IteratorRange<DelegateDeclaration::ParameterIterator> parameters{ declaration->invokeMethod().parameters() };
 
     DelegateDeclaration::ParameterIterator it{ parameters.begin() };
     const ParameterDeclaration& inParameter{ *it };

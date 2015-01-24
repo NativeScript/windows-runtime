@@ -32,12 +32,8 @@ namespace Metadata {
         return getGuidAttributeValue(_metadata.Get(), _token);
     }
 
-    PCCOR_SIGNATURE DelegateDeclaration::returnType() const {
-        return _invokeMethod.returnType();
-    }
-
-    IteratorRange<DelegateDeclaration::ParameterIterator> DelegateDeclaration::parameters() const {
-        return _invokeMethod.parameters();
+    const MethodDeclaration& DelegateDeclaration::invokeMethod() const {
+        return _invokeMethod;
     }
 
     GenericDelegateDeclaration::GenericDelegateDeclaration(IMetaDataImport2* metadata, mdTypeDef token)
@@ -75,18 +71,6 @@ namespace Metadata {
     CLSID GenericDelegateInstanceDeclaration::id() const {
         CLSID guid = GenericInstanceIdBuilder::generateId(*this);
         return guid;
-    }
-
-    PCCOR_SIGNATURE GenericDelegateInstanceDeclaration::returnType() const {
-        // TODO
-
-        return Base::returnType();
-    }
-
-    IteratorRange<DelegateDeclaration::ParameterIterator> GenericDelegateInstanceDeclaration::parameters() const {
-        // TODO
-
-        return Base::parameters();
     }
 }
 }
