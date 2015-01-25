@@ -5,12 +5,19 @@ namespace NativeScript.TestFixtures
 {
     public sealed class OverloadsClass
     {
-        private OverloadsClass()
+        public OverloadsClass()
+        {
+        }
+
+        public OverloadsClass(double x)
+        {
+        }
+
+        public OverloadsClass(double x, double y)
         {
         }
 
         [DefaultOverload]
-        [Overload("InstanceMethod")]
         public double InstanceMethod(double x)
         {
             throw new NotImplementedException();
@@ -23,7 +30,6 @@ namespace NativeScript.TestFixtures
         }
 
         [DefaultOverload]
-        [Overload("StaticMethod")]
         public static double StaticMethod(double x)
         {
             throw new NotImplementedException();

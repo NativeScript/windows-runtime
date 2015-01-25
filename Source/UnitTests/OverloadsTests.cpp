@@ -16,7 +16,6 @@ namespace UnitTests {
 
     const MethodDeclaration& method1{ methods[0] };
     Assert::IsTrue(method1.name() == L"InstanceMethod");
-    Assert::IsTrue(method1.overloadName() == L"InstanceMethod");
     Assert::IsTrue(method1.isDefaultOverload() == true);
 
     const MethodDeclaration& method2{ methods[1] };

@@ -2,9 +2,8 @@ set(HEADER_FILES
     UnitTests-Prefix.h
 )
 
-set(TEST_CASES_FILES
+set(METADATA_TESTS
     ClassesTests.cpp
-    CMakeLists.txt
     DelegatesTests.cpp
     EnumsTests.cpp
     EventsTests.cpp
@@ -15,12 +14,12 @@ set(TEST_CASES_FILES
     StructsTests.cpp
 )
 set(SOURCE_FILES
-    ${TEST_CASES_FILES}
+    ${METADATA_TESTS}
     UnitTests-Prefix.cpp
 )
 
 source_group("" FILES ${HEADER_FILES})
-source_group("TestCases" FILES ${TEST_CASES_FILES})
+source_group("MetadataTests" FILES ${METADATA_TESTS})
 source_group("" FILES ${SOURCE_FILES})
 
 list(APPEND ${SOURCE_FILES} UnitTests-Prefix.cpp)

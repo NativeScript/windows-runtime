@@ -1,5 +1,4 @@
 #include "UnitTests-Prefix.h"
-#include <iomanip>
 
 namespace NativeScript {
 namespace UnitTests {

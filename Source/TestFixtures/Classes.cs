@@ -1,4 +1,5 @@
 ﻿using System;
+using Windows.ApplicationModel.Appointments;
 using Windows.Foundation.Metadata;
 
 namespace NativeScript.TestFixtures
@@ -92,7 +93,9 @@ namespace NativeScript.TestFixtures
         {
         }
 
-        public static void ComplexStaticMethod(object @object, SimpleClass simpleClass, int @int, out int outInt, string @string, long? nullableLong, SimpleEnum? nullableEnum, SimpleStruct? nullableStruct, SimpleDelegate @delegate)
+        public static void ComplexStaticMethod(object @object, SimpleClass simpleClass, int @int, out int outInt,
+            string @string, long? nullableLong, SimpleEnum? nullableEnum, SimpleStruct? nullableStruct,
+            SimpleDelegate @delegate)
         {
             throw new NotImplementedException();
         }
@@ -122,10 +125,22 @@ namespace NativeScript.TestFixtures
         }
     }
 
-    public sealed class InstanceMethodsClass : Windows.ApplicationModel.Appointments.IAppointmentParticipant
+    public sealed class InstanceMethodsClass : IAppointmentParticipant
     {
         private InstanceMethodsClass()
         {
+        }
+
+        public string Address
+        {
+            get { throw new NotImplementedException(); }
+            set { throw new NotImplementedException(); }
+        }
+
+        public string DisplayName
+        {
+            get { throw new NotImplementedException(); }
+            set { throw new NotImplementedException(); }
         }
 
         [Version(1)]
@@ -155,18 +170,6 @@ namespace NativeScript.TestFixtures
         public override string ToString()
         {
             return base.ToString();
-        }
-
-        public string Address
-        {
-            get { throw new NotImplementedException(); }
-            set { throw new NotImplementedException(); }
-        }
-
-        public string DisplayName
-        {
-            get { throw new NotImplementedException(); }
-            set { throw new NotImplementedException(); }
         }
     }
 }

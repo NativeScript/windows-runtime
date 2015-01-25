@@ -22,10 +22,10 @@ namespace NativeScript.TestFixtures
 
     public struct ComplexStruct
     {
+        public SimpleEnum EnumField;
         public SimpleEnum? NullableEnumField;
         public Int32? NullableInt32Field;
         public SimpleStruct? NullableStructField;
-        public SimpleEnum EnumField;
         public SimpleStruct StructField;
     }
 }

@@ -10,7 +10,7 @@ namespace NativeScript.TestFixtures
     {
         Value1 = -1,
         Value2,
-        Value3,
+        Value3
     }
 
     // [Flags] must not be present if enum is int; required if enum is uint
@@ -18,14 +18,14 @@ namespace NativeScript.TestFixtures
     public enum Int32Enum : int
     {
         MinValue = int.MinValue,
-        MaxValue = int.MaxValue,
+        MaxValue = int.MaxValue
     }
 
     [Flags]
     public enum UInt32Enum : uint
     {
         MinValue = uint.MinValue,
-        MaxValue = uint.MaxValue,
+        MaxValue = uint.MaxValue
     }
 
     public enum ManyMembersEnum

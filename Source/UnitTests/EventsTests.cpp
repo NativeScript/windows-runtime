@@ -1,5 +1,4 @@
 #include "UnitTests-Prefix.h"
-#include <iomanip>
 
 namespace NativeScript {
 namespace UnitTests {
@@ -77,7 +76,7 @@ TEST_METHOD(ExternalGenericEvent) {
     EventDeclaration typedEvent{ *static_cast<const EventDeclaration*>(declaration->findMembersWithName(eventName)[0].get()) };
     Assert::IsTrue(typedEvent.name() == eventName);
     Assert::IsTrue(typedEvent.fullName() == eventName);
-    Assert::IsTrue(typedEvent.type().fullName() == L"Windows.Foundation.TypedEventHandler`2<Object, Int32>");
+    Assert::IsTrue(typedEvent.type().fullName() == L"Windows.Foundation.TypedEventHandler`2<Object, Windows.Foundation.Collections.IIterable`1<Int32>>");
     Assert::IsTrue(typedEvent.addMethod().fullName() == L"add_GenericEvent");
     Assert::IsTrue(typedEvent.removeMethod().fullName() == L"remove_GenericEvent");
 }

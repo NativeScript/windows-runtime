@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Collections.Generic;
 using Windows.Foundation;
+using Windows.UI.Xaml;
 
 namespace NativeScript.TestFixtures
 {
@@ -13,8 +15,8 @@ namespace NativeScript.TestFixtures
 
         public static event EmptyDelegate StaticEvent;
         public event EmptyDelegate EmptyEvent;
-        public event Windows.UI.Xaml.RoutedEventHandler ExternalEvent;
-        public event TypedEventHandler<object, int> GenericEvent;
+        public event RoutedEventHandler ExternalEvent;
+        public event TypedEventHandler<object, IEnumerable<int>> GenericEvent;
     }
 #pragma warning restore 67
 }
