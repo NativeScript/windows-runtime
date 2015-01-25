@@ -13,7 +13,14 @@ Prerequisites:
 * [Bison](http://gnuwin32.sourceforge.net/packages/bison.htm#download)
 * [Gperf](http://gnuwin32.sourceforge.net/packages/gperf.htm#download)
 
+Clone the repo (This could take several hours):
+
+```shell
+git clone --recursive git@github.com:telerik/tns-winrt.git
 ```
+
+```shell
+cd tns-winrt
 mkdir Build && cd Build
 cmake ../Source -DCMAKE_SYSTEM_NAME="WindowsPhone" -DCMAKE_SYSTEM_VERSION="8.1"
 cmake --build .
