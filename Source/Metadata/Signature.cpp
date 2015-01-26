@@ -1,6 +1,5 @@
 #include "Metadata-Prefix.h"
 #include "Signature.h"
-#include <sstream>
 
 namespace NativeScript {
 namespace Metadata {
@@ -39,7 +38,6 @@ namespace Metadata {
             return start;
 
         case ELEMENT_TYPE_SZARRAY:
-            // TODO: CustomMod
             consumeType(signature);
             return start;
 
@@ -68,112 +66,135 @@ namespace Metadata {
         }
     }
 
-    wstring Signature::toString(IMetaDataImport2* metadata, PCCOR_SIGNATURE signature) {
+    void Signature::toString(IMetaDataImport2* metadata, PCCOR_SIGNATURE signature, wstring& result) {
         CorElementType elementType{ CorSigUncompressElementType(signature) };
         switch (elementType) {
         case ELEMENT_TYPE_VOID:
-            return L"Void";
+            result += L"Void";
+            break;
 
         case ELEMENT_TYPE_BOOLEAN:
-            return L"Boolean";
+            result += L"Boolean";
+            break;
 
         case ELEMENT_TYPE_CHAR:
-            return L"Char16";
+            result += L"Char16";
+            break;
 
         case ELEMENT_TYPE_I1:
-            return L"Int8";
+            result += L"Int8";
+            break;
 
         case ELEMENT_TYPE_U1:
-            return L"UInt8";
+            result += L"UInt8";
+            break;
 
         case ELEMENT_TYPE_I2:
-            return L"Int16";
+            result += L"Int16";
+            break;
 
         case ELEMENT_TYPE_U2:
-            return L"UInt16";
+            result += L"UInt16";
+            break;
 
         case ELEMENT_TYPE_I4:
-            return L"Int32";
+            result += L"Int32";
+            break;
 
         case ELEMENT_TYPE_U4:
-            return L"UInt32";
+            result += L"UInt32";
+            break;
 
         case ELEMENT_TYPE_I8:
-            return L"Int64";
+            result += L"Int64";
+            break;
 
         case ELEMENT_TYPE_U8:
-            return L"UInt64";
+            result += L"UInt64";
+            break;
 
         case ELEMENT_TYPE_R4:
-            return L"Single";
+            result += L"Single";
+            break;
 
         case ELEMENT_TYPE_R8:
-            return L"Double";
+            result += L"Double";
+            break;
 
         case ELEMENT_TYPE_STRING:
-            return L"String";
+            result += L"String";
+            break;
 
         case ELEMENT_TYPE_VALUETYPE: {
             mdToken token{ CorSigUncompressToken(signature) };
             identifier className = getClassName(metadata, token);
             if (wcscmp(className.data(), L"System.Guid") == 0) {
-                return L"Guid";
+                result += L"Guid";
             } else {
-                return className.data();
+                result += className.data();
             }
+            break;
         }
 
         case ELEMENT_TYPE_CLASS: {
             mdToken token{ CorSigUncompressToken(signature) };
-            return getClassName(metadata, token).data();
+            result += getClassName(metadata, token).data();
+            break;
         }
 
         case ELEMENT_TYPE_OBJECT:
-            return L"Object";
+            result += L"Object";
+            break;
 
         case ELEMENT_TYPE_SZARRAY:
-            // TODO: CustomMod
-            return toString(metadata, signature) + L"[]";
+            toString(metadata, signature, result);
+            result += L"[]";
+            break;
 
         case ELEMENT_TYPE_VAR: {
             ULONG index{ CorSigUncompressData(signature) };
-            return L"Var!" + to_wstring(index);
+            result += L"Var!";
+            result += to_wstring(index);
+            break;
         }
 
         case ELEMENT_TYPE_GENERICINST: {
-            wostringstream result;
-
             CorElementType genericType{ CorSigUncompressElementType(signature) };
             ASSERT(genericType == ELEMENT_TYPE_CLASS);
 
             mdToken token{ CorSigUncompressToken(signature) };
-            result << getClassName(metadata, token).data();
+            result += getClassName(metadata, token).data();
 
-            result << L'<';
+            result += L'<';
 
             ULONG genericArgumentsCount{ CorSigUncompressData(signature) };
             for (size_t i = 0; i < genericArgumentsCount; ++i) {
                 PCCOR_SIGNATURE type{ consumeType(signature) };
-                result << toString(metadata, type);
+                toString(metadata, type, result);
 
                 if (i != genericArgumentsCount - 1) {
-                    result << L", ";
+                    result += L", ";
                 }
             }
 
-            result << L'>';
-
-            wstring str{ result.str() };
-            return str;
+            result += L'>';
+            break;
         }
 
         case ELEMENT_TYPE_BYREF:
-            consumeType(signature);
-            return L"ref " + toString(metadata, signature);
+            result += L"ByRef ";
+            toString(metadata, signature, result);
+            break;
 
         default:
             ASSERT_NOT_REACHED();
         }
+    }
+
+    wstring Signature::toString(IMetaDataImport2* metadata, PCCOR_SIGNATURE signature) {
+        wstring result;
+        toString(metadata, signature, result);
+        return result;
     }
 }
 }

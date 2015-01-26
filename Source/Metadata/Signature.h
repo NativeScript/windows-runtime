@@ -11,6 +11,9 @@ namespace Metadata {
         static PCCOR_SIGNATURE consumeType(PCCOR_SIGNATURE&);
 
         static std::wstring toString(IMetaDataImport2*, PCCOR_SIGNATURE);
+
+    private:
+        static void toString(IMetaDataImport2*, PCCOR_SIGNATURE, std::wstring&);
     };
 }
 }
