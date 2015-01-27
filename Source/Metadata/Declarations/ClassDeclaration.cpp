@@ -73,29 +73,10 @@ namespace Metadata {
     }
 
     wstring ClassDeclaration::baseFullName() const {
-        identifier parentName;
-        ULONG parentNameLength;
-
         mdToken parentToken{ mdTokenNil };
         ASSERT_SUCCESS(_metadata->GetTypeDefProps(_token, nullptr, 0, nullptr, nullptr, &parentToken));
 
-        switch (TypeFromToken(parentToken)) {
-        case mdtTypeDef: {
-            ASSERT_SUCCESS(_metadata->GetTypeDefProps(parentToken, parentName.data(), parentName.size(), &parentNameLength, nullptr, nullptr));
-            break;
-        }
-
-        case mdtTypeRef: {
-            ASSERT_SUCCESS(_metadata->GetTypeRefProps(parentToken, nullptr, parentName.data(), parentName.size(), &parentNameLength));
-            break;
-        }
-
-        default:
-            ASSERT_NOT_REACHED();
-        }
-
-        wstring result{ parentName.data(), parentNameLength - 1 };
-        return result;
+        return getTypeName(_metadata.Get(), parentToken);
     }
 
     const InterfaceDeclaration& ClassDeclaration::defaultInterface() const {
