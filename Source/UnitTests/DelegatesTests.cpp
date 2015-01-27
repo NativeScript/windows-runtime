@@ -23,9 +23,9 @@ TEST_METHOD(SimpleDelegate) {
     const wchar_t* name{ L"NativeScript.TestFixtures.SimpleDelegate" };
     shared_ptr<DelegateDeclaration> declaration{ static_pointer_cast<DelegateDeclaration>(metadataReader.findByName(name)) };
 
-    IteratorRange<DelegateDeclaration::ParameterIterator> parameters{ declaration->invokeMethod().parameters() };
+    IteratorRange<MethodDeclaration::ParameterIterator> parameters{ declaration->invokeMethod().parameters() };
 
-    DelegateDeclaration::ParameterIterator it{ parameters.begin() };
+    MethodDeclaration::ParameterIterator it{ parameters.begin() };
     const ParameterDeclaration& inParameter{ *it };
     Assert::IsTrue(inParameter.name() == L"inParameter");
     Assert::IsTrue(inParameter.isOut() == false);
@@ -49,9 +49,9 @@ TEST_METHOD(GenericDelegate) {
     Assert::IsTrue(declaration->fullName() == name);
     Assert::IsTrue(declaration->numberOfGenericParameters() == 1);
 
-    IteratorRange<DelegateDeclaration::ParameterIterator> parameters{ declaration->invokeMethod().parameters() };
+    IteratorRange<MethodDeclaration::ParameterIterator> parameters{ declaration->invokeMethod().parameters() };
 
-    DelegateDeclaration::ParameterIterator it{ parameters.begin() };
+    MethodDeclaration::ParameterIterator it{ parameters.begin() };
     const ParameterDeclaration& inParameter{ *it };
     Assert::IsTrue(inParameter.name() == L"sender");
 

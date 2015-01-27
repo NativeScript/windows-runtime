@@ -83,9 +83,9 @@ namespace Metadata {
             for (size_t i = 0; i < attributesCount; ++i) {
                 mdCustomAttribute attribute{ attributes[i] };
                 mdToken classAttributeClassToken{ getCustomAttributeClassToken(metadata, attribute) };
-                identifier classAttributeClassName = getClassName(metadata, classAttributeClassToken);
+                wstring classAttributeClassName{ getTypeName(metadata, classAttributeClassToken) };
 
-                if (wcscmp(classAttributeClassName.data(), attributeName) != 0) {
+                if (classAttributeClassName != attributeName) {
                     continue;
                 }
 
@@ -137,9 +137,9 @@ namespace Metadata {
             }
 
             mdToken firstArgumentToken{ CorSigUncompressToken(signature) };
-            identifier firstArgumentTypeName = getClassName(metadata, firstArgumentToken);
+            wstring firstArgumentTypeName{ getTypeName(metadata, firstArgumentToken) };
 
-            if (wcscmp(firstArgumentTypeName.data(), SYSTEM_TYPE_W) != 0) {
+            if (firstArgumentTypeName != SYSTEM_TYPE_W) {
                 return false;
             }
 

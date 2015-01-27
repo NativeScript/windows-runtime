@@ -127,18 +127,18 @@ namespace Metadata {
 
         case ELEMENT_TYPE_VALUETYPE: {
             mdToken token{ CorSigUncompressToken(signature) };
-            identifier className = getClassName(metadata, token);
-            if (wcscmp(className.data(), L"System.Guid") == 0) {
+            wstring className{ getTypeName(metadata, token) };
+            if (className == L"System.Guid") {
                 result += L"Guid";
             } else {
-                result += className.data();
+                result += className;
             }
             break;
         }
 
         case ELEMENT_TYPE_CLASS: {
             mdToken token{ CorSigUncompressToken(signature) };
-            result += getClassName(metadata, token).data();
+            result += getTypeName(metadata, token);
             break;
         }
 
@@ -163,7 +163,7 @@ namespace Metadata {
             ASSERT(genericType == ELEMENT_TYPE_CLASS);
 
             mdToken token{ CorSigUncompressToken(signature) };
-            result += getClassName(metadata, token).data();
+            result += getTypeName(metadata, token);
 
             result += L'<';
 

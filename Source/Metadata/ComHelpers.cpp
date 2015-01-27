@@ -91,23 +91,28 @@ namespace Metadata {
         return getMetadataFileResult == S_OK;
     }
 
-    identifier getClassName(IMetaDataImport2* metadata, mdToken token) {
-        identifier className;
+    wstring getTypeName(IMetaDataImport2* metadata, mdToken token) {
+        ASSERT(metadata);
+        ASSERT(token != mdTokenNil);
+
+        identifier nameData;
+        ULONG nameLength{ 0 };
 
         switch (TypeFromToken(token)) {
         case mdtTypeDef:
-            ASSERT_SUCCESS(metadata->GetTypeDefProps(token, className.data(), className.size(), nullptr, nullptr, nullptr));
+            ASSERT_SUCCESS(metadata->GetTypeDefProps(token, nameData.data(), nameData.size(), &nameLength, nullptr, nullptr));
             break;
 
         case mdtTypeRef:
-            ASSERT_SUCCESS(metadata->GetTypeRefProps(token, nullptr, className.data(), className.size(), nullptr));
+            ASSERT_SUCCESS(metadata->GetTypeRefProps(token, nullptr, nameData.data(), nameData.size(), &nameLength));
             break;
 
         default:
             ASSERT_NOT_REACHED();
         }
 
-        return className;
+        wstring result{ nameData.data(), nameLength - 1 };
+        return result;
     }
 }
 }

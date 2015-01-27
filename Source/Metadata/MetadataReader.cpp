@@ -6,18 +6,6 @@ const wchar_t* const SYSTEM_ENUM_W{ L"System.Enum" };
 const wchar_t* const SYSTEM_VALUETYPE_W{ L"System.ValueType" };
 const wchar_t* const SYSTEM_MULTICASTDELEGATE_W{ L"System.MulticastDelegate" };
 
-namespace {
-template <typename T, typename U>
-bool equalToAny(T&& t, U&& u) {
-    return (t == u);
-}
-
-template <typename T, typename U, typename... Args>
-bool equalToAny(T&& t, U&& u, Args&&... args) {
-    return equalToAny(t, u) || equalToAny(t, args...);
-}
-}
-
 namespace NativeScript {
 namespace Metadata {
 

@@ -3,6 +3,7 @@
 // TODO: Move and refactor
 
 #include <array>
+#include <string>
 
 #define NO_RETURN __declspec(noreturn)
 
@@ -78,6 +79,6 @@ namespace Metadata {
 
     bool resolveTypeRef(IMetaDataImport2*, mdTypeRef, IMetaDataImport2**, mdTypeDef*);
 
-    identifier getClassName(IMetaDataImport2*, mdToken);
+    std::wstring getTypeName(IMetaDataImport2*, mdToken);
 }
 }

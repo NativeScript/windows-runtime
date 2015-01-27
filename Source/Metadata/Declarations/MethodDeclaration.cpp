@@ -46,13 +46,13 @@ namespace Metadata {
         ASSERT(parametersCount < parameterTokens.size() - 1);
         _metadata->CloseEnum(parameterEnumerator);
 
-        size_t startIndex = 0;
+        size_t startIndex{ 0 };
         if (argumentsCount + 1 == parametersCount) {
             ++startIndex;
         }
 
         for (size_t i = startIndex; i < parametersCount; ++i) {
-            PCCOR_SIGNATURE type = Signature::consumeType(signature);
+            PCCOR_SIGNATURE type{ Signature::consumeType(signature) };
             _parameters.emplace_back(_metadata.Get(), parameterTokens[i], type);
         }
 

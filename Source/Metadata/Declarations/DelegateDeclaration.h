@@ -12,8 +12,6 @@ namespace Metadata {
     public:
         typedef TypeDeclaration Base;
 
-        using ParameterIterator = MethodDeclaration::ParameterIterator;
-
         explicit DelegateDeclaration(IMetaDataImport2*, mdTypeDef);
 
         virtual CLSID id() const;

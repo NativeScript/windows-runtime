@@ -32,7 +32,7 @@ namespace Metadata {
     }
 
     bool ParameterDeclaration::isOut() const {
-        PCCOR_SIGNATURE type = _type;
+        PCCOR_SIGNATURE type{ _type };
         return CorSigUncompressData(type) == ELEMENT_TYPE_BYREF;
     }
 
