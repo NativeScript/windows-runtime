@@ -99,6 +99,8 @@ namespace Metadata {
             ASSERT_SUCCESS(WindowsDeleteString(nameParts[i]));
         }
 
+        CoTaskMemFree(nameParts);
+
         return guid;
     }
 }
