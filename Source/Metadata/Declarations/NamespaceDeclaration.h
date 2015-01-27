@@ -1,6 +1,8 @@
 #pragma once
 
 #include "Declaration.h"
+#include <vector>
+#include <Wrappers/IteratorRange.h>
 
 namespace NativeScript {
 namespace Metadata {
@@ -9,18 +11,20 @@ namespace Metadata {
     public:
         typedef Declaration Base;
 
+        using ChildrenIterator = std::vector<const std::wstring>::const_iterator;
+
         explicit NamespaceDeclaration(const wchar_t* fullName);
 
         virtual std::wstring name() const override;
 
         virtual std::wstring fullName() const override;
 
-        // TODO
-        // RoResolveNamespace gives incomplete results.
-        // The search for the "Windows" namespace on Windows Phone 8.1 fails both on a device and on an emulator with corrupted metadata error.
+        // Incomplete
+        IteratorRange<ChildrenIterator> children();
 
     private:
         std::wstring _fullName;
+        std::vector<std::wstring> _children;
     };
 }
 }
