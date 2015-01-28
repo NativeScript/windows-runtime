@@ -40,7 +40,7 @@ namespace NativeScript {
     public:                                                                             \
         static const ::NativeScript::FFITypeClassInfo* info() { return &s_info; }
 
-    static const unsigned IsFFITypeFlag = 1 << 31;
+    static const unsigned IsFFITypeFlag = 1 << 15;
 
     inline bool isFFIType(JSC::JSCell* cell) {
         if (!cell) {
