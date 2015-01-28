@@ -3,6 +3,8 @@ set(HEADER_FILES
     Runtime.h
     RuntimeExportMacros.h
     GlobalObject.h
+    
+    ReleasePool.h
 
     FFI/FFIType.h
     FFI/FFIVoidType.h

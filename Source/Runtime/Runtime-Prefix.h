@@ -3,3 +3,4 @@
 #include <JavaScriptCore/JSCInlines.h>
 #include <JavaScriptCore/Error.h>
 #include <wrl.h>
+#include "ReleasePool.h"
