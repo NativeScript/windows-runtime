@@ -13,7 +13,7 @@ JSValue FFIVoidType::marshalNativeToJS(const JSCell*, ExecState*, const void*) {
 void FFIVoidType::marshalJSToNative(const JSCell*, ExecState*, JSValue, void*) {
 }
 
-const ffi_type* FFIVoidType::getFFITypeStruct(const JSCell*) {
+ffi_type* FFIVoidType::getFFITypeStruct(const JSCell*) {
     return &ffi_type_void;
 }
 }

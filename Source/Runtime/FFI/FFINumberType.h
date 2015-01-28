@@ -14,7 +14,7 @@ class FFINumberType : public JSC::JSNonFinalObject {
     DECLARE_FFI_INFO
 
 public:
-    static FFINumberType<T>* create(JSC::VM& vm, JSC::Structure* structure, const ffi_type* ffiType) {
+    static FFINumberType<T>* create(JSC::VM& vm, JSC::Structure* structure, ffi_type* ffiType) {
         ASSERT(ffiType);
 
         FFINumberType* object = new (NotNull, JSC::allocateCell<FFINumberType<T>>(vm.heap)) FFINumberType<T>(vm, structure, ffiType);
@@ -29,7 +29,7 @@ public:
     }
 
 private:
-    FFINumberType(JSC::VM& vm, JSC::Structure* structure, const ffi_type* ffiType)
+    FFINumberType(JSC::VM& vm, JSC::Structure* structure, ffi_type* ffiType)
         : Base(vm, structure)
         , _ffiType(ffiType) {
     }
@@ -42,12 +42,12 @@ private:
         *reinterpret_cast<T*>(buffer) = value.toNumber(execState);
     }
 
-    static const ffi_type* getFFITypeStruct(const JSCell* cell) {
+    static ffi_type* getFFITypeStruct(const JSCell* cell) {
         const FFINumberType<T>* type = jsCast<const FFINumberType<T>*>(cell);
         return type->_ffiType;
     }
 
-    const ffi_type* _ffiType;
+    ffi_type* _ffiType;
 };
 
 template <typename T>

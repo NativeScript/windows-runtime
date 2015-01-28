@@ -31,6 +31,6 @@ private:
 
     static void marshalJSToNative(const JSC::JSCell*, JSC::ExecState*, JSC::JSValue, void*);
 
-    static const ffi_type* getFFITypeStruct(const JSCell*);
+    static ffi_type* getFFITypeStruct(const JSCell*);
 };
 }

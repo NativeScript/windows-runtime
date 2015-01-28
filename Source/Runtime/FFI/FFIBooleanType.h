@@ -40,7 +40,7 @@ private:
         *reinterpret_cast<T*>(buffer) = value.toBoolean(execState);
     }
 
-    static const ffi_type* getFFITypeStruct(const JSCell*) {
+    static ffi_type* getFFITypeStruct(const JSCell*) {
         return &ffi_type_uint8;
     }
 };

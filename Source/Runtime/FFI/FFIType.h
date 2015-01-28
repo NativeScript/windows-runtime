@@ -9,7 +9,7 @@ namespace NativeScript {
 
         void (*marshalJSToNative)(const JSC::JSCell*, JSC::ExecState*, JSC::JSValue, void*);
 
-        const ffi_type* (*getFFITypeStruct)(const JSC::JSCell*);
+        ffi_type* (*getFFITypeStruct)(const JSC::JSCell*);
     };
 
 #define CREATE_FFI_METHOD_TABLE(ClassName) { \
