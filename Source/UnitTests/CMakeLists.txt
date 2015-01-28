@@ -3,15 +3,15 @@ set(HEADER_FILES
 )
 
 set(METADATA_TESTS
-    ClassesTests.cpp
-    DelegatesTests.cpp
-    EnumsTests.cpp
-    EventsTests.cpp
-    InterfacesTests.cpp
-    MarshalingTests.cpp
-    NamespacesTests.cpp
-    OverloadsTests.cpp
-    StructsTests.cpp
+    MetadataTests/ClassesTests.cpp
+    MetadataTests/DelegatesTests.cpp
+    MetadataTests/EnumsTests.cpp
+    MetadataTests/EventsTests.cpp
+    MetadataTests/InterfacesTests.cpp
+    MetadataTests/MarshalingTests.cpp
+    MetadataTests/NamespacesTests.cpp
+    MetadataTests/OverloadsTests.cpp
+    MetadataTests/StructsTests.cpp
 )
 set(SOURCE_FILES
     ${METADATA_TESTS}
@@ -38,6 +38,7 @@ set(RESOURCE_FILES
 
 include_directories(
     ${PROJECT_SOURCE_DIR}/Metadata
+    ${CMAKE_CURRENT_SOURCE_DIR}
 )
 
 # TODO
