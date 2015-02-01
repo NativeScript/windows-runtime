@@ -19,9 +19,9 @@ configure_file(
 )
 list(APPEND RESOURCE_FILES ${CMAKE_CURRENT_BINARY_DIR}/Package.appxmanifest)
 
-set(TEST_JS app/Test.js)
+set(TEST_JS ${CMAKE_CURRENT_SOURCE_DIR}/app/Test.js)
 if (NOT EXISTS ${TEST_JS})
-    file(WRITE ${TEST_JS} "console.log('Hello, World!');")
+    file(WRITE ${TEST_JS} "console.log('Hello, World!');\n")
 endif()
 
 list(APPEND RESOURCE_FILES app tns_modules)
