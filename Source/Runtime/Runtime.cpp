@@ -70,6 +70,6 @@ void Runtime::initialize() {
     initializeThreading();
 }
 
-void Runtime::executeModule(const wchar_t* moduleIdentifier, JSValueRef** error) {
+void Runtime::executeModule(const wchar_t* moduleIdentifier, JSValueRef* error) {
 }
 }
