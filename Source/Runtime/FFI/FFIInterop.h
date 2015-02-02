@@ -26,19 +26,16 @@ public:
         return JSC::Structure::create(vm, globalObject, prototype, JSC::TypeInfo(JSC::ObjectType, StructureFlags), info());
     }
 
-    ~FFIInterop() = default;
-
 protected:
     FFIInterop(JSC::VM& vm, JSC::Structure* structure)
         : Base(vm, structure) {
     }
 
+    ~FFIInterop() = default;
+
     void finishCreation(JSC::VM&);
 
     static void visitChildren(JSC::JSCell*, JSC::SlotVisitor&);
-
-private:
-    static void destroy(JSC::JSCell*);
 
     JSC::WriteBarrier<FFIVoidType> _voidType;
     JSC::WriteBarrier<FFINumberType<int8_t>> _int8Type;
@@ -52,5 +49,8 @@ private:
     JSC::WriteBarrier<FFINumberType<float>> _floatType;
     JSC::WriteBarrier<FFINumberType<double>> _doubleType;
     JSC::WriteBarrier<FFIBooleanType<bool>> _boolType;
+
+private:
+    static void destroy(JSC::JSCell*);
 };
 }

@@ -22,6 +22,10 @@ namespace Metadata {
 
         PCCOR_SIGNATURE type() const;
 
+        IMetaDataImport2* metadata() const {
+            return _metadata.Get();
+        }
+
     private:
         const Microsoft::WRL::ComPtr<IMetaDataImport2> _metadata;
         const mdParamDef _token;

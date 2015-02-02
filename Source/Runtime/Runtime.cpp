@@ -5,7 +5,7 @@
 #include <JavaScriptCore/StrongInlines.h>
 #include "GlobalObject.h"
 
-#include <MetadataReader.h>
+#include "COM/COMInterop.h"
 
 #include "Runtime.h"
 
@@ -15,17 +15,15 @@ using namespace JSC;
 using namespace Metadata;
 
 namespace {
-    MetadataReader metadataReader;
-
     EncodedJSValue JSC_HOST_CALL getMetadata(ExecState* execState) {
         WTF::String typeName = execState->argument(0).toWTFString(execState);
-        shared_ptr<Declaration> declaration{ metadataReader.findByName(typeName.createHString().Get()) };
+        COMInterop* interop = jsCast<GlobalObject*>(execState->lexicalGlobalObject())->interop();
 
-        if (!declaration) {
-            return JSValue::encode(jsNull());
+        if (JSObject* type = interop->resolveType(typeName.createHString().Get())) {
+            return JSValue::encode(type);
         }
 
-        return JSValue::encode(jsString(execState, declaration->fullName().data()));
+        return JSValue::encode(jsNull());
     }
 }
 

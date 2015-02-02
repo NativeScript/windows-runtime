@@ -20,13 +20,13 @@ public:
     void set(COMObjectWrapper* wrapper) {
         ASSERT(wrapper);
 
-        _wrappedObjects.set(wrapper->wrappedObject().Get(), wrapper);
+        _wrappedObjects.set(wrapper->wrappedObject(), wrapper);
     }
 
     void remove(COMObjectWrapper* wrapper) {
         ASSERT(wrapper);
 
-        _wrappedObjects.remove(wrapper->wrappedObject().Get());
+        _wrappedObjects.remove(wrapper->wrappedObject());
     }
 
 private:

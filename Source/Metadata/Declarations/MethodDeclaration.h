@@ -45,6 +45,10 @@ namespace Metadata {
 
         bool isDefaultOverload() const;
 
+        IMetaDataImport2* metadata() const {
+            return _metadata.Get();
+        }
+
     private:
         friend std::unique_ptr<const InterfaceDeclaration> findDeclaringInterfaceForMethod(const MethodDeclaration&, size_t* outIndex);
 

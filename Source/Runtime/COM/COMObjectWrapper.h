@@ -22,8 +22,8 @@ public:
         return JSC::Structure::create(vm, globalObject, prototype, JSC::TypeInfo(JSC::ObjectType, StructureFlags), info());
     }
 
-    const Microsoft::WRL::ComPtr<IUnknown>& wrappedObject() const {
-        return _wrappedObject;
+    IUnknown* wrappedObject() const {
+        return _wrappedObject.Get();
     }
 
     static WTF::String className(const JSC::JSObject* object);

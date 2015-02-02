@@ -13,8 +13,12 @@ set(HEADER_FILES
     FFI/FFIInterop.h
 
     COM/COMObjectWrapper.h
+    COM/COMConstructor.h
     COM/COMObjectMap.h
+    COM/COMUnknownType.h
+    COM/HSTRINGType.h
     COM/COMInterop.h
+    COM/COMMethodCall.h
 )
 
 set(SOURCE_FILES
@@ -26,7 +30,11 @@ set(SOURCE_FILES
     FFI/FFIInterop.cpp
 
     COM/COMObjectWrapper.cpp
+    COM/COMConstructor.cpp
+    COM/COMUnknownType.cpp
+    COM/HSTRINGType.cpp
     COM/COMInterop.cpp
+    COM/COMMethodCall.cpp
 )
 
 include_directories(${WEBKIT_INCLUDE_DIRECTORIES} ${PROJECT_SOURCE_DIR}/Metadata ${PROJECT_SOURCE_DIR}/libffi/libffi.Shared)
