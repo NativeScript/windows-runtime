@@ -32,7 +32,7 @@ namespace Metadata {
     }
 
     PropertyDeclaration::PropertyDeclaration(IMetaDataImport2* metadata, mdProperty token)
-        : Base(DeclarationKind::Property)
+        : Base()
         , _metadata{ metadata }
         , _token{ token }
         , _getter{ makeGetter(metadata, token) }

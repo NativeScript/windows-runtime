@@ -6,8 +6,8 @@ namespace Metadata {
 
     using namespace std;
 
-    ParameterDeclaration::ParameterDeclaration(IMetaDataImport2* metadata, mdParamDef token, PCCOR_SIGNATURE type)
-        : Base(DeclarationKind::Parameter)
+    ParameterDeclaration::ParameterDeclaration(IMetaDataImport2* metadata, mdParamDef token, const Type& type)
+        : Base()
         , _metadata{ metadata }
         , _token{ token }
         , _type{ type } {
@@ -31,12 +31,7 @@ namespace Metadata {
         return result;
     }
 
-    bool ParameterDeclaration::isOut() const {
-        PCCOR_SIGNATURE type{ _type };
-        return CorSigUncompressData(type) == ELEMENT_TYPE_BYREF;
-    }
-
-    PCCOR_SIGNATURE ParameterDeclaration::type() const {
+    const Type& ParameterDeclaration::type() const {
         return _type;
     }
 }

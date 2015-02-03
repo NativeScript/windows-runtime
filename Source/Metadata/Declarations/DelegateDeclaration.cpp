@@ -20,11 +20,11 @@ namespace Metadata {
     }
 
     DelegateDeclaration::DelegateDeclaration(IMetaDataImport2* metadata, mdTypeDef token)
-        : DelegateDeclaration(DeclarationKind::Delegate, metadata, token) {
+        : DelegateDeclaration(ElementType::Delegate, metadata, token) {
     }
 
-    DelegateDeclaration::DelegateDeclaration(DeclarationKind kind, IMetaDataImport2* metadata, mdTypeDef token)
-        : Base(kind, metadata, token)
+    DelegateDeclaration::DelegateDeclaration(ElementType elementType, IMetaDataImport2* metadata, mdTypeDef token)
+        : Base(elementType, metadata, token)
         , _invokeMethod{ metadata, getInvokeMethodToken(metadata, token) } {
     }
 
@@ -37,7 +37,7 @@ namespace Metadata {
     }
 
     GenericDelegateDeclaration::GenericDelegateDeclaration(IMetaDataImport2* metadata, mdTypeDef token)
-        : Base(DeclarationKind::GenericDelegate, metadata, token) {
+        : Base(ElementType::GenericDelegate, metadata, token) {
     }
 
     size_t GenericDelegateDeclaration::numberOfGenericParameters() const {
@@ -51,21 +51,17 @@ namespace Metadata {
         return count;
     }
 
-    GenericDelegateInstanceDeclaration::GenericDelegateInstanceDeclaration(IMetaDataImport2* openMetadata, mdTypeDef openToken, IMetaDataImport2* closedMetadata, mdTypeSpec closedToken)
-        : Base(DeclarationKind::GenericDelegateInstance, openMetadata, openToken)
+    GenericDelegateInstanceDeclaration::GenericDelegateInstanceDeclaration(IMetaDataImport2* openMetadata, mdTypeDef openToken, IMetaDataImport2* closedMetadata, PCCOR_SIGNATURE signature)
+        : Base(ElementType::GenericDelegateInstance, openMetadata, openToken)
         , _closedMetadata{ closedMetadata }
-        , _closedToken{ closedToken } {
+        , _signature{ signature } {
 
         ASSERT(closedMetadata);
-        ASSERT(TypeFromToken(closedToken) == mdtTypeSpec);
-        ASSERT(closedToken != mdTypeSpecNil);
+        ASSERT(signature);
     }
 
     wstring GenericDelegateInstanceDeclaration::fullName() const {
-        PCCOR_SIGNATURE signature{ nullptr };
-        ULONG signatureSize{ 0 };
-        ASSERT_SUCCESS(_closedMetadata->GetTypeSpecFromToken(_closedToken, &signature, &signatureSize));
-        return Signature::toString(_closedMetadata.Get(), signature);
+        return Signature(_closedMetadata.Get(), _signature).toString();
     }
 
     CLSID GenericDelegateInstanceDeclaration::id() const {

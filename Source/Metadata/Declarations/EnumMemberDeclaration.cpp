@@ -8,7 +8,7 @@ namespace Metadata {
     using namespace Microsoft::WRL;
 
     EnumMemberDeclaration::EnumMemberDeclaration(IMetaDataImport2* metadata, mdFieldDef token)
-        : Base(DeclarationKind::EnumMember, metadata, token) {
+        : Base(metadata, token) {
     }
 
     int64_t EnumMemberDeclaration::value() const {

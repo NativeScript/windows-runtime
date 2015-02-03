@@ -15,7 +15,7 @@ namespace Metadata {
         virtual IID id() const;
 
     protected:
-        explicit InterfaceDeclaration(DeclarationKind, IMetaDataImport2*, mdTypeDef);
+        explicit InterfaceDeclaration(ElementType, IMetaDataImport2*, mdTypeDef);
     };
 
     class GenericInterfaceDeclaration final : public InterfaceDeclaration {
@@ -31,15 +31,14 @@ namespace Metadata {
     public:
         typedef InterfaceDeclaration Base;
 
-        explicit GenericInterfaceInstanceDeclaration(IMetaDataImport2*, mdTypeDef, IMetaDataImport2*, mdTypeSpec);
+        explicit GenericInterfaceInstanceDeclaration(IMetaDataImport2*, mdTypeDef, std::vector<const Type&>);
 
         virtual std::wstring fullName() const override;
 
         virtual IID id() const override;
 
     private:
-        const Microsoft::WRL::ComPtr<IMetaDataImport2> _closedMetadata;
-        mdTypeSpec _closedToken;
+        std::vector<const Type&> _genericArguments;
     };
 }
 }

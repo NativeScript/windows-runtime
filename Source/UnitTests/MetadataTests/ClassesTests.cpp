@@ -6,10 +6,8 @@ namespace UnitTests {
     TEST_CLASS(ClassesTests){
         public :
             TEST_METHOD(EmptyClass){
-                MetadataReader metadataReader;
-
-    const wchar_t* name{ L"NativeScript.TestFixtures.EmptyClass" };
-    shared_ptr<ClassDeclaration> declaration{ static_pointer_cast<ClassDeclaration>(metadataReader.findByName(name)) };
+                const wchar_t * name{ L"NativeScript.TestFixtures.EmptyClass" };
+    const ClassDeclaration* declaration{ static_cast<const ClassDeclaration*>(MetadataReader::findByName(name)) };
 
     Assert::IsTrue(declaration->name() == L"EmptyClass");
     Assert::IsTrue(declaration->fullName() == name);
@@ -18,10 +16,8 @@ namespace UnitTests {
 }
 
 TEST_METHOD(ImplementedInterfaces) {
-    MetadataReader metadataReader;
-
     const wchar_t* name{ L"NativeScript.TestFixtures.SimpleClass" };
-    shared_ptr<ClassDeclaration> declaration{ static_pointer_cast<ClassDeclaration>(metadataReader.findByName(name)) };
+    const ClassDeclaration* declaration{ static_cast<const ClassDeclaration*>(MetadataReader::findByName(name)) };
 
     IteratorRange<ClassDeclaration::InterfaceIterator> interfaces{ declaration->implementedInterfaces() };
     ClassDeclaration::InterfaceIterator it{ interfaces.begin() };
@@ -38,10 +34,8 @@ TEST_METHOD(ImplementedInterfaces) {
 }
 
 TEST_METHOD(Methods) {
-    MetadataReader metadataReader;
-
     const wchar_t* name{ L"NativeScript.TestFixtures.SimpleClass" };
-    shared_ptr<ClassDeclaration> declaration{ static_pointer_cast<ClassDeclaration>(metadataReader.findByName(name)) };
+    const ClassDeclaration* declaration{ static_cast<const ClassDeclaration*>(MetadataReader::findByName(name)) };
 
     IteratorRange<ClassDeclaration::MethodIterator> methods{ declaration->methods() };
     ClassDeclaration::MethodIterator it{ methods.begin() };
@@ -64,20 +58,16 @@ TEST_METHOD(Methods) {
 }
 
 TEST_METHOD(OverrideableMethods) {
-    MetadataReader metadataReader;
-
     const wchar_t* name{ L"Windows.UI.Xaml.Application" };
-    shared_ptr<ClassDeclaration> declaration{ static_pointer_cast<ClassDeclaration>(metadataReader.findByName(name)) };
+    const ClassDeclaration* declaration{ static_cast<const ClassDeclaration*>(MetadataReader::findByName(name)) };
 
     MethodDeclaration overridableMethod{ declaration->findMethodsWithName(L"OnActivated")[0] };
     Assert::IsTrue(overridableMethod.isSealed() == false);
 }
 
 TEST_METHOD(Properties) {
-    MetadataReader metadataReader;
-
     const wchar_t* name{ L"NativeScript.TestFixtures.SimpleClass" };
-    shared_ptr<ClassDeclaration> declaration{ static_pointer_cast<ClassDeclaration>(metadataReader.findByName(name)) };
+    const ClassDeclaration* declaration{ static_cast<const ClassDeclaration*>(MetadataReader::findByName(name)) };
 
     IteratorRange<ClassDeclaration::PropertyIterator> properties{ declaration->properties() };
     ClassDeclaration::PropertyIterator it{ properties.begin() };
@@ -120,9 +110,7 @@ TEST_METHOD(Properties) {
 }
 
 TEST_METHOD(ActivatableInitializers) {
-    MetadataReader metadataReader;
-
-    shared_ptr<ClassDeclaration> declaration{ static_pointer_cast<ClassDeclaration>(metadataReader.findByName(L"NativeScript.TestFixtures.ActivatableClass")) };
+    const ClassDeclaration* declaration{ static_cast<const ClassDeclaration*>(MetadataReader::findByName(L"NativeScript.TestFixtures.ActivatableClass")) };
 
     IteratorRange<ClassDeclaration::MethodIterator> initializers{ declaration->initializers() };
 
@@ -179,9 +167,7 @@ TEST_METHOD(ActivatableInitializers) {
 }
 
 TEST_METHOD(ComposablebleInitializers) {
-    MetadataReader metadataReader;
-
-    shared_ptr<ClassDeclaration> declaration{ static_pointer_cast<ClassDeclaration>(metadataReader.findByName(L"Windows.UI.Xaml.DataTemplateKey")) };
+    const ClassDeclaration* declaration{ static_cast<const ClassDeclaration*>(MetadataReader::findByName(L"Windows.UI.Xaml.DataTemplateKey")) };
 
     IteratorRange<ClassDeclaration::MethodIterator> initializers{ declaration->initializers() };
 
@@ -206,9 +192,7 @@ TEST_METHOD(ComposablebleInitializers) {
 }
 
 TEST_METHOD(StaticMethods) {
-    MetadataReader metadataReader;
-
-    shared_ptr<ClassDeclaration> declaration{ static_pointer_cast<ClassDeclaration>(metadataReader.findByName(L"NativeScript.TestFixtures.StaticMethodsClass")) };
+    const ClassDeclaration* declaration{ static_cast<const ClassDeclaration*>(MetadataReader::findByName(L"NativeScript.TestFixtures.StaticMethodsClass")) };
 
     MethodDeclaration complexStaticMethod{ declaration->findMethodsWithName(L"ComplexStaticMethod")[0] };
     Assert::IsTrue(complexStaticMethod.numberOfParameters() == 9);
@@ -256,9 +240,7 @@ TEST_METHOD(StaticMethods) {
 }
 
 TEST_METHOD(InstanceMethods) {
-    MetadataReader metadataReader;
-
-    shared_ptr<ClassDeclaration> declaration{ static_pointer_cast<ClassDeclaration>(metadataReader.findByName(L"NativeScript.TestFixtures.InstanceMethodsClass")) };
+    const ClassDeclaration* declaration{ static_cast<const ClassDeclaration*>(MetadataReader::findByName(L"NativeScript.TestFixtures.InstanceMethodsClass")) };
 
     PropertyDeclaration property{ *static_cast<const PropertyDeclaration*>(declaration->findMembersWithName(L"Address")[0].get()) };
     size_t setterIndex{ 0 };
@@ -305,9 +287,7 @@ TEST_METHOD(InstanceMethods) {
 }
 
 TEST_METHOD(GenericMethodImplementation1) {
-    MetadataReader metadataReader;
-
-    shared_ptr<ClassDeclaration> declaration{ static_pointer_cast<ClassDeclaration>(metadataReader.findByName(L"NativeScript.TestFixtures.MultiGenericImplementationClass")) };
+    const ClassDeclaration* declaration{ static_cast<const ClassDeclaration*>(MetadataReader::findByName(L"NativeScript.TestFixtures.MultiGenericImplementationClass")) };
 
     MethodDeclaration method1{ declaration->findMethodsWithName(L"Windows.Foundation.Collections.IIterable`1<Int16>.First")[0] };
     size_t index1{ 0 };
@@ -324,9 +304,7 @@ TEST_METHOD(GenericMethodImplementation1) {
 }
 
 TEST_METHOD(GenericMethodImplementation2) {
-    MetadataReader metadataReader;
-
-    shared_ptr<ClassDeclaration> declaration{ static_pointer_cast<ClassDeclaration>(metadataReader.findByName(L"Windows.Data.Json.JsonArray")) };
+    const ClassDeclaration* declaration{ static_cast<const ClassDeclaration*>(MetadataReader::findByName(L"Windows.Data.Json.JsonArray")) };
 
     MethodDeclaration method1{ declaration->findMethodsWithName(L"First")[0] };
     size_t index1{ 0 };
@@ -337,9 +315,7 @@ TEST_METHOD(GenericMethodImplementation2) {
 }
 
 TEST_METHOD(ExplicitInterfaceMethodImplementation) {
-    MetadataReader metadataReader;
-
-    shared_ptr<ClassDeclaration> declaration{ static_pointer_cast<ClassDeclaration>(metadataReader.findByName(L"NativeScript.TestFixtures.ExplicitInterfaceMethodImplementationClass")) };
+    const ClassDeclaration* declaration{ static_cast<const ClassDeclaration*>(MetadataReader::findByName(L"NativeScript.TestFixtures.ExplicitInterfaceMethodImplementationClass")) };
 
     MethodDeclaration method0{ declaration->findMethodsWithName(L"Method")[0] };
     Assert::IsTrue(method0.fullName() == L"Method");
@@ -362,21 +338,19 @@ TEST_METHOD(ExplicitInterfaceMethodImplementation) {
 }
 
 TEST_METHOD(ClassType) {
-    MetadataReader metadataReader;
-
-    shared_ptr<ClassDeclaration> emptyClass{ static_pointer_cast<ClassDeclaration>(metadataReader.findByName(L"NativeScript.TestFixtures.EmptyClass")) };
+    const ClassDeclaration* emptyClass{ static_cast<const ClassDeclaration*>(MetadataReader::findByName(L"NativeScript.TestFixtures.EmptyClass")) };
     Assert::IsTrue(emptyClass->isInstantiable() == false);
     Assert::IsTrue(emptyClass->isSealed() == true);
 
-    shared_ptr<ClassDeclaration> activatableClass{ static_pointer_cast<ClassDeclaration>(metadataReader.findByName(L"NativeScript.TestFixtures.ActivatableClass")) };
+    const ClassDeclaration* activatableClass{ static_cast<const ClassDeclaration*>(MetadataReader::findByName(L"NativeScript.TestFixtures.ActivatableClass")) };
     Assert::IsTrue(activatableClass->isInstantiable() == true);
     Assert::IsTrue(activatableClass->isSealed() == true);
 
-    shared_ptr<ClassDeclaration> composableClass{ static_pointer_cast<ClassDeclaration>(metadataReader.findByName(L"Windows.UI.Xaml.Controls.ListView")) };
+    const ClassDeclaration* composableClass{ static_cast<const ClassDeclaration*>(MetadataReader::findByName(L"Windows.UI.Xaml.Controls.ListView")) };
     Assert::IsTrue(composableClass->isInstantiable() == true);
     Assert::IsTrue(composableClass->isSealed() == false);
 
-    shared_ptr<ClassDeclaration> abstractClass{ static_pointer_cast<ClassDeclaration>(metadataReader.findByName(L"Windows.UI.Xaml.Controls.Control")) };
+    const ClassDeclaration* abstractClass{ static_cast<const ClassDeclaration*>(MetadataReader::findByName(L"Windows.UI.Xaml.Controls.Control")) };
     Assert::IsTrue(abstractClass->isInstantiable() == false);
     Assert::IsTrue(abstractClass->isSealed() == false);
 }

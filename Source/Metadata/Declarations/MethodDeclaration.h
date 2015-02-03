@@ -35,7 +35,7 @@ namespace Metadata {
 
         bool isSealed() const;
 
-        PCCOR_SIGNATURE returnType() const;
+        const Type& returnType() const;
 
         IteratorRange<ParameterIterator> parameters() const;
 
@@ -48,10 +48,12 @@ namespace Metadata {
     private:
         friend std::unique_ptr<const InterfaceDeclaration> findDeclaringInterfaceForMethod(const MethodDeclaration&, size_t* outIndex);
 
+        void parseSignature();
+
         const Microsoft::WRL::ComPtr<IMetaDataImport2> _metadata;
         const mdMethodDef _token;
 
-        PCCOR_SIGNATURE _returnType;
+        const Type* _returnType;
         std::vector<ParameterDeclaration> _parameters;
     };
 }

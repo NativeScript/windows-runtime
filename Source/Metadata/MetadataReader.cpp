@@ -1,10 +1,6 @@
 #include "Metadata-Prefix.h"
 #include "MetadataReader.h"
-
-const wchar_t* const WINDOWS_W{ L"Windows" };
-const wchar_t* const SYSTEM_ENUM_W{ L"System.Enum" };
-const wchar_t* const SYSTEM_VALUETYPE_W{ L"System.ValueType" };
-const wchar_t* const SYSTEM_MULTICASTDELEGATE_W{ L"System.MulticastDelegate" };
+#include "TypeCache.h"
 
 namespace NativeScript {
 namespace Metadata {
@@ -17,79 +13,107 @@ namespace Metadata {
 
     // TODO: Use decl_iterator, specific_decl_iterator, filtered_decl_iterator
 
-    shared_ptr<Declaration> MetadataReader::findByName(const wchar_t* fullName) const {
+    const Type* MetadataReader::findByName(const wchar_t* fullName) {
         HStringReference fullNameRef{ fullName };
         return findByName(fullNameRef.Get());
-    }
-
-    shared_ptr<Declaration> MetadataReader::findByName(HSTRING fullName) const {
-        if (WindowsGetStringLen(fullName) == 0) {
-            return make_shared<NamespaceDeclaration>(L"");
         }
 
-        ComPtr<IMetaDataImport2> metadata;
-        mdTypeDef token{ mdTokenNil };
+        const Type* MetadataReader::findByName(HSTRING fullName) {
+            // Look in cache
 
-        HRESULT getMetadataFileResult{ RoGetMetaDataFile(fullName, nullptr, nullptr, metadata.GetAddressOf(), &token) };
-
-        if (FAILED(getMetadataFileResult)) {
-            if (getMetadataFileResult == RO_E_METADATA_NAME_IS_NAMESPACE) {
-                return make_shared<NamespaceDeclaration>(WindowsGetStringRawBuffer(fullName, nullptr));
+            if (WindowsGetStringLen(fullName) == 0) {
+                return &TypeCache::instance().getOrCreateNamespace(WindowsGetStringRawBuffer(fullName, nullptr));
             }
 
-            return nullptr;
+            ComPtr<IMetaDataImport2> metadata;
+            mdTypeDef token{ mdTokenNil };
+
+            HRESULT getMetadataFileResult{ RoGetMetaDataFile(fullName, nullptr, nullptr, metadata.GetAddressOf(), &token) };
+
+            if (FAILED(getMetadataFileResult)) {
+                if (getMetadataFileResult == RO_E_METADATA_NAME_IS_NAMESPACE) {
+                    return &TypeCache::instance().getOrCreateNamespace(WindowsGetStringRawBuffer(fullName, nullptr));
+                }
+
+                // Find indexOf '<'
+
+                return nullptr;
+            }
+
+            return &TypeCache::instance().getOrCreateTypeDeclaration(metadata.Get(), token);
         }
 
-        DWORD flags{ 0 };
-        mdToken parentToken{ mdTokenNil };
-        ASSERT_SUCCESS(metadata->GetTypeDefProps(token, nullptr, 0, nullptr, &flags, &parentToken));
+        const Type& MetadataReader::parseType(IMetaDataImport2* metadata, PCCOR_SIGNATURE signature) {
+            CorElementType elementType{ CorSigUncompressElementType(signature) };
+            switch (elementType) {
+            case ELEMENT_TYPE_VOID:
+                return TypeCache::instance().voidType();
 
-        if (IsTdClass(flags)) {
-            identifier parentName;
+            case ELEMENT_TYPE_BOOLEAN:
+                return TypeCache::instance().booleanType();
 
-            switch (TypeFromToken(parentToken)) {
-            case mdtTypeDef: {
-                ASSERT_SUCCESS(metadata->GetTypeDefProps(parentToken, parentName.data(), parentName.size(), nullptr, nullptr, nullptr));
-                break;
+            case ELEMENT_TYPE_CHAR:
+                return TypeCache::instance().char16Type();
+
+            case ELEMENT_TYPE_I1:
+                return TypeCache::instance().int8Type();
+
+            case ELEMENT_TYPE_U1:
+                return TypeCache::instance().uInt8Type();
+
+            case ELEMENT_TYPE_I2:
+                return TypeCache::instance().int16Type();
+
+            case ELEMENT_TYPE_U2:
+                return TypeCache::instance().uInt16Type();
+
+            case ELEMENT_TYPE_I4:
+                return TypeCache::instance().int32Type();
+
+            case ELEMENT_TYPE_U4:
+                return TypeCache::instance().uInt32Type();
+
+            case ELEMENT_TYPE_I8:
+                return TypeCache::instance().int64Type();
+
+            case ELEMENT_TYPE_U8:
+                return TypeCache::instance().uInt64Type();
+
+            case ELEMENT_TYPE_R4:
+                return TypeCache::instance().singleType();
+
+            case ELEMENT_TYPE_R8:
+                return TypeCache::instance().doubleType();
+
+            case ELEMENT_TYPE_STRING:
+                return TypeCache::instance().stringType();
+
+            case ELEMENT_TYPE_VALUETYPE: {
+            case ELEMENT_TYPE_CLASS: {
+                mdToken token{ CorSigUncompressToken(signature) };
+                return TypeCache::instance().getOrCreateTypeDeclaration(metadata, token);
             }
 
-            case mdtTypeRef: {
-                ASSERT_SUCCESS(metadata->GetTypeRefProps(parentToken, nullptr, parentName.data(), parentName.size(), nullptr));
-                break;
+            case ELEMENT_TYPE_OBJECT:
+                return TypeCache::instance().objectType();
+
+            case ELEMENT_TYPE_SZARRAY:
+                return TypeCache::instance().getOrCreateArrayType(metadata, signature);
+
+            case ELEMENT_TYPE_VAR:
+                return TypeCache::instance().getOrCreateGenericParameterType(metadata, signature);
+
+            case ELEMENT_TYPE_GENERICINST: {
+                return TypeCache::instance().getOrCreateGenericInstanceType(metadata, signature);
             }
+
+            case ELEMENT_TYPE_BYREF:
+                return TypeCache::instance().getOrCreateReferenceType(metadata, signature);
 
             default:
                 ASSERT_NOT_REACHED();
             }
-
-            if (wcscmp(parentName.data(), SYSTEM_ENUM_W) == 0) {
-                return make_shared<EnumDeclaration>(metadata.Get(), token);
-            }
-
-            if (wcscmp(parentName.data(), SYSTEM_VALUETYPE_W) == 0) {
-                return make_shared<StructDeclaration>(metadata.Get(), token);
-            }
-
-            if (wcscmp(parentName.data(), SYSTEM_MULTICASTDELEGATE_W) == 0) {
-                if (wcsstr(WindowsGetStringRawBuffer(fullName, nullptr), L"`")) {
-                    return make_shared<GenericDelegateDeclaration>(metadata.Get(), token);
-                } else {
-                    return make_shared<DelegateDeclaration>(metadata.Get(), token);
-                }
-            }
-
-            return make_shared<ClassDeclaration>(metadata.Get(), token);
-        }
-
-        if (IsTdInterface(flags)) {
-            if (wcsstr(WindowsGetStringRawBuffer(fullName, nullptr), L"`")) {
-                return make_shared<GenericInterfaceDeclaration>(metadata.Get(), token);
-            } else {
-                return make_shared<InterfaceDeclaration>(metadata.Get(), token);
             }
         }
-
-        ASSERT_NOT_REACHED();
     }
-}
 }

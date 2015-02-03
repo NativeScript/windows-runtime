@@ -7,10 +7,8 @@ namespace UnitTests {
     TEST_CLASS(EnumsTests){
         public :
             TEST_METHOD(EmptyEnum){
-                MetadataReader metadataReader;
-
-    const wchar_t* name{ L"NativeScript.TestFixtures.EmptyEnum" };
-    shared_ptr<EnumDeclaration> declaration{ static_pointer_cast<EnumDeclaration>(metadataReader.findByName(name)) };
+                const wchar_t * name{ L"NativeScript.TestFixtures.EmptyEnum" };
+    const EnumDeclaration* declaration{ static_cast<const EnumDeclaration*>(MetadataReader::findByName(name)) };
 
     Assert::IsTrue(declaration->name() == L"EmptyEnum");
     Assert::IsTrue(declaration->fullName() == name);
@@ -20,10 +18,8 @@ namespace UnitTests {
 }
 
 TEST_METHOD(SimpleEnum) {
-    MetadataReader metadataReader;
-
     const wchar_t* name{ L"NativeScript.TestFixtures.SimpleEnum" };
-    shared_ptr<EnumDeclaration> declaration{ static_pointer_cast<EnumDeclaration>(metadataReader.findByName(name)) };
+    const EnumDeclaration* declaration{ static_cast<const EnumDeclaration*>(MetadataReader::findByName(name)) };
 
     EnumDeclaration::MemberIterator it{ declaration->begin() };
     const EnumMemberDeclaration& member1{ *it };
@@ -48,13 +44,10 @@ TEST_METHOD(SimpleEnum) {
 }
 
 TEST_METHOD(Int32Enum) {
-    MetadataReader metadataReader;
-
     const wchar_t* name{ L"NativeScript.TestFixtures.Int32Enum" };
-    shared_ptr<EnumDeclaration> declaration{ static_pointer_cast<EnumDeclaration>(metadataReader.findByName(name)) };
+    const EnumDeclaration* declaration{ static_cast<const EnumDeclaration*>(MetadataReader::findByName(name)) };
 
-    PCCOR_SIGNATURE type{ declaration->type() };
-    Assert::IsTrue(CorSigUncompressElementType(type) == ELEMENT_TYPE_I4);
+    Assert::IsTrue(declaration->type().elementType() == ElementType::Int32);
 
     EnumDeclaration::MemberIterator it{ declaration->begin() };
     const EnumMemberDeclaration& member1{ *it };
@@ -71,13 +64,10 @@ TEST_METHOD(Int32Enum) {
 }
 
 TEST_METHOD(UInt32Enum) {
-    MetadataReader metadataReader;
-
     const wchar_t* name{ L"NativeScript.TestFixtures.UInt32Enum" };
-    shared_ptr<EnumDeclaration> declaration{ static_pointer_cast<EnumDeclaration>(metadataReader.findByName(name)) };
+    const EnumDeclaration* declaration{ static_cast<const EnumDeclaration*>(MetadataReader::findByName(name)) };
 
-    PCCOR_SIGNATURE type{ declaration->type() };
-    Assert::IsTrue(CorSigUncompressElementType(type) == ELEMENT_TYPE_U4);
+    Assert::IsTrue(declaration->type().elementType() == ElementType::UInt32);
 
     EnumDeclaration::MemberIterator it{ declaration->begin() };
     const EnumMemberDeclaration& member1{ *it };
@@ -94,10 +84,8 @@ TEST_METHOD(UInt32Enum) {
 }
 
 TEST_METHOD(ManyMembersEnum) {
-    MetadataReader metadataReader;
-
     const wchar_t* name{ L"NativeScript.TestFixtures.ManyMembersEnum" };
-    shared_ptr<EnumDeclaration> declaration{ static_pointer_cast<EnumDeclaration>(metadataReader.findByName(name)) };
+    const EnumDeclaration* declaration{ static_cast<const EnumDeclaration*>(MetadataReader::findByName(name)) };
 
     size_t size{ declaration->size() };
     Assert::IsTrue(size == 512);

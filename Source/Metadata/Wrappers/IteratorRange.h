@@ -6,20 +6,24 @@ template <typename T>
 class IteratorRange final {
 public:
     explicit IteratorRange(T beginIterator, T endIterator)
-        : _beginIterator(std::move(beginIterator))
-        , _endIterator(std::move(endIterator)) {
+        : _begin(std::move(beginIterator))
+        , _end(std::move(endIterator)) {
     }
 
     T begin() const {
-        return _beginIterator;
+        return _begin;
     }
 
     T end() const {
-        return _endIterator;
+        return _end;
+    }
+
+    bool empty() const {
+        return _begin == _end;
     }
 
 private:
-    T _beginIterator;
-    T _endIterator;
+    T _begin;
+    T _end;
 };
 }

@@ -7,10 +7,8 @@ namespace UnitTests {
     TEST_CLASS(InterfacesTests){
         public :
             TEST_METHOD(EmptyInterface){
-                MetadataReader metadataReader;
-
-    const wchar_t* name{ L"NativeScript.TestFixtures.IEmptyInterface" };
-    shared_ptr<InterfaceDeclaration> declaration{ static_pointer_cast<InterfaceDeclaration>(metadataReader.findByName(name)) };
+                const wchar_t * name{ L"NativeScript.TestFixtures.IEmptyInterface" };
+    const InterfaceDeclaration* declaration{ static_cast<const InterfaceDeclaration*>(MetadataReader::findByName(name)) };
 
     Assert::IsTrue(declaration->name() == L"IEmptyInterface");
     Assert::IsTrue(declaration->fullName() == name);
@@ -18,10 +16,8 @@ namespace UnitTests {
 }
 
 TEST_METHOD(OpenGenericInterface) {
-    MetadataReader metadataReader;
-
     const wchar_t* name{ L"Windows.Foundation.Collections.IIterable`1" };
-    shared_ptr<GenericInterfaceDeclaration> declaration{ static_pointer_cast<GenericInterfaceDeclaration>(metadataReader.findByName(name)) };
+    const GenericInterfaceDeclaration* declaration{ static_cast<const GenericInterfaceDeclaration*>(MetadataReader::findByName(name)) };
 
     Assert::IsTrue(declaration->name() == L"IIterable");
     Assert::IsTrue(declaration->fullName() == name);
@@ -29,9 +25,7 @@ TEST_METHOD(OpenGenericInterface) {
 }
 
 TEST_METHOD(ClosedGenericInterface) {
-    MetadataReader metadataReader;
-
-    shared_ptr<ClassDeclaration> declaration{ static_pointer_cast<ClassDeclaration>(metadataReader.findByName(L"NativeScript.TestFixtures.MultiGenericImplementationClass")) };
+    const ClassDeclaration* declaration{ static_cast<const ClassDeclaration*>(MetadataReader::findByName(L"NativeScript.TestFixtures.MultiGenericImplementationClass")) };
 
     // TODO
     MultiGenericImplementationClass ^ instance(ref new MultiGenericImplementationClass());
@@ -46,10 +40,8 @@ TEST_METHOD(ClosedGenericInterface) {
 }
 
 TEST_METHOD(ClosedGenericInterfaceImplementation) {
-    MetadataReader metadataReader;
-
     const wchar_t* name{ L"NativeScript.TestFixtures.SingleGenericImplementationClass" };
-    shared_ptr<ClassDeclaration> declaration{ static_pointer_cast<ClassDeclaration>(metadataReader.findByName(name)) };
+    const ClassDeclaration* declaration{ static_cast<const ClassDeclaration*>(MetadataReader::findByName(name)) };
 
     IteratorRange<ClassDeclaration::InterfaceIterator> interfaces{ declaration->implementedInterfaces() };
 

@@ -25,20 +25,12 @@ namespace Metadata {
 
             return MethodDeclaration{ metadata, removeMethodToken };
         }
-
-        unique_ptr<DelegateDeclaration> makeType(IMetaDataImport2* metadata, mdEvent token) {
-            mdToken delegateToken{ mdTokenNil };
-            ASSERT_SUCCESS(metadata->GetEventProps(token, nullptr, nullptr, 0, nullptr, nullptr, &delegateToken, nullptr, nullptr, nullptr, nullptr, 0, nullptr));
-
-            return DeclarationFactory::makeDelegateDeclaration(metadata, delegateToken);
-        }
     }
 
     EventDeclaration::EventDeclaration(IMetaDataImport2* metadata, mdEvent token)
-        : Base(DeclarationKind::Event)
+        : Base()
         , _metadata{ metadata }
         , _token{ token }
-        , _type{ makeType(metadata, token) }
         , _addMethod{ makeAddMethod(metadata, token) }
         , _removeMethod{ makeRemoveMethod(metadata, token) } {
 
@@ -78,10 +70,6 @@ namespace Metadata {
 
     bool EventDeclaration::isSealed() const {
         return addMethod().isSealed();
-    }
-
-    const DelegateDeclaration& EventDeclaration::type() const {
-        return *_type.get();
     }
 
     const MethodDeclaration& EventDeclaration::addMethod() const {

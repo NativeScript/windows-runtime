@@ -313,6 +313,8 @@ namespace Metadata {
                         CorElementType type2{ CorSigUncompressElementType(typeSpecSignature) };
                         ASSERT(type2 == ELEMENT_TYPE_CLASS);
 
+                        PCCOR_SIGNATURE closedSignature{ getTypeSpecSignature(metadata, parentToken) };
+
                         // TODO: Use signature in matching
                         mdToken openGenericClassToken{ CorSigUncompressToken(typeSpecSignature) };
                         switch (TypeFromToken(openGenericClassToken)) {
@@ -321,7 +323,7 @@ namespace Metadata {
                             ASSERT_SUCCESS(metadata->FindMethod(openGenericClassToken, declaringMethodName.data(), nullptr, 0, &declaringMethod));
 
                             *outIndex = findMethodIndex(metadata, openGenericClassToken, 0);
-                            return make_unique<GenericInterfaceInstanceDeclaration>(metadata, openGenericClassToken, metadata, parentToken);
+                            return make_unique<GenericInterfaceInstanceDeclaration>(metadata, openGenericClassToken, metadata, closedSignature);
                         }
 
                         case mdtTypeRef: {
@@ -335,7 +337,7 @@ namespace Metadata {
                             ASSERT_SUCCESS(externalMetadata->FindMethod(externalClassToken, declaringMethodName.data(), nullptr, 0, &declaringMethod));
 
                             *outIndex = findMethodIndex(externalMetadata.Get(), externalClassToken, declaringMethod);
-                            return make_unique<GenericInterfaceInstanceDeclaration>(externalMetadata.Get(), externalClassToken, metadata, parentToken);
+                            return make_unique<GenericInterfaceInstanceDeclaration>(externalMetadata.Get(), externalClassToken, metadata, closedSignature);
                         }
 
                         default:

@@ -28,7 +28,7 @@ namespace Metadata {
     }
 
     StructDeclaration::StructDeclaration(IMetaDataImport2* metadata, mdTypeDef token)
-        : Base(DeclarationKind::Struct, metadata, token)
+        : Base(ElementType::Struct, metadata, token)
         , _fields(makeFieldDeclarations(metadata, token)) {
     }
 

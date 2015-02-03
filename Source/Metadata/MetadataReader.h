@@ -4,14 +4,22 @@
 
 #include <hstring.h>
 #include "Declarations/Declarations.h"
+#include "TypeCache.h"
 
 namespace NativeScript {
 namespace Metadata {
 
-    class MetadataReader {
+    class MetadataReader final {
     public:
-        std::shared_ptr<Declaration> findByName(const wchar_t* fullName) const;
-        std::shared_ptr<Declaration> findByName(HSTRING fullName) const;
+        explicit MetadataReader() = delete;
+
+        static const Type* findByName(const wchar_t* fullName);
+        static const Type* findByName(HSTRING fullName);
+
+        static const Type& parseType(IMetaDataImport2*, PCCOR_SIGNATURE);
+
+    private:
+        TypeCache _typeCache;
     };
 }
 }

@@ -7,8 +7,9 @@ namespace Metadata {
     using namespace std;
     using namespace Microsoft::WRL;
 
-    TypeDeclaration::TypeDeclaration(DeclarationKind kind, IMetaDataImport2* metadata, mdTypeDef token)
-        : Base(kind)
+    TypeDeclaration::TypeDeclaration(ElementType elementType, IMetaDataImport2* metadata, mdTypeDef token)
+        : Type(elementType)
+        , Declaration()
         , _metadata{ metadata }
         , _token{ token } {
 
@@ -29,19 +30,19 @@ namespace Metadata {
     }
 
     wstring TypeDeclaration::name() const {
-        wstring fullyQualifiedName(fullName());
+        wstring name(fullName());
 
-        size_t backtickIndex{ fullyQualifiedName.rfind(L"`") };
+        size_t backtickIndex{ name.rfind(L"`") };
         if (backtickIndex != wstring::npos) {
-            fullyQualifiedName.erase(backtickIndex);
+            name.erase(backtickIndex);
         }
 
-        size_t dotIndex{ fullyQualifiedName.rfind(L".") };
+        size_t dotIndex{ name.rfind(L".") };
         if (dotIndex != wstring::npos) {
-            fullyQualifiedName.erase(0, dotIndex + 1);
+            name.erase(0, dotIndex + 1);
         }
 
-        return fullyQualifiedName;
+        return name;
     }
 
     wstring TypeDeclaration::fullName() const {
@@ -52,6 +53,10 @@ namespace Metadata {
 
         wstring fullName{ fullNameData.data(), fullNameDataLength - 1 };
         return fullName;
+    }
+
+    void TypeDeclaration::toStringInternal(wstring& result) const {
+        result.append(fullName());
     }
 }
 }

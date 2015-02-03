@@ -1,16 +1,16 @@
 #pragma once
 
-#include "Declaration.h"
 #include <vector>
-#include <Wrappers/IteratorRange.h>
+
+#include "Declaration.h"
+#include "Types/Type.h"
+#include "Wrappers/IteratorRange.h"
 
 namespace NativeScript {
 namespace Metadata {
 
-    class NamespaceDeclaration final : public Declaration {
+    class NamespaceDeclaration final : public Type, public Declaration {
     public:
-        typedef Declaration Base;
-
         using ChildrenIterator = std::vector<const std::wstring>::const_iterator;
 
         explicit NamespaceDeclaration(const wchar_t* fullName);
@@ -21,6 +21,8 @@ namespace Metadata {
 
         // Incomplete
         IteratorRange<ChildrenIterator> children();
+
+        virtual void toStringInternal(std::wstring&) const override;
 
     private:
         std::wstring _fullName;

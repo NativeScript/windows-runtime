@@ -27,8 +27,6 @@ namespace Metadata {
 
         bool isSealed() const;
 
-        const DelegateDeclaration& type() const;
-
         const MethodDeclaration& addMethod() const;
 
         const MethodDeclaration& removeMethod() const;
@@ -37,7 +35,6 @@ namespace Metadata {
         const Microsoft::WRL::ComPtr<IMetaDataImport2> _metadata;
         const mdEvent _token;
 
-        std::shared_ptr<DelegateDeclaration> _type;
         MethodDeclaration _addMethod;
         MethodDeclaration _removeMethod;
     };

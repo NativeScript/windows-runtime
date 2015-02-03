@@ -19,7 +19,7 @@ namespace Metadata {
     protected:
         friend class GenericInstanceIdBuilder;
 
-        explicit FieldDeclaration(DeclarationKind, IMetaDataImport2*, mdFieldDef);
+        explicit FieldDeclaration(IMetaDataImport2*, mdFieldDef);
 
         const Microsoft::WRL::ComPtr<IMetaDataImport2> _metadata;
         const mdFieldDef _token;

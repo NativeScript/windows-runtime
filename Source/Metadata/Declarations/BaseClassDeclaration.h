@@ -39,7 +39,7 @@ namespace Metadata {
         std::vector<const MethodDeclaration> findMethodsWithName(const wchar_t*) const;
 
     protected:
-        explicit BaseClassDeclaration(DeclarationKind, IMetaDataImport2*, mdTypeDef);
+        explicit BaseClassDeclaration(ElementType, IMetaDataImport2*, mdTypeDef);
 
     private:
         std::vector<const std::unique_ptr<const InterfaceDeclaration>> _implementedInterfaces;

@@ -17,7 +17,16 @@ set(HEADER_FILES
     Declarations/TypeDeclaration.h
     Declarations/Declarations.h
 
+    Types/ArrayType.h
+    Types/GenericParameterType.h
+    Types/ElementType.h
+    Types/ReferenceType.h
+    Types/SimpleType.h
+    Types/Type.h
+    Types/Types.h
+
     Wrappers/IteratorRange.h
+    Wrappers/Noncopyable.h
 
     ComHelpers.h
     DeclarationFactory.h
@@ -26,6 +35,7 @@ set(HEADER_FILES
     Metadata-Prefix.h
     MetadataReader.h
     Signature.h
+    TypeCache.h
 )
 
 set(SOURCE_FILES

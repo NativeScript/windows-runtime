@@ -10,11 +10,11 @@ namespace Metadata {
     using namespace Microsoft::WRL;
 
     InterfaceDeclaration::InterfaceDeclaration(IMetaDataImport2* metadata, mdTypeDef token)
-        : InterfaceDeclaration(DeclarationKind::Interface, metadata, token) {
+        : InterfaceDeclaration(ElementType::Interface, metadata, token) {
     }
 
-    InterfaceDeclaration::InterfaceDeclaration(DeclarationKind kind, IMetaDataImport2* metadata, mdTypeDef token)
-        : Base(kind, metadata, token) {
+    InterfaceDeclaration::InterfaceDeclaration(ElementType elementType, IMetaDataImport2* metadata, mdTypeDef token)
+        : Base(elementType, metadata, token) {
     }
 
     IID InterfaceDeclaration::id() const {
@@ -22,7 +22,7 @@ namespace Metadata {
     }
 
     GenericInterfaceDeclaration::GenericInterfaceDeclaration(IMetaDataImport2* metadata, mdTypeDef token)
-        : Base(DeclarationKind::GenericInterface, metadata, token) {
+        : Base(ElementType::GenericInterface, metadata, token) {
     }
 
     size_t GenericInterfaceDeclaration::numberOfGenericParameters() const {
@@ -36,20 +36,14 @@ namespace Metadata {
         return count;
     }
 
-    GenericInterfaceInstanceDeclaration::GenericInterfaceInstanceDeclaration(IMetaDataImport2* openMetadata, mdTypeDef openToken, IMetaDataImport2* closedMetadata, mdTypeSpec closedToken)
-        : Base(DeclarationKind::GenericInterfaceInstance, openMetadata, openToken)
-        , _closedMetadata{ closedMetadata }
-        , _closedToken{ closedToken } {
-        ASSERT(closedMetadata);
-        ASSERT(TypeFromToken(closedToken) == mdtTypeSpec);
-        ASSERT(closedToken != mdTypeSpecNil);
+    GenericInterfaceInstanceDeclaration::GenericInterfaceInstanceDeclaration(IMetaDataImport2* openMetadata, mdTypeDef openToken, vector<Type&> genericArguments)
+        : Base(ElementType::GenericInterfaceInstance, openMetadata, openToken)
+        , _genericArguments{ genericArguments } {
+        ASSERT(genericArguments.size() > 0);
     }
 
     wstring GenericInterfaceInstanceDeclaration::fullName() const {
-        PCCOR_SIGNATURE signature{ nullptr };
-        ULONG signatureSize{ 0 };
-        ASSERT_SUCCESS(_closedMetadata->GetTypeSpecFromToken(_closedToken, &signature, &signatureSize));
-        return Signature::toString(_closedMetadata.Get(), signature);
+        return;
     }
 
     IID GenericInterfaceInstanceDeclaration::id() const {

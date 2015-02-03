@@ -7,6 +7,52 @@ namespace Metadata {
     using namespace Microsoft::WRL::Wrappers;
     using namespace Microsoft::WRL;
 
+    unique_ptr<TypeDeclaration> DeclarationFactory::makeTypeDefDeclaration(IMetaDataImport2* metadata, mdTypeDef token, const wchar_t* fullName) {
+        ASSERT(metadata);
+        ASSERT(TypeFromToken(token) == mdtTypeDef);
+        ASSERT(token != mdTypeDefNil);
+
+        DWORD flags{ 0 };
+        mdToken parentToken{ mdTokenNil };
+        ASSERT_SUCCESS(metadata->GetTypeDefProps(token, nullptr, 0, nullptr, &flags, &parentToken));
+
+        if (IsTdClass(flags)) {
+            wstring parentName { getBase }
+
+            if (wcscmp(parentName.data(), SYSTEM_ENUM_W) == 0) {
+                return make_unique<EnumDeclaration>(metadata, token);
+            }
+
+            if (wcscmp(parentName.data(), SYSTEM_VALUETYPE_W) == 0) {
+                return make_unique<StructDeclaration>(metadata, token);
+            }
+
+            if (wcscmp(parentName.data(), SYSTEM_MULTICASTDELEGATE_W) == 0) {
+                if (wcsstr(fullName, L"`")) {
+                    return make_unique<GenericDelegateDeclaration>(metadata, token);
+                } else {
+                    return make_unique<DelegateDeclaration>(metadata, token);
+                }
+            }
+
+            return make_unique<ClassDeclaration>(metadata, token);
+        }
+
+        if (IsTdInterface(flags)) {
+            if (wcsstr(fullName, L"`")) {
+                return make_unique<GenericInterfaceDeclaration>(metadata, token);
+            } else {
+                return make_unique<InterfaceDeclaration>(metadata, token);
+            }
+        }
+
+        ASSERT_NOT_REACHED();
+    }
+
+    unique_ptr<NamespaceDeclaration> DeclarationFactory::makeNamespaceDeclaration(const wchar_t* fullName) {
+        return make_unique<NamespaceDeclaration>(*fullName == L'\0' ? L"" : fullName);
+    }
+
     unique_ptr<DelegateDeclaration> DeclarationFactory::makeDelegateDeclaration(IMetaDataImport2* metadata, mdToken token) {
         switch (TypeFromToken(token)) {
         case mdtTypeDef: {
@@ -34,10 +80,12 @@ namespace Metadata {
             CorElementType type2{ CorSigUncompressElementType(signature) };
             ASSERT(type2 == ELEMENT_TYPE_CLASS);
 
+            PCCOR_SIGNATURE closedSignature{ getTypeSpecSignature(metadata, token) };
+
             mdToken openGenericDelegateToken{ CorSigUncompressToken(signature) };
             switch (TypeFromToken(openGenericDelegateToken)) {
             case mdtTypeDef: {
-                return make_unique<GenericDelegateInstanceDeclaration>(metadata, openGenericDelegateToken, metadata, token);
+                return make_unique<GenericDelegateInstanceDeclaration>(metadata, openGenericDelegateToken, metadata, closedSignature);
             }
 
             case mdtTypeRef: {
@@ -47,7 +95,7 @@ namespace Metadata {
                 bool isResolved{ resolveTypeRef(metadata, openGenericDelegateToken, externalMetadata.GetAddressOf(), &externalDelegateToken) };
                 ASSERT(isResolved);
 
-                return make_unique<GenericDelegateInstanceDeclaration>(externalMetadata.Get(), externalDelegateToken, metadata, token);
+                return make_unique<GenericDelegateInstanceDeclaration>(externalMetadata.Get(), externalDelegateToken, metadata, closedSignature);
             }
 
             default:
@@ -87,10 +135,12 @@ namespace Metadata {
             CorElementType type2{ CorSigUncompressElementType(signature) };
             ASSERT(type2 == ELEMENT_TYPE_CLASS);
 
+            PCCOR_SIGNATURE closedSignature{ getTypeSpecSignature(metadata, token) };
+
             mdToken openGenericDelegateToken{ CorSigUncompressToken(signature) };
             switch (TypeFromToken(openGenericDelegateToken)) {
             case mdtTypeDef: {
-                return make_unique<GenericInterfaceInstanceDeclaration>(metadata, openGenericDelegateToken, metadata, token);
+                return make_unique<GenericInterfaceInstanceDeclaration>(metadata, openGenericDelegateToken, metadata, closedSignature);
             }
 
             case mdtTypeRef: {
@@ -100,14 +150,12 @@ namespace Metadata {
                 bool isResolved{ resolveTypeRef(metadata, openGenericDelegateToken, externalMetadata.GetAddressOf(), &externalDelegateToken) };
                 ASSERT(isResolved);
 
-                return make_unique<GenericInterfaceInstanceDeclaration>(externalMetadata.Get(), externalDelegateToken, metadata, token);
+                return make_unique<GenericInterfaceInstanceDeclaration>(externalMetadata.Get(), externalDelegateToken, metadata, closedSignature);
             }
 
             default:
                 ASSERT_NOT_REACHED();
             }
-
-            break;
         }
 
         default:

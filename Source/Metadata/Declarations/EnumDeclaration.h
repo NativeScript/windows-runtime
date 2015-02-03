@@ -1,5 +1,6 @@
 #pragma once
 
+#include "Types/Type.h"
 #include "TypeDeclaration.h"
 #include "EnumMemberDeclaration.h"
 
@@ -38,7 +39,7 @@ namespace Metadata {
 
         explicit EnumDeclaration(IMetaDataImport2*, mdTypeDef);
 
-        PCCOR_SIGNATURE type() const;
+        const Type& type() const;
 
         size_t size() const;
 

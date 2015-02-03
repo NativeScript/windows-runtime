@@ -102,8 +102,8 @@ namespace Metadata {
         }
     }
 
-    BaseClassDeclaration::BaseClassDeclaration(DeclarationKind kind, IMetaDataImport2* metadata, mdTypeDef token)
-        : Base(kind, metadata, token)
+    BaseClassDeclaration::BaseClassDeclaration(ElementType elementType, IMetaDataImport2* metadata, mdTypeDef token)
+        : Base(elementType, metadata, token)
         , _implementedInterfaces(makeImplementedInterfacesDeclarations(metadata, token))
         , _methods(makeMethodDeclarations(metadata, token))
         , _properties(makePropertyDeclarations(metadata, token))

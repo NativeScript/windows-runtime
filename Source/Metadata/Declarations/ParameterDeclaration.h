@@ -4,6 +4,7 @@
 #include <wrl.h>
 
 #include "Declaration.h"
+#include "Types/Type.h"
 
 namespace NativeScript {
 namespace Metadata {
@@ -12,20 +13,18 @@ namespace Metadata {
     public:
         typedef Declaration Base;
 
-        explicit ParameterDeclaration(IMetaDataImport2*, mdParamDef, PCCOR_SIGNATURE);
+        explicit ParameterDeclaration(IMetaDataImport2*, mdParamDef, const Type&);
 
         virtual std::wstring name() const override;
 
         virtual std::wstring fullName() const override;
 
-        bool isOut() const;
-
-        PCCOR_SIGNATURE type() const;
+        const Type& type() const;
 
     private:
         const Microsoft::WRL::ComPtr<IMetaDataImport2> _metadata;
         const mdParamDef _token;
-        const PCCOR_SIGNATURE _type;
+        const Type& _type;
     };
 }
 }

@@ -1,5 +1,6 @@
 #include "Metadata-Prefix.h"
 #include "MethodDeclaration.h"
+#include "TypeCache.h"
 #include "Signature.h"
 
 namespace NativeScript {
@@ -8,11 +9,8 @@ namespace Metadata {
     using namespace std;
     using namespace Microsoft::WRL;
 
-    const wchar_t* const OVERLOAD_ATTRIBUTE_W{ L"Windows.Foundation.Metadata.OverloadAttribute" };
-    const wchar_t* const DEFAULT_OVERLOAD_ATTRIBUTE_W{ L"Windows.Foundation.Metadata.DefaultOverloadAttribute" };
-
     MethodDeclaration::MethodDeclaration(IMetaDataImport2* metadata, mdMethodDef token)
-        : Base(DeclarationKind::Method)
+        : Base()
         , _metadata{ metadata }
         , _token{ token }
         , _parameters() {
@@ -21,6 +19,10 @@ namespace Metadata {
         ASSERT(TypeFromToken(token) == mdtMethodDef);
         ASSERT(token != mdMethodDefNil);
 
+        parseSignature();
+    }
+
+    void MethodDeclaration::parseSignature() {
         PCCOR_SIGNATURE signature{ nullptr };
         ULONG signatureSize{ 0 };
 
@@ -30,13 +32,10 @@ namespace Metadata {
         PCCOR_SIGNATURE startSignature{ signature };
 #endif
 
-        if (CorSigUncompressCallingConv(signature) == IMAGE_CEE_CS_CALLCONV_GENERIC) {
-            NOT_IMPLEMENTED();
-        }
-
+        CorSigUncompressCallingConv(signature);
         ULONG argumentsCount{ CorSigUncompressData(signature) };
 
-        _returnType = Signature::consumeType(signature);
+        _returnType = &MetadataReader::parseType(_metadata.Get(), consumeType(signature));
 
         HCORENUM parameterEnumerator{ nullptr };
         ULONG parametersCount{ 0 };
@@ -52,7 +51,7 @@ namespace Metadata {
         }
 
         for (size_t i = startIndex; i < parametersCount; ++i) {
-            PCCOR_SIGNATURE type{ Signature::consumeType(signature) };
+            const Type& type{ MetadataReader::parseType(_metadata.Get(), consumeType(signature)) };
             _parameters.emplace_back(_metadata.Get(), parameterTokens[i], type);
         }
 
@@ -88,8 +87,8 @@ namespace Metadata {
         return IsMdStatic(methodFlags) || IsMdFinal(methodFlags);
     }
 
-    PCCOR_SIGNATURE MethodDeclaration::returnType() const {
-        return _returnType;
+    const Type& MethodDeclaration::returnType() const {
+        return *_returnType;
     }
 
     wstring MethodDeclaration::name() const {

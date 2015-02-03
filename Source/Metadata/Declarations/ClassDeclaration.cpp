@@ -13,8 +13,6 @@ namespace Metadata {
     // TODO
     namespace {
 
-        const wchar_t* const DEFAULT_ATTRIBUTE{ L"Windows.Foundation.Metadata.DefaultAttribute" };
-
         vector<MethodDeclaration> makeInitializerDeclarations(IMetaDataImport2* metadata, mdTypeDef token) {
             HCORENUM enumerator{ nullptr };
             ULONG count{ 0 };
@@ -52,12 +50,13 @@ namespace Metadata {
 
             for (size_t i = 0; i < interfaceImplCount; ++i) {
                 mdInterfaceImpl interfaceImplToken{ interfaceImplTokens[i] };
-                HRESULT getCustomAttributeResult{ metadata->GetCustomAttributeByName(interfaceImplToken, DEFAULT_ATTRIBUTE, nullptr, nullptr) };
+                HRESULT getCustomAttributeResult{ metadata->GetCustomAttributeByName(interfaceImplToken, DEFAULT_ATTRIBUTE_W, nullptr, nullptr) };
                 ASSERT_SUCCESS(getCustomAttributeResult);
 
                 if (getCustomAttributeResult == S_OK) {
                     mdToken interfaceToken{ mdTokenNil };
                     ASSERT_SUCCESS(metadata->GetInterfaceImplProps(interfaceImplToken, nullptr, &interfaceToken));
+                    // TODO
                     return DeclarationFactory::makeInterfaceDeclaration(metadata, interfaceToken);
                 }
             }
@@ -67,7 +66,7 @@ namespace Metadata {
     }
 
     ClassDeclaration::ClassDeclaration(IMetaDataImport2* metadata, mdTypeDef token)
-        : Base(DeclarationKind::Class, metadata, token)
+        : Base(ElementType::Class, metadata, token)
         , _initializers(makeInitializerDeclarations(metadata, token))
         , _defaultInterface(makeDefaultInterface(metadata, token)) {
     }

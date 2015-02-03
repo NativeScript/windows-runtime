@@ -4,6 +4,7 @@
 
 #include <array>
 #include <string>
+#include <comdef.h>
 
 #define NO_RETURN __declspec(noreturn)
 
@@ -71,6 +72,15 @@ namespace Metadata {
     const wchar_t* const ACTIVATABLE_ATTRIBUTE_W{ L"Windows.Foundation.Metadata.ActivatableAttribute" };
     const wchar_t* const COMPOSABLE_ATTRIBUTE_W{ L"Windows.Foundation.Metadata.ComposableAttribute" };
 
+    const wchar_t* const DEFAULT_ATTRIBUTE_W{ L"Windows.Foundation.Metadata.DefaultAttribute" };
+
+    const wchar_t* const OVERLOAD_ATTRIBUTE_W{ L"Windows.Foundation.Metadata.OverloadAttribute" };
+    const wchar_t* const DEFAULT_OVERLOAD_ATTRIBUTE_W{ L"Windows.Foundation.Metadata.DefaultOverloadAttribute" };
+
+    const wchar_t* const SYSTEM_ENUM_W{ L"System.Enum" };
+    const wchar_t* const SYSTEM_VALUETYPE_W{ L"System.ValueType" };
+    const wchar_t* const SYSTEM_MULTICASTDELEGATE_W{ L"System.MulticastDelegate" };
+
     std::wstring getStringValueFromBlob(IMetaDataImport2*, PCCOR_SIGNATURE);
 
     std::wstring getUnaryCustomAttributeStringValue(IMetaDataImport2*, mdToken, const wchar_t* attributeName);
@@ -80,5 +90,9 @@ namespace Metadata {
     bool resolveTypeRef(IMetaDataImport2*, mdTypeRef, IMetaDataImport2**, mdTypeDef*);
 
     std::wstring getTypeName(IMetaDataImport2*, mdToken);
+
+    std::wstring getBaseFullName(IMetaDataImport2*, mdTypeDef);
+
+    PCCOR_SIGNATURE getTypeSpecSignature(IMetaDataImport2*, mdTypeSpec);
 }
 }

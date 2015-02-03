@@ -19,7 +19,7 @@ namespace Metadata {
         const MethodDeclaration& invokeMethod() const;
 
     protected:
-        explicit DelegateDeclaration(DeclarationKind, IMetaDataImport2*, mdTypeDef);
+        explicit DelegateDeclaration(ElementType, IMetaDataImport2*, mdTypeDef);
 
     private:
         MethodDeclaration _invokeMethod;
@@ -38,7 +38,7 @@ namespace Metadata {
     public:
         typedef DelegateDeclaration Base;
 
-        explicit GenericDelegateInstanceDeclaration(IMetaDataImport2*, mdTypeDef, IMetaDataImport2*, mdTypeSpec);
+        explicit GenericDelegateInstanceDeclaration(IMetaDataImport2*, mdTypeDef, IMetaDataImport2*, PCCOR_SIGNATURE);
 
         virtual std::wstring fullName() const override;
 
@@ -46,7 +46,7 @@ namespace Metadata {
 
     private:
         const Microsoft::WRL::ComPtr<IMetaDataImport2> _closedMetadata;
-        mdTypeSpec _closedToken;
+        PCCOR_SIGNATURE _signature;
     };
 }
 }

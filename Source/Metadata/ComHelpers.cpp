@@ -80,6 +80,7 @@ namespace Metadata {
     bool resolveTypeRef(IMetaDataImport2* metadata, mdTypeRef token, IMetaDataImport2** externalMetadata, mdTypeDef* externalToken) {
         ASSERT(metadata);
         ASSERT(TypeFromToken(token) == mdtTypeRef);
+        ASSERT(token != mdTypeRefNil);
         ASSERT(externalMetadata);
         ASSERT(externalToken);
 
@@ -113,6 +114,47 @@ namespace Metadata {
 
         wstring result{ nameData.data(), nameLength - 1 };
         return result;
+    }
+
+    wstring getBaseFullName(IMetaDataImport2* metadata, mdTypeDef token) {
+        ASSERT(metadata);
+        ASSERT(TypeFromToken(token) == mdtTypeDef);
+        ASSERT(token != mdTypeDefNil);
+
+        mdToken parentToken{ mdTokenNil };
+        ASSERT_SUCCESS(metadata->GetTypeDefProps(token, nullptr, 0, nullptr, nullptr, &parentToken));
+
+        identifier parentName;
+        ULONG nameLength{ 0 };
+
+        switch (TypeFromToken(parentToken)) {
+        case mdtTypeDef: {
+            ASSERT_SUCCESS(metadata->GetTypeDefProps(parentToken, parentName.data(), parentName.size(), &nameLength, nullptr, nullptr));
+            break;
+        }
+
+        case mdtTypeRef: {
+            ASSERT_SUCCESS(metadata->GetTypeRefProps(parentToken, nullptr, parentName.data(), parentName.size(), &nameLength));
+            break;
+        }
+
+        default:
+            ASSERT_NOT_REACHED();
+        }
+
+        wstring result{ parentName.data(), nameLength - 1 };
+        return result;
+    }
+
+    PCCOR_SIGNATURE getTypeSpecSignature(IMetaDataImport2* metadata, mdTypeSpec token) {
+        ASSERT(metadata);
+        ASSERT(TypeFromToken(token) == mdtTypeSpec);
+        ASSERT(token != mdTypeSpecNil);
+
+        PCCOR_SIGNATURE signature{ nullptr };
+        ULONG signatureSize{ 0 };
+        ASSERT_SUCCESS(metadata->GetTypeSpecFromToken(token, &signature, &signatureSize));
+        return signature;
     }
 }
 }

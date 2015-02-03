@@ -19,6 +19,7 @@ namespace NativeScript.TestFixtures
         void Method();
     }
 
+    // TODO: Explicit property and event
     public sealed class ExplicitInterfaceMethodImplementationClass : IExplicitInterface1, IExplicitInterface2
     {
         private ExplicitInterfaceMethodImplementationClass()

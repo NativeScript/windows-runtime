@@ -1,5 +1,6 @@
 #include "Metadata-Prefix.h"
 #include "EnumDeclaration.h"
+#include "TypeCache.h"
 
 namespace NativeScript {
 namespace Metadata {
@@ -59,10 +60,10 @@ namespace Metadata {
     }
 
     EnumDeclaration::EnumDeclaration(IMetaDataImport2* metadata, mdTypeDef token)
-        : Base(DeclarationKind::Enum, metadata, token) {
+        : Base(ElementType::Enum, metadata, token) {
     }
 
-    PCCOR_SIGNATURE EnumDeclaration::type() const {
+    const Type& EnumDeclaration::type() const {
         mdFieldDef typeField{ mdTokenNil };
         ASSERT_SUCCESS(_metadata->FindField(_token, COR_ENUM_FIELD_NAME_W, nullptr, 0, &typeField));
 
@@ -70,10 +71,17 @@ namespace Metadata {
         ULONG signatureSize{ 0 };
         ASSERT_SUCCESS(_metadata->GetFieldProps(typeField, nullptr, nullptr, 0, nullptr, nullptr, &signature, &signatureSize, nullptr, nullptr, nullptr));
 
+#if _DEBUG
+        PCCOR_SIGNATURE startSignature{ signature };
+#endif
+
         ULONG header{ CorSigUncompressData(signature) };
         ASSERT(header == IMAGE_CEE_CS_CALLCONV_FIELD);
 
-        return signature;
+        const Type& fieldType{ MetadataReader::parseType(_metadata.Get(), consumeType(signature)) };
+        ASSERT(startSignature + signatureSize == signature);
+
+        return fieldType;
     }
 
     // Skips COR_ENUM_FIELD field

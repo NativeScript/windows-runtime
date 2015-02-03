@@ -10,46 +10,44 @@ namespace Metadata {
     using namespace Microsoft::WRL::Wrappers;
     using namespace Microsoft::WRL;
 
-    static MetadataReader metadataReader;
-
     HRESULT GenericInstanceIdBuilder::locatorImpl(PCWSTR name, IRoSimpleMetaDataBuilder& builder) {
-        shared_ptr<Declaration> declaration{ metadataReader.findByName(name) };
+        const Type* declaration{ MetadataReader::findByName(name) };
         ASSERT(declaration);
 
-        DeclarationKind kind{ declaration->kind() };
-        switch (kind) {
-        case DeclarationKind::Class: {
-            ClassDeclaration* classDeclaration{ static_cast<ClassDeclaration*>(declaration.get()) };
+        ElementType elementType{ declaration->elementType() };
+        switch (elementType) {
+        case ElementType::Class: {
+            const ClassDeclaration* classDeclaration{ static_cast<const ClassDeclaration*>(declaration) };
             const InterfaceDeclaration& defaultInterface{ classDeclaration->defaultInterface() };
             IID defaultInterfaceId = defaultInterface.id();
             ASSERT_SUCCESS(builder.SetRuntimeClassSimpleDefault(name, defaultInterface.fullName().data(), &defaultInterfaceId));
             return S_OK;
         }
 
-        case DeclarationKind::Interface: {
-            InterfaceDeclaration* interfaceDeclaration{ static_cast<InterfaceDeclaration*>(declaration.get()) };
+        case ElementType::Interface: {
+            const InterfaceDeclaration* interfaceDeclaration{ static_cast<const InterfaceDeclaration*>(declaration) };
             ASSERT_SUCCESS(builder.SetWinRtInterface(interfaceDeclaration->id()));
             return S_OK;
         }
 
-        case DeclarationKind::GenericInterface: {
-            GenericInterfaceDeclaration* genericInterfaceDeclaration{ static_cast<GenericInterfaceDeclaration*>(declaration.get()) };
+        case ElementType::GenericInterface: {
+            const GenericInterfaceDeclaration* genericInterfaceDeclaration{ static_cast<const GenericInterfaceDeclaration*>(declaration) };
             ASSERT_SUCCESS(builder.SetParameterizedInterface(genericInterfaceDeclaration->id(), genericInterfaceDeclaration->numberOfGenericParameters()));
             return S_OK;
         }
 
-        case DeclarationKind::Enum: {
-            EnumDeclaration* enumDeclaration{ static_cast<EnumDeclaration*>(declaration.get()) };
-            ASSERT_SUCCESS(builder.SetEnum(enumDeclaration->fullName().data(), Signature::toString(nullptr, enumDeclaration->type()).data()));
+        case ElementType::Enum: {
+            const EnumDeclaration* enumDeclaration{ static_cast<const EnumDeclaration*>(declaration) };
+            ASSERT_SUCCESS(builder.SetEnum(enumDeclaration->fullName().data(), enumDeclaration->type().toString().data()));
             return S_OK;
         }
 
-        case DeclarationKind::Struct: {
-            StructDeclaration* structDeclaration{ static_cast<StructDeclaration*>(declaration.get()) };
+        case ElementType::Struct: {
+            const StructDeclaration* structDeclaration{ static_cast<const StructDeclaration*>(declaration) };
 
             vector<wstring> fieldNames;
             for (const StructFieldDeclaration& field : *structDeclaration) {
-                fieldNames.push_back(Signature::toString(field._metadata.Get(), field.type()));
+                fieldNames.push_back(field.type().toString());
             }
 
             vector<const wchar_t*> fieldNamesW;
@@ -61,14 +59,14 @@ namespace Metadata {
             return S_OK;
         }
 
-        case DeclarationKind::Delegate: {
-            DelegateDeclaration* delegateDeclaration{ static_cast<DelegateDeclaration*>(declaration.get()) };
+        case ElementType::Delegate: {
+            const DelegateDeclaration* delegateDeclaration{ static_cast<const DelegateDeclaration*>(declaration) };
             ASSERT_SUCCESS(builder.SetDelegate(delegateDeclaration->id()));
             return S_OK;
         }
 
-        case DeclarationKind::GenericDelegate: {
-            GenericDelegateDeclaration* genericDelegateDeclaration{ static_cast<GenericDelegateDeclaration*>(declaration.get()) };
+        case ElementType::GenericDelegate: {
+            const GenericDelegateDeclaration* genericDelegateDeclaration{ static_cast<const GenericDelegateDeclaration*>(declaration) };
             ASSERT_SUCCESS(builder.SetParameterizedDelegate(genericDelegateDeclaration->id(), genericDelegateDeclaration->numberOfGenericParameters()));
             return S_OK;
         }

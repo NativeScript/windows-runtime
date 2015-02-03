@@ -6,10 +6,8 @@ namespace UnitTests {
     TEST_CLASS(OverloadsTests){
         public :
             TEST_METHOD(MethodOverloads){
-                MetadataReader metadataReader;
-
-    const wchar_t* name{ L"NativeScript.TestFixtures.OverloadsClass" };
-    shared_ptr<ClassDeclaration> declaration{ static_pointer_cast<ClassDeclaration>(metadataReader.findByName(name)) };
+                const wchar_t * name{ L"NativeScript.TestFixtures.OverloadsClass" };
+    const ClassDeclaration* declaration{ static_cast<const ClassDeclaration*>(MetadataReader::findByName(name)) };
     vector<const MethodDeclaration> methods{ declaration->findMethodsWithName(L"InstanceMethod") };
 
     Assert::IsTrue(methods.size() == 2);

@@ -12,8 +12,10 @@ namespace Metadata {
     public:
         typedef BaseClassDeclaration Base;
 
+        // TODO: Move to private
         explicit ClassDeclaration(IMetaDataImport2*, mdTypeDef);
 
+        // TODO: Replace with type
         std::wstring baseFullName() const;
 
         const InterfaceDeclaration& defaultInterface() const;

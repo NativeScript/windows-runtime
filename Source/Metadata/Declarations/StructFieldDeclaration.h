@@ -1,6 +1,7 @@
 #pragma once
 
 #include "FieldDeclaration.h"
+#include "Types/Type.h"
 
 namespace NativeScript {
 namespace Metadata {
@@ -11,7 +12,7 @@ namespace Metadata {
 
         explicit StructFieldDeclaration(IMetaDataImport2*, mdFieldDef);
 
-        PCCOR_SIGNATURE type() const;
+        const Type& type() const;
     };
 }
 }

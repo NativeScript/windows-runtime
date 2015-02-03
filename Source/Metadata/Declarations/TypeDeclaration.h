@@ -3,23 +3,26 @@
 #include <cor.h>
 #include <wrl.h>
 
-#include "Declaration.h"
+#include "Types/Type.h"
+#include "Declarations/Declaration.h"
 
 namespace NativeScript {
 namespace Metadata {
 
-    class TypeDeclaration : public Declaration {
+    class TypeDeclaration : public Type, public Declaration {
     public:
-        typedef Declaration Base;
-
         virtual bool isExported() const override;
 
         virtual std::wstring name() const override;
 
         virtual std::wstring fullName() const override;
 
+        virtual void toStringInternal(std::wstring&) const override;
+
     protected:
-        explicit TypeDeclaration(DeclarationKind, IMetaDataImport2*, mdTypeDef);
+        explicit TypeDeclaration(ElementType, IMetaDataImport2*, mdTypeDef);
+
+        // TODO: Friend typeFactory and private constructors in all leafs
 
         const Microsoft::WRL::ComPtr<IMetaDataImport2> _metadata;
         const mdTypeDef _token;

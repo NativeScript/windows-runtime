@@ -8,7 +8,8 @@ namespace Metadata {
     using namespace Microsoft::WRL::Wrappers;
 
     NamespaceDeclaration::NamespaceDeclaration(const wchar_t* fullName)
-        : Base(DeclarationKind::Namespace)
+        : Type(ElementType::Namespace)
+        , Declaration()
         , _fullName(fullName) {
 
         ASSERT(fullName);
@@ -33,12 +34,12 @@ namespace Metadata {
     }
 
     wstring NamespaceDeclaration::name() const {
-        wstring fullyQualifiedName(fullName());
-        size_t dotIndex{ fullyQualifiedName.rfind(L".") };
+        wstring name(fullName());
+        size_t dotIndex{ name.rfind(L".") };
         if (dotIndex != wstring::npos) {
-            fullyQualifiedName = fullyQualifiedName.substr(dotIndex + 1);
+            name = name.substr(dotIndex + 1);
         }
-        return fullyQualifiedName;
+        return name;
     }
 
     wstring NamespaceDeclaration::fullName() const {
@@ -47,6 +48,10 @@ namespace Metadata {
 
     IteratorRange<NamespaceDeclaration::ChildrenIterator> NamespaceDeclaration::children() {
         return IteratorRange<ChildrenIterator>(_children.begin(), _children.end());
+    }
+
+    void NamespaceDeclaration::toStringInternal(wstring& result) const {
+        result.append(_fullName);
     }
 }
 }
