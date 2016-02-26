@@ -57,7 +57,7 @@ Runtime::Runtime(RuntimeImplRef impl, const wchar_t* applicationPath)
 
     GlobalObject* globalObject = impl->globalObject.get();
 
-    globalObject->putDirectNativeFunction(*impl->vm, globalObject, Identifier(globalObject->globalExec(), WTF::ASCIILiteral("T")), 1, &getMetadata, NoIntrinsic, DontEnum | Attribute::Function);
+    globalObject->putDirectNativeFunction(*impl->vm, globalObject, Identifier(globalObject->globalExec(), WTF::ASCIILiteral("$")), 1, &getMetadata, NoIntrinsic, DontEnum | Attribute::Function);
 }
 
 Runtime::~Runtime() {

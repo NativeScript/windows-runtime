@@ -217,7 +217,7 @@ TEST_METHOD(StaticMethods) {
     Assert::IsTrue(complexStaticMethodIndexInterface->id() == IID{ 0x74214197, 0xA903, 0x51CA, { 0x74, 0x76, 0x47, 0xFA, 0x5D, 0x93, 0xD5, 0x93 } });
     Assert::IsTrue(complexStaticMethodIndex == 0);
 
-    vector<const MethodDeclaration> methods{ declaration->findMethodsWithName(L"StaticMethod") };
+    vector<MethodDeclaration> methods{ declaration->findMethodsWithName(L"StaticMethod") };
 
     ClassDeclaration::MethodIterator it{ methods.begin() };
     const MethodDeclaration& method0{ *it };
@@ -266,7 +266,7 @@ TEST_METHOD(InstanceMethods) {
     Assert::IsTrue(toStringInterface->fullName() == L"Windows.ApplicationModel.Appointments.IAppointmentParticipant");
     Assert::IsTrue(setterIndex == 3);
 
-    vector<const MethodDeclaration> methods{ declaration->findMethodsWithName(L"InstanceMethod") };
+    vector<MethodDeclaration> methods{ declaration->findMethodsWithName(L"InstanceMethod") };
 
     ClassDeclaration::MethodIterator it{ methods.begin() };
     const MethodDeclaration& method0{ *it };

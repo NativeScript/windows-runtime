@@ -1,7 +1,0 @@
-if("${CMAKE_SYSTEM_NAME}" STREQUAL "WindowsPhone")
-    include_external_msproject(libffi ${CMAKE_CURRENT_SOURCE_DIR}/libffi.WindowsPhone/libffi.vcxproj)
-elseif("${CMAKE_SYSTEM_NAME}" STREQUAL "WindowsStore")
-    include_external_msproject(libffi ${CMAKE_CURRENT_SOURCE_DIR}/libffi.Windows/libffi.vcxproj)
-else()
-    message(FATAL_ERROR "libffi supports Store/Phone only.")
-endif()

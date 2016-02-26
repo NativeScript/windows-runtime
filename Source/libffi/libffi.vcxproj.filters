@@ -1,0 +1,54 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="14.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="ARM">
+      <UniqueIdentifier>{6e5a224d-4ea8-477d-a6b6-562a4f9a0f39}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="x86">
+      <UniqueIdentifier>{efd08a33-6c06-42b1-ba0d-838f74bd0cd3}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="ffitarget.h" />
+    <ClInclude Include="ffi.h" />
+    <ClInclude Include="ffi_common.h" />
+    <ClInclude Include="fficonfig.h" />
+    <ClInclude Include="targetver.h" />
+    <ClInclude Include="ARM\kxarm.h">
+      <Filter>ARM</Filter>
+    </ClInclude>
+    <ClInclude Include="ARM\kxarmunw.h">
+      <Filter>ARM</Filter>
+    </ClInclude>
+    <ClInclude Include="ARM\ffitarget.h">
+      <Filter>ARM</Filter>
+    </ClInclude>
+    <ClInclude Include="x86\ffitarget.h">
+      <Filter>x86</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="java_raw_api.c" />
+    <ClCompile Include="closures.c" />
+    <ClCompile Include="debug.c" />
+    <ClCompile Include="dlmalloc.c" />
+    <ClCompile Include="ffi.c" />
+    <ClCompile Include="raw_api.c" />
+    <ClCompile Include="types.c" />
+    <ClCompile Include="prep_cif.c" />
+    <ClCompile Include="ARM\ffi.c">
+      <Filter>ARM</Filter>
+    </ClCompile>
+    <ClCompile Include="x86\ffi.c">
+      <Filter>x86</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="ARM\win32.asm">
+      <Filter>ARM</Filter>
+    </None>
+    <None Include="x86\win32.asm">
+      <Filter>x86</Filter>
+    </None>
+  </ItemGroup>
+</Project>

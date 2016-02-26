@@ -12,7 +12,7 @@ namespace Metadata {
     public:
         typedef TypeDeclaration Base;
 
-        using FieldIterator = std::vector<const StructFieldDeclaration>::const_iterator;
+        using FieldIterator = std::vector<StructFieldDeclaration>::const_iterator;
 
         explicit StructDeclaration(IMetaDataImport2*, mdTypeDef);
 

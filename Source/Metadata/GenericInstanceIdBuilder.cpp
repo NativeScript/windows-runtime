@@ -52,9 +52,9 @@ namespace Metadata {
                 fieldNames.push_back(Signature::toString(field._metadata.Get(), field.type()));
             }
 
-            vector<const wchar_t*> fieldNamesW;
-            for (const wstring& fieldName : fieldNames) {
-                fieldNamesW.push_back(fieldName.data());
+            vector<wchar_t*> fieldNamesW;
+            for (wstring& fieldName : fieldNames) {
+                fieldNamesW.push_back(const_cast<wchar_t*>(fieldName.data()));
             }
 
             ASSERT_SUCCESS(builder.SetStruct(structDeclaration->fullName().data(), structDeclaration->size(), fieldNamesW.data()));

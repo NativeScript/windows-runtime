@@ -19,7 +19,7 @@ namespace Metadata {
     public:
         typedef Declaration Base;
 
-        using ParameterIterator = std::vector<const ParameterDeclaration>::const_iterator;
+        using ParameterIterator = std::vector<ParameterDeclaration>::const_iterator;
 
         explicit MethodDeclaration(IMetaDataImport2*, mdMethodDef);
 

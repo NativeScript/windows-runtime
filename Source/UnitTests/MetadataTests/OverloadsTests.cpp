@@ -10,7 +10,7 @@ namespace UnitTests {
 
     const wchar_t* name{ L"NativeScript.TestFixtures.OverloadsClass" };
     shared_ptr<ClassDeclaration> declaration{ static_pointer_cast<ClassDeclaration>(metadataReader.findByName(name)) };
-    vector<const MethodDeclaration> methods{ declaration->findMethodsWithName(L"InstanceMethod") };
+    vector<MethodDeclaration> methods{ declaration->findMethodsWithName(L"InstanceMethod") };
 
     Assert::IsTrue(methods.size() == 2);
 

@@ -12,7 +12,7 @@ namespace Metadata {
     // TODO
     namespace {
 
-        vector<const unique_ptr<const InterfaceDeclaration>> makeImplementedInterfacesDeclarations(IMetaDataImport2* metadata, mdTypeDef token) {
+        vector<unique_ptr<const InterfaceDeclaration>> makeImplementedInterfacesDeclarations(IMetaDataImport2* metadata, mdTypeDef token) {
             HCORENUM enumerator{ nullptr };
             ULONG count{ 0 };
             array<mdInterfaceImpl, 1024> tokens;
@@ -21,7 +21,7 @@ namespace Metadata {
             ASSERT(count < tokens.size() - 1);
             metadata->CloseEnum(enumerator);
 
-            vector<const unique_ptr<const InterfaceDeclaration>> result;
+            vector<unique_ptr<const InterfaceDeclaration>> result;
             for (size_t i = 0; i < count; ++i) {
                 mdToken interfaceToken{ mdTokenNil };
                 ASSERT_SUCCESS(metadata->GetInterfaceImplProps(tokens[i], nullptr, &interfaceToken));
@@ -126,10 +126,10 @@ namespace Metadata {
         return IteratorRange<EventIterator>(_events.begin(), _events.end());
     }
 
-    vector<const unique_ptr<const Declaration>> BaseClassDeclaration::findMembersWithName(const wchar_t* name) const {
+    vector<unique_ptr<const Declaration>> BaseClassDeclaration::findMembersWithName(const wchar_t* name) const {
         ASSERT(name);
 
-        vector<const unique_ptr<const Declaration>> result;
+        vector<unique_ptr<const Declaration>> result;
 
         for (const MethodDeclaration& method : findMethodsWithName(name)) {
             result.push_back(make_unique<MethodDeclaration>(method));
@@ -150,7 +150,7 @@ namespace Metadata {
         return result;
     }
 
-    vector<const MethodDeclaration> BaseClassDeclaration::findMethodsWithName(const wchar_t* name) const {
+    vector<MethodDeclaration> BaseClassDeclaration::findMethodsWithName(const wchar_t* name) const {
         ASSERT(name);
 
         HCORENUM enumerator{ nullptr };
@@ -159,7 +159,7 @@ namespace Metadata {
         ASSERT_SUCCESS(_metadata->EnumMethodsWithName(&enumerator, _token, name, methodTokens.data(), methodTokens.size(), &methodsCount));
         _metadata->CloseEnum(enumerator);
 
-        vector<const MethodDeclaration> result;
+        vector<MethodDeclaration> result;
 
         for (size_t i = 0; i < methodsCount; ++i) {
             mdMethodDef methodToken{ methodTokens[i] };

@@ -1,0 +1,9 @@
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+    <PropertyGroup Label="Globals">
+        <UnitTestPlatformVersion  Condition="'$(UnitTestPlatformVersion)' == ''">14.0</UnitTestPlatformVersion>
+    </PropertyGroup>
+    <ItemGroup>
+        <SDKReference Include="CppUnitTestFramework.Universal, Version=$(UnitTestPlatformVersion)" />
+        <SDKReference Include="TestPlatform.Universal, Version=$(UnitTestPlatformVersion)" />
+    </ItemGroup>
+</Project>

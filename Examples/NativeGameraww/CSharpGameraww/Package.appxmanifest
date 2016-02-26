@@ -1,23 +1,28 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Package xmlns="http://schemas.microsoft.com/appx/2010/manifest" xmlns:m2="http://schemas.microsoft.com/appx/2013/manifest" xmlns:m3="http://schemas.microsoft.com/appx/2014/manifest" xmlns:mp="http://schemas.microsoft.com/appx/2014/phone/manifest">
 
-  <Identity Name="8da62173-fb2d-4347-b612-9dc2fb3576e4"
-            Publisher="CN=jzhekov"
-            Version="1.0.0.0" />
+<Package
+  xmlns="http://schemas.microsoft.com/appx/manifest/foundation/windows10"
+  xmlns:mp="http://schemas.microsoft.com/appx/2014/phone/manifest"
+  xmlns:uap="http://schemas.microsoft.com/appx/manifest/uap/windows10"
+  IgnorableNamespaces="uap mp">
 
-  <mp:PhoneIdentity PhoneProductId="8da62173-fb2d-4347-b612-9dc2fb3576e4" PhonePublisherId="00000000-0000-0000-0000-000000000000"/>
+  <mp:PhoneIdentity PhoneProductId="bd84a06c-9815-4567-b4ef-16de1568683d" PhonePublisherId="00000000-0000-0000-0000-000000000000"/>
+
+  <Identity
+    Name="8da62173-fb2d-4347-b612-9dc2fb3576e4"
+    Publisher="CN=telerik"
+    Version="1.0.0.0" />
 
   <Properties>
     <DisplayName>CSharpGameraww</DisplayName>
-    <PublisherDisplayName>jzhekov</PublisherDisplayName>
+    <PublisherDisplayName>Telerik</PublisherDisplayName>
     <Logo>Assets\StoreLogo.png</Logo>
   </Properties>
 
-  <Prerequisites>
-    <OSMinVersion>6.3.1</OSMinVersion>
-    <OSMaxVersionTested>6.3.1</OSMaxVersionTested>
-  </Prerequisites>
-  
+  <Dependencies>
+    <TargetDeviceFamily Name="Windows.Universal" MinVersion="10.0.0.0" MaxVersionTested="10.0.0.0" />
+  </Dependencies>
+
   <Resources>
     <Resource Language="x-generate"/>
   </Resources>
@@ -26,19 +31,19 @@
     <Application Id="App"
         Executable="$targetnametoken$.exe"
         EntryPoint="CSharpGameraww.App">
-        <m3:VisualElements
+        <uap:VisualElements
             DisplayName="CSharpGameraww"
-            Square150x150Logo="Assets\Logo.png"
-            Square44x44Logo="Assets\SmallLogo.png"
+            Square150x150Logo="Assets\Square150x150Logo.png"
+            Square44x44Logo="Assets\Square44x44Logo.png"
             Description="CSharpGameraww"
-            ForegroundText="light"
             BackgroundColor="transparent">
-            <m3:DefaultTile Wide310x150Logo="Assets\WideLogo.png" Square71x71Logo="Assets\Square71x71Logo.png"/>
-            <m3:SplashScreen Image="Assets\SplashScreen.png"/>
-        </m3:VisualElements>
+            <uap:DefaultTile Wide310x150Logo="Assets\Wide310x150Logo.png"/>
+            <uap:SplashScreen Image="Assets\SplashScreen.png" />
+        </uap:VisualElements>
     </Application>
   </Applications>
+
   <Capabilities>
-    <Capability Name="internetClientServer" />
+    <Capability Name="internetClient" />
   </Capabilities>
 </Package>

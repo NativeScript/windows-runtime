@@ -1,12 +1,12 @@
-cmake_minimum_required(VERSION 3.1.0)
+cmake_minimum_required(VERSION 3.4.0)
 project(NativeScript)
 
 set(CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/cmake")
 
 add_definitions(
-    # Windows 8.1
-    /D_WIN32_WINNT=0x0603
-    /DWINVER=0x0603
+    # Windows 10
+    /D_WIN32_WINNT=0x0A00
+    /DWINVER=0x0A00
     /DNOMINMAX
     /wd4018 /wd4068 /wd4099 /wd4100 /wd4127 /wd4138 /wd4146 /wd4180 /wd4189 /wd4201 /wd4244 /wd4251 /wd4267 /wd4275 /wd4288
     /wd4291 /wd4305 /wd4309 /wd4344 /wd4355 /wd4389 /wd4396 /wd4481 /wd4503 /wd4505 /wd4510 /wd4512 /wd4530 /wd4610 /wd4702
@@ -14,7 +14,7 @@ add_definitions(
 )
 include(WebKit.cmake)
 
-add_subdirectory(libffi)
+include_external_msproject(libffi ${CMAKE_CURRENT_SOURCE_DIR}/libffi/libffi.vcxproj)
 
 add_subdirectory(Metadata)
 add_subdirectory(Runtime)

@@ -1,10 +1,10 @@
 {
-  "name": "tns-winrt",
-  "description": "Telerik NativeScript Runtime for WinRT",
+  "name": "tns-windows",
+  "description": "Telerik NativeScript Runtime for the Universal Windows Platform",
   "version": "0.1.0",
   "keywords": [
     "NativeScript",
-    "WinRT",
+    "Windows",
     "runtime"
   ],
   "author": {

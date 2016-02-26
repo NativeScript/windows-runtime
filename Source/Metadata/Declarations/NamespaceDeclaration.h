@@ -11,7 +11,7 @@ namespace Metadata {
     public:
         typedef Declaration Base;
 
-        using ChildrenIterator = std::vector<const std::wstring>::const_iterator;
+        using ChildrenIterator = std::vector<std::wstring>::const_iterator;
 
         explicit NamespaceDeclaration(const wchar_t* fullName);
 

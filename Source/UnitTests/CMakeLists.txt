@@ -15,6 +15,7 @@ set(METADATA_TESTS
 )
 set(SOURCE_FILES
     ${METADATA_TESTS}
+    Main.cpp
     UnitTests-Prefix.cpp
 )
 
@@ -24,17 +25,24 @@ source_group("" FILES ${SOURCE_FILES})
 
 list(APPEND ${SOURCE_FILES} UnitTests-Prefix.cpp)
 
-file(GLOB CONTENT_FILES ${PROJECT_SOURCE_DIR}/cmake/Assets_${CMAKE_SYSTEM_NAME}/*)
+file(GLOB CONTENT_FILES ${PROJECT_SOURCE_DIR}/cmake/Assets/*)
 source_group("Assets" FILES ${CONTENT_FILES})
-
-list(APPEND CONTENT_FILES
-    cmake/Package_${CMAKE_SYSTEM_NAME}.appxmanifest
-)
-set_property(SOURCE ${CONTENT_FILES} PROPERTY VS_DEPLOYMENT_CONTENT 1)
 
 set(RESOURCE_FILES
     ${CONTENT_FILES}
 )
+
+set(SHORT_NAME UnitTests)
+set(PACKAGE_GUID 4961B5D7-2CCC-4060-879C-695F84B1E354)
+set(APPLICATION_ID "vstest.executionengine.universal.App")
+configure_file(
+    ${PROJECT_SOURCE_DIR}/cmake/Package.appxmanifest.in
+    ${CMAKE_CURRENT_BINARY_DIR}/Package.appxmanifest
+    @ONLY
+)
+list(APPEND RESOURCE_FILES ${CMAKE_CURRENT_BINARY_DIR}/Package.appxmanifest)
+
+set_property(SOURCE ${RESOURCE_FILES} PROPERTY VS_DEPLOYMENT_CONTENT 1)
 
 include_directories(
     ${PROJECT_SOURCE_DIR}/Metadata
@@ -42,18 +50,17 @@ include_directories(
 )
 
 # TODO
-file(COPY ${CMAKE_CURRENT_SOURCE_DIR}/cmake/UnitTests_${CMAKE_SYSTEM_NAME}.vcxproj.user DESTINATION ${CMAKE_CURRENT_BINARY_DIR})
-file(RENAME ${CMAKE_CURRENT_BINARY_DIR}/UnitTests_${CMAKE_SYSTEM_NAME}.vcxproj.user ${CMAKE_CURRENT_BINARY_DIR}/UnitTests.vcxproj.user)
+file(COPY ${CMAKE_CURRENT_SOURCE_DIR}/cmake/UnitTests.vcxproj.user DESTINATION ${CMAKE_CURRENT_BINARY_DIR})
 
-add_library(UnitTests SHARED ${SOURCE_FILES} ${HEADER_FILES} ${RESOURCE_FILES})
+add_executable(UnitTests WIN32 ${SOURCE_FILES} ${HEADER_FILES} ${RESOURCE_FILES})
 target_link_libraries(UnitTests Metadata)
 add_dependencies(UnitTests TestFixtures)
 
 include(PrecompiledHeaders)
 SET_PRECOMPILED_HEADER(UnitTests UnitTests-Prefix.h UnitTests-Prefix.cpp)
 
-set_target_properties(UnitTests PROPERTIES LINK_FLAGS "/LIBPATH:$(VCInstallDir)UnitTest/lib")
-set_target_properties(UnitTests PROPERTIES COMPILE_FLAGS "/I$(VCInstallDir)UnitTest/include")
+set_target_properties(UnitTests PROPERTIES LINK_FLAGS "/LIBPATH:$(VCInstallDir)UnitTest/lib/UWP")
+set_target_properties(UnitTests PROPERTIES COMPILE_FLAGS "/I$(VCInstallDir)UnitTest/include/UWP")
 
 set_target_properties(UnitTests PROPERTIES
     VS_WINRT_COMPONENT TRUE
