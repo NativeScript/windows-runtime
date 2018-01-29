@@ -1,8 +1,10 @@
+> **WARNING:** This repository is a proof-of-concept implementation of a Windows runtime for NativeScript that we **no longer maintain**.
+
 # NativeScript Runtime for the Universal Windows Platform
 
 The NativeScript Runtime allows [Windows Runtime](https://en.wikipedia.org/wiki/Windows_Runtime) APIs to be called from JavaScript. It is similar to the [JavaScript bridge](https://msdn.microsoft.com/en-us/library/hh710230%28v=vs.94%29.aspx?f=255&MSPPError=-2147217396) that Microsoft provides, but also allows XAML UI controls to be instantiated. This way NativeScript UWP apps are truly native, instead of being HTML based.
 
-> **NOTE:** At the moment, the runtime is in a **proof of concept** stage - it only allows calling of methods with primitive types. Things like inheritance, generics, exception handling, asynchronous tasks and advanced marshalling/projections are further to be developed.
+At the moment, the runtime is in a **proof of concept** stage - it only allows calling of methods with primitive types. Things like inheritance, generics, exception handling, asynchronous tasks and advanced marshalling/projections are further to be developed.
 
 ## Building and Running
 
